@@ -13,3 +13,15 @@ Route::get('/home', function () {
 Route::get('/shop', function () {
     return view('shop');
 });
+
+Route::get('/best-sellers', function () {
+    return view('best-sellers');
+});
+
+Route::get('/gifts', function () {
+    return view('gifts');
+});
+
+Route::get('/product-detail', function () {
+    return view('product-detail');
+});
