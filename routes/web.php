@@ -7,21 +7,21 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function () {
-    return view('home');
-});
+    return view('pages.home');
+})->name('home');
 
 Route::get('/shop', function () {
-    return view('shop');
-});
+    return view('pages.shop');
+})->name('shop');
 
 Route::get('/best-sellers', function () {
-    return view('best-sellers');
-});
+    return view('pages.best-sellers');
+})->name('best-sellers');
 
 Route::get('/gifts', function () {
-    return view('gifts');
-});
+    return view('pages.gifts');
+})->name('gifts');
 
 Route::get('/product-detail', function () {
-    return view('product-detail');
-});
+    return view('pages.product-detail');
+})->name('product-detail');

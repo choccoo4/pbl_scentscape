@@ -16,23 +16,23 @@
         <div class="container mx-auto px-6 flex justify-between items-center">
             <!-- Logo -->
             <div class="flex items-center">
-                <img src="{{ asset('images/Scentscape.png') }}" alt="Scentscape Logo" class="h-10 w-auto">
+                <a href="{{ route('home') }}"><img src="{{ asset('images/Scentscape.png') }}" alt="Scentscape Logo" class="h-10 w-auto"></a>
             </div>
 
             <!-- Desktop Nav -->
             <nav class="hidden md:flex flex-1 ml-10 justify-between items-center">
                 <ul class="flex space-x-6">
-                    <li><a href="#" class="hover:text-gray-300">Best Sellers</a></li>
+                    <li><a href="{{ route('best-sellers') }}" class="hover:text-gray-300">Best Sellers</a></li>
                     <li><a href="#" class="hover:text-gray-300">About</a></li>
-                    <li><a href="#" class="hover:text-gray-300">Shop</a></li>
-                    <li><a href="#" class="hover:text-gray-300">Gifts</a></li>
+                    <li><a href="{{ route('shop') }}" class="hover:text-gray-300">Shop</a></li>
+                    <li><a href="{{ route('gifts') }}" class="hover:text-gray-300">Gifts</a></li>
                 </ul>
 
                 <!-- Icons -->
                 <div class="flex items-center space-x-4 ml-6">
                     <a href="#"><i class="fas fa-user text-lg"></i></a>
                     <button @click="searchOpen = !searchOpen"><i class="fas fa-search text-lg"></i></button>
-                    <a href="#">Keranjang<i class="fas fa-shopping-cart text-lg"></i></a>
+                    <a href="#"><i class="fas fa-shopping-cart text-lg"></i></a>
                 </div>
             </nav>
 
