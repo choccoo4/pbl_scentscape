@@ -14,6 +14,7 @@
     <!-- Header -->
 <header x-data="{ menuOpen: false, searchOpen: false }" class="bg-teal-900 text-white py-4 relative">
     <div class="container mx-auto px-6 flex justify-between items-center">
+
         <!-- Logo -->
         <div class="flex items-center">
             <img src="{{ asset('images/Scentscape.png') }}" alt="Scentscape Logo" class="h-10 w-auto">
@@ -23,7 +24,7 @@
         <nav class="hidden md:flex flex-1 ml-10 justify-between items-center">
             <ul class="flex space-x-6">
                 <li><a href="#" class="hover:text-gray-300">Best Sellers</a></li>
-                <li><a href="#" class="hover:text-gray-300">About</a></li>
+                <li><a href="{{ url('/about') }}" class="hover:text-gray-300">About</a></li>
                 <li><a href="#" class="hover:text-gray-300">Shop</a></li>
                 <li><a href="#" class="hover:text-gray-300">Gifts</a></li>
             </ul>
@@ -103,8 +104,6 @@
             </div>
         </div>
     </footer>
-
-
 </body>
 
 </html>
