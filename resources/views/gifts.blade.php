@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.pembeli')
 
 @section('title', 'Gifts - Scentscape')
 
