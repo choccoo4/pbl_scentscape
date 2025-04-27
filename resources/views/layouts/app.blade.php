@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -74,6 +73,8 @@
 
 
     <!-- Bagian Konten -->
+    @include('partials.header')
+
     <main>
         @yield('content')
     </main>
@@ -103,7 +104,8 @@
                 </div>
             </div>
         </div>
-    </footer>
+</footer>
+    @include('partials.footer')
 </body>
 
 </html>
