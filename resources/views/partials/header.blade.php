@@ -9,14 +9,14 @@
         <nav class="hidden md:flex flex-1 ml-10 justify-between items-center">
             <ul class="flex space-x-6">
                 <li><a href="{{ route('best-sellers') }}" class="hover:text-gray-300">Best Sellers</a></li>
-                <li><a href="#" class="hover:text-gray-300">About</a></li>
+                <li><a href="{{ route('about') }}" class="hover:text-gray-300">About</a></li>
                 <li><a href="{{ route('shop') }}" class="hover:text-gray-300">Shop</a></li>
                 <li><a href="{{ route('gifts') }}" class="hover:text-gray-300">Gifts</a></li>
             </ul>
             <div class="flex items-center space-x-4 ml-6">
-                <a href="#"><i class="fas fa-user text-lg"></i></a>
+                <a href="{{ route('profile') }}"><i class="fas fa-user text-lg"></i></a>
                 <button @click="searchOpen = !searchOpen"><i class="fas fa-search text-lg"></i></button>
-                <a href="#"><i class="fas fa-shopping-cart text-lg"></i></a>
+                <a href="{{ route('cart') }}"><i class="fas fa-shopping-cart text-lg"></i></a>
             </div>
         </nav>
 
@@ -30,7 +30,7 @@
     <div x-show="menuOpen" x-transition class="md:hidden bg-teal-800 px-6 py-4">
         <ul class="flex flex-col space-y-4">
             <li><a href="{{ route('best-sellers') }}" class="hover:text-gray-300">Best Sellers</a></li>
-            <li><a href="#" class="hover:text-gray-300">About</a></li>
+            <li><a href="{{ route('about') }}" class="hover:text-gray-300">About</a></li>
             <li><a href="{{ route('shop') }}" class="hover:text-gray-300">Shop</a></li>
             <li><a href="{{ route('gifts') }}" class="hover:text-gray-300">Gifts</a></li>
         </ul>
