@@ -26,7 +26,9 @@ Route::get('/product-detail', function () {
 Route::get('/', function () {
     return view('welcome');
 });
- 
+Route::get('/home', function () {
+    return view('home');
+    
 Route::get('/dashboard', function () {
     return view('sellers.dashboard');
 })->name('dashboard');
@@ -43,6 +45,7 @@ Route::get('/updateproduk', function () {
     return view('sellers.updateproduk');
 })->name('updateproduk');
 
+
 Route::get('/daftarpesanan', function () {
     return view('sellers.daftarpesanan');
 })->name('pesanan.index');
@@ -51,9 +54,47 @@ Route::get('/rekapitulasi', function () {
     return view('sellers.rekapitulasi');
 })->name('rekap.index');
 
-
 Route::get('/laporan', function () {
     return view('sellers.laporan');
+});
+
+Route::get('/shop', function () {
+    return view('shop');
+});
+
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
+
+
+Route::get('/profile', function () {
+    return view('profile');
+})->name('profile');
+
+Route::get('/transaksi', function () {
+    return view('transaksi');
+})->name('transaksi');
+
+Route::get('/checkout', function () {
+    return view('chekout');
+});
+
+// routes/web.php
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/order-history', function () {
+    return view('order-history');
+})->name('order.history');
+
+
+Route::get('/cart', function () {
+    return view('cart');
 });
 
 Route::get('/pengaturan', function () {
@@ -61,4 +102,3 @@ Route::get('/pengaturan', function () {
 })->name('pengaturan.index');
 
 //Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-
