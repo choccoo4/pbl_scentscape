@@ -56,7 +56,7 @@ Profile</span>
     </a>
 
 
-    <a href="{{ route('pengaturan.index') }}"
+    <a href="#"
        class="block py-2 px-4 hover:bg-[#0f766e] rounded {{ request()->is('pengaturan*') ? 'bg-[#0f766e]' : '' }}">
        <i class="fa-solid fa-gear mr-5" style="color: #ffffff;"></i>Pengaturan Toko
     </a>

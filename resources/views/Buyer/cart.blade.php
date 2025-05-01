@@ -1,70 +1,71 @@
 @extends('layouts.app')
+@section('title', 'Cart - Scentscape')
+
+@vite(['resources/css/app.css', 'resources/js/app.js'])
 
 @section('content')
-<div class="min-h-screen bg-[#FDF6EF] py-10 px-6">
-    <div class="max-w-5xl mx-auto">
-        <h1 class="text-2xl font-semibold mb-8 text-center">Cart</h1>
-        
-        <table class="w-full text-sm text-left border-collapse">
-            <thead>
-                <tr class="border-b">
-                    <th class="py-2">Product</th>
-                    <th class="py-2">Product</th>
-                    <th class="py-2 text-right">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Product 1 -->
-                <tr class="border-b py-4">
-                    <td class="py-4 flex items-center space-x-4">
-                        <img src="{{ asset('images/products/image6-1.png') }}" alt="Almalika" class="w-16 h-16 object-cover rounded">
+<div class="min-h-screen bg-[#F6F1EB] py-10 px-6 md:px-20">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-semibold text-center text-[#3E3A39] mb-8">Your Cart</h1>
+
+        <div x-data="cartRoot()" x-init="init()" x-ref="root" class="space-y-6">
+            <p class="text-xl text-[#3E3A39] mb-4 font-medium">Select Products to Checkout</p>
+
+            @foreach ($cartItems as $index => $item)
+            <div x-data="cartItem({{ $item['price'] }}, {{ $item['quantity'] }})"
+                x-init="$nextTick(() => {
+                $watch('quantity', () => $refs.root.updateItem({{ $index }}, quantity, price));
+                $refs.root.updateItem({{ $index }}, quantity, price);
+                })"
+                class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-all">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <!-- Kiri: Checkbox, Gambar, Nama dan Harga -->
+                    <div class="flex items-center gap-4 w-full sm:w-1/2">
+                        <input type="checkbox" class="form-checkbox text-[#9BAF9A]" />
+                        <img src="{{ asset('images/products/' . $item['img']) }}" alt="{{ $item['name'] }}" class="w-16 h-16 object-cover rounded-md border border-[#D6C6B8]">
                         <div>
-                            <p class="font-medium">Almalika</p>
-                            <p class="text-gray-600">Rp 401.000</p>
+                            <p class="text-base font-semibold text-[#3E3A39]">{{ $item['name'] }}</p>
+                            <p class="text-sm text-[#6B7280]">Rp {{ number_format($item['price'], 0, ',', '.') }}</p>
                         </div>
-                    </td>
-                    <td class="py-4">
+                    </div>
+
+                    <!-- Kanan: Qty, Remove, dan Total -->
+                    <div class="flex items-center justify-between gap-4 sm:gap-6 flex-wrap sm:flex-nowrap w-full sm:w-1/2">
+                        <!-- Qty Controls -->
                         <div class="flex items-center space-x-2">
-                            <button class="border px-2">-</button>
-                            <span>1</span>
-                            <button class="border px-2">+</button>
+                            <button @click="decrease" class="border border-[#9BAF9A] text-[#9BAF9A] px-2 py-1 rounded hover:bg-[#F6F1EB]">-</button>
+                            <span class="text-base" x-text="quantity"></span>
+                            <button @click="increase" class="border border-[#9BAF9A] text-[#9BAF9A] px-2 py-1 rounded hover:bg-[#F6F1EB]">+</button>
                         </div>
-                        <a href="#" class="block text-sm text-gray-500 mt-1 underline">Remove</a>
-                    </td>
-                    <td class="py-4 text-right">Rp 401.000</td>
-                </tr>
 
-                <!-- Product 2 -->
-                <tr class="border-b py-4">
-                    <td class="py-4 flex items-center space-x-4">
-                        <img src="{{ asset('images/products/image7-1.png') }}" alt="Scent Designer Kit" class="w-16 h-16 object-cover rounded">
-                        <div>
-                            <p class="font-medium">Scent Designer Kit</p>
-                            <p class="text-gray-600">Rp 341.000</p>
-                        </div>
-                    </td>
-                    <td class="py-4">
-                        <div class="flex items-center space-x-2">
-                            <button class="border px-2">-</button>
-                            <span>1</span>
-                            <button class="border px-2">+</button>
-                        </div>
-                        <a href="#" class="block text-sm text-gray-500 mt-1 underline">Remove</a>
-                    </td>
-                    <td class="py-4 text-right">Rp 341.000</td>
-                </tr>
-            </tbody>
-        </table>
+                        <!-- Remove -->
+                        <a href="#" class="text-sm text-[#D6C6B8] hover:text-[#9BAF9A]">Remove</a>
 
-        <!-- Total -->
-        <div class="mt-6 text-right">
-            <p class="text-base">Total: <span class="font-semibold">Rp 742.000</span></p>
-            <p class="text-sm text-gray-600">Shipping & taxes calculated at checkout</p>
-        </div>
+                        <!-- Total -->
+                        <p class="text-base font-semibold text-[#3E3A39]">Rp <span x-text="total"></span></p>
+                    </div>
+                </div>
+            </div>
+            @endforeach
 
-        <!-- Checkout Button -->
-        <div class="text-right mt-4">
-            <a href="/checkout" class="bg-[#004D40] text-white px-6 py-2 text-sm font-medium hover:bg-[#00695C]">CHECKOUT</a>
+            <!-- Total Section -->
+            <div class="flex flex-col sm:flex-row justify-between items-center bg-[#D6C6B8] p-6 rounded-lg shadow-lg mt-6 space-y-4 sm:space-y-0">
+                <div class="text-center sm:text-left">
+                    <p class="text-xl font-medium text-[#3E3A39]">
+                        Total:
+                        <span class="font-semibold text-[#9BAF9A]">
+                            Rp <span x-text="totalFormatted"></span>
+                        </span>
+                    </p>
+                    <p class="text-sm text-[#3E3A39]">Shipping & taxes calculated at checkout</p>
+                </div>
+                <a href="/checkout" class="bg-[#414833] text-white px-8 py-3 text-lg font-medium hover:bg-[#00695C] transition-colors rounded-lg">Proceed to Checkout</a>
+            </div>
+
+            <!-- Tagline -->
+            <div class="text-center mt-8 text-[#9BAF9A]">
+                <p>"Every scent tells a story"</p>
+            </div>
         </div>
     </div>
 </div>

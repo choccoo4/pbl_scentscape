@@ -1,4 +1,4 @@
-<header x-data="{ menuOpen: false, searchOpen: false }" class="bg-teal-900 text-white py-4 relative">
+<header x-data="{ menuOpen: false, searchOpen: false }" class="bg-[#414833] text-white py-4 relative">
     <div class="container mx-auto px-6 flex justify-between items-center">
         <div class="flex items-center">
             <a href="{{ route('home') }}">
@@ -14,7 +14,30 @@
                 <li><a href="{{ route('gifts') }}" class="hover:text-gray-300">Gifts</a></li>
             </ul>
             <div class="flex items-center space-x-4 ml-6">
-                <a href="{{ route('profile') }}"><i class="fas fa-user text-lg"></i></a>
+                <div x-data="{ open: false }" class="relative">
+                    <!-- Avatar/Profile Icon -->
+                    <button @mouseenter="open = true" @mouseleave.away="open = false" @click="open = !open"
+                        class="flex items-center space-x-2 focus:outline-none">
+                        <img src="/images/profile.png" alt="Profile" class="w-8 h-8 rounded-full border border-gray-300">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown -->
+                    <div x-show="open" x-transition
+                        class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-50"
+                        @mouseenter="open = true" @mouseleave="open = false">
+                        <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
+                        <form method="POST" action="/logout">
+                            @csrf
+                            <button type="submit" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
                 <button @click="searchOpen = !searchOpen"><i class="fas fa-search text-lg"></i></button>
                 <a href="{{ route('cart') }}"><i class="fas fa-shopping-cart text-lg"></i></a>
             </div>
@@ -35,9 +58,9 @@
             <li><a href="{{ route('gifts') }}" class="hover:text-gray-300">Gifts</a></li>
         </ul>
         <div class="flex mt-4 space-x-4 text-xl">
-            <a href="#"><i class="fas fa-user"></i></a>
+            <a href="{{ route('profile') }}"><i class="fas fa-user"></i></a>
             <button @click="searchOpen = !searchOpen"><i class="fas fa-search"></i></button>
-            <a href="#"><i class="fas fa-shopping-cart"></i></a>
+            <a href="{{ route('cart') }}"><i class="fas fa-shopping-cart"></i></a>
         </div>
     </div>
 

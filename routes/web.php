@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\BuyerController; 
 
 Route::get('/home', function () {
     return view('buyer.home');
@@ -19,14 +20,14 @@ Route::get('/gifts', function () {
     return view('buyer.gifts');
 })->name('gifts');
 
-Route::get('/product-detail', function () {
+Route::get('/product-detail/{slug}', function () {
     return view('buyer.product-detail');
 })->name('product-detail');
 
 Route::get('/', function () {
     return view('welcome');
 });
-    
+
 Route::get('/dashboard', function () {
     return view('sellers.dashboard');
 })->name('dashboard');
@@ -69,6 +70,10 @@ Route::get('/profile', function () {
     return view('buyer.profile');
 })->name('profile');
 
+Route::get('/change-pw', function () {
+    return view('buyer.change-pw');
+})->name('change-pw');
+
 Route::get('/transaksi', function () {
     return view('buyer.transaksi');
 })->name('transaksi');
@@ -86,13 +91,17 @@ Route::get('/order-history', function () {
     return view('buyer.order-history');
 })->name('order.history');
 
-
-Route::get('/cart', function () {
-    return view('buyer.cart');
-})->name('cart');
+Route::get('/cart', [CartController::class, 'index'])->name('cart');
 
 Route::get('/pengaturan', function () {
     return view('sellers.pengaturan');
 })->name('pengaturan.index');
 
 //Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+use Illuminate\Support\Facades\Auth;
+
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/login');
+})->name('logout');

@@ -4,51 +4,85 @@
 
 @section('content')
 <div class="bg-[#FDF6EF] min-h-screen py-12">
-    <div class="flex max-w-6xl">
+    <div class="flex max-w-6xl mx-auto">
         <!-- Sidebar -->
-        <aside class="w-full md:w-1/5 bg-[#FDF6EF] p-6 border-r-0 border-gray-300">
-    <div class="flex items-center gap-4 mb-6 px-2">
-    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="w-10 h-10" alt="Profile Icon">
-    <p class="font-semibold text-lg">username</p>
-</div>
-        <ul class="space-y-4 text-left font-medium ml-8">
-            <li class="flex items-center space-x-2">
-                <i class="fas fa-user"></i>
-                <a href="#">My Account</a>
-            </li>
-            <li class="ml-8"><a href="#">Profile</a></li>
-            <li class="ml-8"><a href="#">Change Password</a></li>
-            <li class="flex items-center space-x-2 font-medium text-black">
-                <i class="fas fa-box"></i>
-                <a href="{{ route('order.history') }}">Order History</a>
-            </li>
-        </ul>
-    </aside>
+        <aside class="w-full md:w-1/5 bg-[#FDF6EF] p-6">
+            <div class="flex items-center gap-4 mb-6 px-2">
+                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="w-10 h-10" alt="Profile Icon">
+                <p class="font-semibold text-lg">username</p>
+            </div>
+            <ul class="space-y-2 text-left font-medium ml-4 group">
+                <li class="relative">
+                    <div class="flex items-center space-x-2 hover:text-[#9BAF9A] transition-all cursor-pointer group-hover:text-[#9BAF9A]">
+                        <i class="fas fa-user"></i>
+                        <span>My Account</span>
+                    </div>
+                    <ul class="pl-6 mt-2 space-y-1 text-sm transition-all duration-300 group-hover:max-h-32 max-h-0 overflow-hidden">
+                        <li><a href="{{ route('profile') }}" class="hover:text-[#BFA6A0]">Profile</a></li>
+                        <li><a href="{{ route('change-pw') }}" class="hover:text-[#BFA6A0]">Change Password</a></li>
+                    </ul>
+                </li>
+                <li class="flex items-center space-x-2 font-medium text-black hover:text-[#9BAF9A]">
+                    <i class="fas fa-box"></i>
+                    <a href="{{ route('order.history') }}">Order History</a>
+                </li>
+            </ul>
+        </aside>
 
         <!-- Profile Content -->
-        <section class="flex-1 bg-white p-10 rounded-lg shadow-md mx-10">
-            <h1 class="text-2xl font-semibold mb-6 border-b pb-2">My Profile</h1>
-
-            <div class="text-center mb-8">
-                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="w-20 h-20 mx-auto mb-2" alt="Profile Picture">
-                <p class="text-sm text-gray-500">✎ change profile-picture</p>
+        <section class="flex-1 bg-white p-10 rounded-lg shadow-md mx-6">
+            <!-- Greeting -->
+            <div class="mb-6">
+                <h2 class="text-2xl font-semibold text-[#3E3A39]">Welcome back, <span class="text-[#9BAF9A]">username</span>!</h2>
+                <p class="text-sm text-gray-500">Update your profile to keep everything up-to-date ✨</p>
             </div>
 
+            <!-- Profile Picture -->
+            <div class="text-center mb-8">
+                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                    class="w-24 h-24 rounded-full border-4 border-[#D6C6B8] mx-auto mb-2 shadow-md"
+                    alt="Profile Picture">
+
+                <label for="profilePicInput" class="text-sm text-[#9BAF9A] hover:underline cursor-pointer">
+                    ✎ Change profile picture
+                </label>
+                <input id="profilePicInput" type="file" class="hidden" accept="image/*">
+            </div>
+
+            <!-- Profile Form -->
             <form>
                 <div class="mb-4">
-                    <label class="block text-gray-700 mb-1">Name</label>
+                    <label class="block text-gray-700 mb-1 flex items-center gap-2">
+                        <i class="fas fa-user text-[#BFA6A0]"></i> Name
+                    </label>
                     <input type="text" class="w-full border px-4 py-2 rounded bg-gray-100" placeholder="Your Name">
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 mb-1">Phone Number</label>
+                    <label class="block text-gray-700 mb-1 flex items-center gap-2">
+                        <i class="fas fa-phone text-[#BFA6A0]"></i> Phone Number
+                    </label>
                     <input type="text" class="w-full border px-4 py-2 rounded bg-gray-100" placeholder="Your Phone Number">
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 mb-1">Address</label>
+                    <label class="block text-gray-700 mb-1 flex items-center gap-2">
+                        <i class="fas fa-map-marker-alt text-[#BFA6A0]"></i> Address
+                    </label>
                     <textarea class="w-full border px-4 py-2 rounded bg-gray-100" rows="4" placeholder="Your Address"></textarea>
                 </div>
-                <button class="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800">Save</button>
+
+                <button class="bg-[#9BAF9A] text-white px-6 py-2 rounded hover:bg-[#8aa38a] transition-colors">
+                    Save
+                </button>
             </form>
+
+            <!-- Divider -->
+            <hr class="my-8 border-[#E5DAD2]">
+
+            <!-- Extra Info Section -->
+            <div class="text-sm text-gray-500 italic">
+                <p>📅 Last updated: <span class="text-[#BFA6A0]">April 22, 2025</span></p>
+                <p class="mt-1">💡 Tip: Keeping your info up-to-date helps with smooth checkout and delivery!</p>
+            </div>
         </section>
     </div>
 </div>

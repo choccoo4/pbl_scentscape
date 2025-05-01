@@ -30,55 +30,105 @@
         </div>
     </div>
 
-    {{-- Grid Produk --}}
+    @php
+    $products = [
+    [
+    'name' => 'La Bohème',
+    'price' => 'Rp 401.000',
+    'img' => 'image5.png',
+    'gender' => 'For Her',
+    'volume' => '40ml',
+    'type' => 'EDT',
+    'aromas' => [
+    ['icon' => 'sparkle', 'label' => 'Bright'],
+    ['icon' => 'star', 'label' => 'Powdery'],
+    ],
+    'slug' => 'la-boheme',
+    ],
+    [
+    'name' => 'Scent Designer Kit',
+    'price' => 'Rp 180.000',
+    'img' => 'image6.jpg',
+    'gender' => 'Unisex',
+    'volume' => '50ml',
+    'type' => 'EDP',
+    'aromas' => [
+    ['icon' => 'palette', 'label' => 'Creative'],
+    ['icon' => 'drop', 'label' => 'Fresh'],
+    ],
+    'slug' => 'scent-designer-kit',
+    ],
+    [
+    'name' => 'Make it Gift',
+    'price' => 'Rp 90.000',
+    'img' => 'image7.jpg',
+    'gender' => 'Gift Set',
+    'volume' => '–',
+    'type' => 'Bundle',
+    'aromas' => [
+    ['icon' => 'gift', 'label' => 'Special'],
+    ['icon' => 'heart', 'label' => 'Romantic'],
+    ],
+    'slug' => 'make-it-gift',
+    ],
+    [
+    'name' => 'Ethereal',
+    'price' => 'Rp 401.000',
+    'img' => 'image2.png',
+    'gender' => 'Unisex',
+    'volume' => '30ml',
+    'type' => 'EDT',
+    'aromas' => [
+    ['icon' => 'leaf', 'label' => 'Green'],
+    ['icon' => 'sparkle', 'label' => 'Fresh'],
+    ],
+    'slug' => 'ethereal',
+    ],
+    [
+    'name' => 'Midnight Bloom',
+    'price' => 'Rp 355.000',
+    'img' => 'image3.png',
+    'gender' => 'For Her',
+    'volume' => '50ml',
+    'type' => 'EDP',
+    'aromas' => [
+    ['icon' => 'flower', 'label' => 'Floral'],
+    ['icon' => 'moon', 'label' => 'Mystic'],
+    ],
+    'slug' => 'midnight-bloom',
+    ],
+    [
+    'name' => 'Golden Hour',
+    'price' => 'Rp 390.000',
+    'img' => 'image4.png',
+    'gender' => 'Unisex',
+    'volume' => '40ml',
+    'type' => 'EDT',
+    'aromas' => [
+    ['icon' => 'sun', 'label' => 'Warm'],
+    ['icon' => 'orange', 'label' => 'Citrus'],
+    ],
+    'slug' => 'golden-hour',
+    ],
+    ];
+    @endphp
+
+
     <div class="grid pt-5 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
-        <div class="border border-black/40 rounded-md overflow-hidden">
-            <div class="aspect-square bg-white">
-                <img src="/images/products/image2.png" alt="Floraison" class="w-full h-full object-cover">
-            </div>
-            <div class="text-center py-3 px-2">
-                <h3 class="font-poppins text-sm text-gray-800">Floraison</h3>
-                <p class="font-poppins text-sm text-gray-600">Rp 401.000</p>
-            </div>
-        </div>
-        <div class="border border-black/40 rounded-md overflow-hidden">
-            <div class="aspect-square bg-white">
-                <img src="/images/products/image3.png" alt="Floraison" class="w-full h-full object-cover">
-            </div>
-            <div class="text-center py-3 px-2">
-                <h3 class="font-poppins text-sm text-gray-800">Floraison</h3>
-                <p class="font-poppins text-sm text-gray-600">Rp 401.000</p>
-            </div>
-        </div>
-        <div class="border border-black/40 rounded-md overflow-hidden">
-            <div class="aspect-square bg-white">
-                <img src="/images/products/image4.png" alt="Floraison" class="w-full h-full object-cover">
-            </div>
-            <div class="text-center py-3 px-2">
-                <h3 class="font-poppins text-sm text-gray-800">Floraison</h3>
-                <p class="font-poppins text-sm text-gray-600">Rp 401.000</p>
-            </div>
-        </div>
-        <div class="border border-black/40 rounded-md overflow-hidden">
-            <div class="aspect-square bg-white">
-                <img src="/images/products/image5.png" alt="Floraison" class="w-full h-full object-cover">
-            </div>
-            <div class="text-center py-3 px-2">
-                <h3 class="font-poppins text-sm text-gray-800">Floraison</h3>
-                <p class="font-poppins text-sm text-gray-600">Rp 401.000</p>
-            </div>
-        </div>
-        <div class="border border-black/40 rounded-md overflow-hidden">
-            <div class="aspect-square bg-white">
-                <img src="/images/products/image.png" alt="Floraison" class="w-full h-full object-cover">
-            </div>
-            <div class="text-center py-3 px-2">
-                <h3 class="font-poppins text-sm text-gray-800">Floraison</h3>
-                <p class="font-poppins text-sm text-gray-600">Rp 401.000</p>
-            </div>
-        </div>
+        @foreach ($products as $product)
+        <a href="{{ route('product-detail', ['slug' => $product['slug']]) }}">
+            <x-product-card
+                name="{{ $product['name'] }}"
+                price="{{ $product['price'] }}"
+                image="{{ asset('images/products/' . $product['img']) }}"
+                gender="{{ $product['gender'] }}"
+                volume="{{ $product['volume'] }}"
+                type="{{ $product['type'] }}"
+                :aromas="$product['aromas']"
+                extraClass="border border-gray-300 w-60" />
+        </a>
+        @endforeach
+
     </div>
 </section>
-
-
 @endsection

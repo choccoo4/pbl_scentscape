@@ -4,67 +4,100 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="relative h-[400px] md:h-[500px] lg:h-[550px] overflow-hidden">
-    <img src="{{ asset('images/hero-home.png') }}" alt="Hero Background" class="absolute inset-0 w-full h-full object-cover z-0" />
-    <div class="absolute inset-0 bg-black/30 z-10"></div>
-    <div class="relative z-20 flex flex-col items-center justify-center h-full text-center text-white px-4">
-        <h1 class="text-2xl md:text-4xl font-semibold mb-3">Best Sellers</h1>
-        <p class="text-sm md:text-lg max-w-xl leading-relaxed">
-        Not sure where to begin? Explore our most loved fragrances, chosen by our loyal customers.
-        </p>
+<x-herosection
+    background="{{ asset('images/hero-home.png') }}"
+    title="Best Sellers"
+    subtitle="Not sure where to begin? Explore our most loved fragrances, chosen by our loyal customers." />
+
+@php
+$products = [
+[
+'name' => 'Floraison',
+'price' => 'Rp 401.000',
+'img' => 'image.png',
+'gender' => 'For Her',
+'volume' => '50ml',
+'type' => 'EDP',
+'aromas' => [
+['icon' => 'flower', 'label' => 'Floral'],
+['icon' => 'drop', 'label' => 'Watery'],
+],
+'slug' => 'floraison',
+],
+[
+'name' => 'Ethereal',
+'price' => 'Rp 401.000',
+'img' => 'image2.png',
+'gender' => 'Unisex',
+'volume' => '30ml',
+'type' => 'EDT',
+'aromas' => [
+['icon' => 'leaf', 'label' => 'Green'],
+['icon' => 'sparkle', 'label' => 'Fresh'],
+],
+'slug' => 'floraison',
+],
+[
+'name' => 'Beige 96',
+'price' => 'Rp 401.000',
+'img' => 'image3.png',
+'gender' => 'For Him',
+'volume' => '75ml',
+'type' => 'Parfum',
+'aromas' => [
+['icon' => 'fire', 'label' => 'Spicy'],
+['icon' => 'drop', 'label' => 'Aquatic'],
+['icon' => 'smiley', 'label' => 'Playful'],
+],
+'slug' => 'floraison',
+],
+[
+'name' => 'Almalika',
+'price' => 'Rp 401.000',
+'img' => 'image4.png',
+'gender' => 'Unisex',
+'volume' => '50ml',
+'type' => 'EDP',
+'aromas' => [
+['icon' => 'crown', 'label' => 'Royal Oud'],
+['icon' => 'flower', 'label' => 'Rose'],
+],
+'slug' => 'floraison',
+],
+[
+'name' => 'La Bohème',
+'price' => 'Rp 401.000',
+'img' => 'image5.png',
+'gender' => 'For Her',
+'volume' => '40ml',
+'type' => 'EDT',
+'aromas' => [
+['icon' => 'sparkle', 'label' => 'Bright'],
+['icon' => 'star', 'label' => 'Powdery'],
+],
+'slug' => 'floraison',
+],
+];
+@endphp
+
+<!-- Card Produk -->
+<section class="bg-[#f2ede4] py-10">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+            @foreach ($products as $product)
+            <a href="{{ route('product-detail', ['slug' => $product['slug']]) }}">
+                <x-product-card
+                    name="{{ $product['name'] }}"
+                    price="{{ $product['price'] }}"
+                    image="{{ asset('images/products/' . $product['img']) }}"
+                    gender="{{ $product['gender'] }}"
+                    volume="{{ $product['volume'] }}"
+                    type="{{ $product['type'] }}"
+                    :aromas="$product['aromas']"
+                    extraClass="border border-gray-300 w-60" />
+            </a>
+            @endforeach
+        </div>
     </div>
 </section>
-
-<section class="bg-[#f2ede4] min-h-screen px-4 md:px-10 py-10">
-{{-- Grid Produk --}}
-    <div class="grid pt-5 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
-        <div class="border border-black/40 rounded-md overflow-hidden">
-            <div class="aspect-square bg-white">
-                <img src="/images/products/image2.png" alt="Floraison" class="w-full h-full object-cover">
-            </div>
-            <div class="text-center py-3 px-2">
-                <h3 class="font-poppins text-sm text-gray-800">Floraison</h3>
-                <p class="font-poppins text-sm text-gray-600">Rp 401.000</p>
-            </div>
-        </div>
-        <div class="border border-black/40 rounded-md overflow-hidden">
-            <div class="aspect-square bg-white">
-                <img src="/images/products/image3.png" alt="Floraison" class="w-full h-full object-cover">
-            </div>
-            <div class="text-center py-3 px-2">
-                <h3 class="font-poppins text-sm text-gray-800">Floraison</h3>
-                <p class="font-poppins text-sm text-gray-600">Rp 401.000</p>
-            </div>
-        </div>
-        <div class="border border-black/40 rounded-md overflow-hidden">
-            <div class="aspect-square bg-white">
-                <img src="/images/products/image4.png" alt="Floraison" class="w-full h-full object-cover">
-            </div>
-            <div class="text-center py-3 px-2">
-                <h3 class="font-poppins text-sm text-gray-800">Floraison</h3>
-                <p class="font-poppins text-sm text-gray-600">Rp 401.000</p>
-            </div>
-        </div>
-        <div class="border border-black/40 rounded-md overflow-hidden">
-            <div class="aspect-square bg-white">
-                <img src="/images/products/image5.png" alt="Floraison" class="w-full h-full object-cover">
-            </div>
-            <div class="text-center py-3 px-2">
-                <h3 class="font-poppins text-sm text-gray-800">Floraison</h3>
-                <p class="font-poppins text-sm text-gray-600">Rp 401.000</p>
-            </div>
-        </div>
-        <div class="border border-black/40 rounded-md overflow-hidden">
-            <div class="aspect-square bg-white">
-                <img src="/images/products/image.png" alt="Floraison" class="w-full h-full object-cover">
-            </div>
-            <div class="text-center py-3 px-2">
-                <h3 class="font-poppins text-sm text-gray-800">Floraison</h3>
-                <p class="font-poppins text-sm text-gray-600">Rp 401.000</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-
 @endsection
