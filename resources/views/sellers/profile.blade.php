@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.seller')
 
 @section('title', 'My Profile')
 
@@ -9,9 +9,8 @@
         <aside class="w-full md:w-1/5 bg-[#FDF6EF] p-6">
             <div class="flex items-center gap-4 mb-6 px-2">
                 <img src="/images/profile.png" class="w-10 h-10 rounded-full" alt="Profile Icon">
-                <p class="font-semibold text-lg">username</p>
+                <p class="font-semibold text-lg">Admin</p>
             </div>
-
             <ul class="space-y-2 text-left font-medium ml-4 group">
                 <li class="relative">
                     <div class="flex items-center space-x-2 hover:text-[#9BAF9A] transition-all cursor-pointer group-hover:text-[#9BAF9A]">
@@ -19,13 +18,9 @@
                         <span>My Account</span>
                     </div>
                     <ul class="pl-6 mt-2 space-y-1 text-sm transition-all duration-300 group-hover:max-h-32 max-h-0 overflow-hidden">
-                        <li><a href="{{ route('profile') }}" class="hover:text-[#BFA6A0]">Profile</a></li>
-                        <li><a href="{{ route('change-pw') }}" class="hover:text-[#BFA6A0]">Change Password</a></li>
+                        <li><a href="{{ route('profil-penjual') }}" class="hover:text-[#BFA6A0]">Profile</a></li>
+                        <li><a href="{{ route('Ubahpasswrod-penjual') }}" class="hover:text-[#BFA6A0]">Change Password</a></li>
                     </ul>
-                </li>
-                <li class="flex items-center space-x-2 font-medium text-black hover:text-[#9BAF9A]">
-                    <i class="fas fa-box"></i>
-                    <a href="{{ route('order.history') }}">Order History</a>
                 </li>
             </ul>
         </aside>
@@ -34,7 +29,7 @@
         <section class="flex-1 bg-white p-10 rounded-lg shadow-md mx-6">
             <!-- Greeting -->
             <div class="mb-6">
-                <h2 class="text-2xl font-semibold text-[#3E3A39]">Welcome back, <span class="text-[#9BAF9A]">username</span>!</h2>
+                <h2 class="text-2xl font-semibold text-[#3E3A39]">Welcome back, <span class="text-[#9BAF9A]">Admin</span>!</h2>
                 <p class="text-sm text-gray-500">Update your profile to keep everything up-to-date ✨</p>
             </div>
 

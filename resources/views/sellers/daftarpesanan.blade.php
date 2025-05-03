@@ -1,6 +1,5 @@
-{{-- resources/views/orders/index.blade.php --}}
-@extends('layouts.penjual')
-
+@extends('layouts.seller')
+@section('title', 'Daftar Pesanan - Scentscape')
 @section('content')
 <h1 class="text-2xl mb-4 flex items-center gap-2">
     <i class="fa-solid fa-clipboard-list mr-2"></i> Daftar Pesanan</h1>

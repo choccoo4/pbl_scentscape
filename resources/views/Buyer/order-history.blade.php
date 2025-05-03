@@ -7,7 +7,7 @@
         <!-- Sidebar -->
         <aside class="w-full md:w-1/5 bg-[#FDF6EF] p-6">
             <div class="flex items-center gap-4 mb-6 px-2">
-                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="w-10 h-10" alt="Profile Icon">
+                <img src="/images/profile.png" class="w-10 h-10 rounded-full" alt="Profile Icon">
                 <p class="font-semibold text-lg">username</p>
             </div>
             <ul class="space-y-2 text-left font-medium ml-4 group">

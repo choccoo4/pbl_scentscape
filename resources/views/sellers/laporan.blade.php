@@ -1,42 +1,64 @@
-@extends('layouts.penjual')
+@extends('layouts.seller')
+@section('title', 'Rekapitulasi Penjualan Harian - Scentscape')
 
 @section('content')
-<h1 class="text-2xl mb-4 flex items-center gap-2">📢 Rekapitulasi Penjualan</h1>
-<hr class="mb-6 border-gray-400">
 
-    <div class="bg-white shadow-md rounded-lg overflow-x-auto">
-        <div class="flex justify-end p-2">
-            <input type="text" placeholder="Search..." class="border border-gray-300 rounded px-3 py-1 text-sm">
-        </div>
-        <table class="w-full text-sm text-left border-t border-gray-200">
-            <thead class="bg-gray-100 text-gray-700">
-                <tr>
-                    <th class="px-4 py-2 border-t border-b">No</th>
-                    <th class="px-4 py-2 border-t border-b">Barang</th>
-                    <th class="px-4 py-2 border-t border-b">Harga</th>
-                    <th class="px-4 py-2 border-t border-b">QTY</th>
-                    <th class="px-4 py-2 border-t border-b">Total Harga</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="bg-gray-100 text-center">
-                    <td class="px-4 py-2">1</td>
-                    <td class="px-4 py-2">-</td>
-                    <td class="px-4 py-2">-</td>
-                    <td class="px-4 py-2">-</td>
-                    <td class="px-4 py-2">-</td>
-                </tr>
-            </tbody>
-        </table>
+<div class="bg-[#f6f1eb] shadow rounded-xl p-6">
+    <div class="mb-6 flex items-center justify-between">
+        <h1 class="text-2xl font-semibold flex items-center gap-3 text-[#3e3a39]">
+            <i class="fa-solid fa-receipt text-[#414833]"></i> Rekapitulasi Penjualan Harian
+        </h1>
 
-        <div class="p-4 text-lg font-semibold">
-            Grand Total : Rp. 0
+        <!-- Search bar -->
+        <div class="mb-0">
+            <input type="text" placeholder="Cari produk..." class="border border-[#bfa6a0] rounded-full px-4 py-2 text-sm w-75 focus:outline-none focus:ring-2 focus:ring-[#9baf9a]">
         </div>
     </div>
 
-    <div class="mt-4">
-        <button class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800">
-            Print
+    <hr class="mb-6 border-[#d6c6b8]">
+
+    <!-- Table -->
+    <div class="overflow-x-auto rounded-lg border border-[#d6c6b8]">
+        <table class="min-w-full text-sm text-left">
+            <thead class="bg-[#9baf9a] text-white">
+                <tr>
+                    <th class="px-4 py-3">No</th>
+                    <th class="px-4 py-3">Barang</th>
+                    <th class="px-4 py-3">Harga</th>
+                    <th class="px-4 py-3">QTY</th>
+                    <th class="px-4 py-3">Total</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white text-[#3e3a39]">
+                <tr class="hover:bg-[#f6f1eb] transition">
+                    <td class="px-4 py-3">1</td>
+                    <td class="px-4 py-3">Parfum Vanilla Mist</td>
+                    <td class="px-4 py-3">Rp. 150.000</td>
+                    <td class="px-4 py-3">2</td>
+                    <td class="px-4 py-3">Rp. 300.000</td>
+                </tr>
+                <tr class="hover:bg-[#f6f1eb] transition">
+                    <td class="px-4 py-3">2</td>
+                    <td class="px-4 py-3">Parfum Citrus Bloom</td>
+                    <td class="px-4 py-3">Rp. 120.000</td>
+                    <td class="px-4 py-3">1</td>
+                    <td class="px-4 py-3">Rp. 120.000</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Total -->
+    <div class="flex justify-end mt-6">
+        <div class="text-lg font-semibold text-[#414833]">
+            Grand Total: <span class="text-[#bfa6a0]">Rp. 420.000</span>
+        </div>
+    </div>
+
+    <!-- Action -->
+    <div class="mt-6 text-right">
+        <button class="bg-[#414833] hover:bg-[#3e3a39] text-white px-6 py-2 rounded-full shadow transition">
+            <i class="fa-solid fa-print mr-2"></i> Print
         </button>
     </div>
 </div>

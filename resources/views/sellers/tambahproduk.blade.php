@@ -1,71 +1,113 @@
-@extends('layouts.penjual')
+@extends('layouts.seller')
+@section('title', 'Tambah Produk - Scentscape')
 
 @section('content')
-<div class="px-6 pt-4 pb-10">
-    <!-- Judul -->
-    <h1 class="text-2xl mb-4 flex items-center gap-2">☰ Tambah Produk</h1>
-    <hr class="mb-6 border-gray-400">
+<div class="max-w-3xl mx-auto p-6 bg-[#F6F1EB] rounded-2xl shadow-lg mt-6">
+    <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2 text-[#3E3A39]">
+        🎁 Tambah Produk
+    </h2>
 
-    <!-- Form -->
-    <form action="#" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded shadow-md w-full max-w-full">
-        @csrf
-        <h2 class="text-lg font-semibold mb-4 border-b border-gray-400 pb-2">Data Produk</h2>
+    <!-- Nama Produk -->
+    <div class="mb-4">
+        <label class="block text-sm font-medium text-[#3E3A39] mb-1">Nama Produk</label>
+        <input type="text" class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]" placeholder="Masukkan nama produk" />
+    </div>
 
-        <!-- Kategori -->
-        <div class="mb-4">
-            <label for="kategori" class="block mb-1 font-medium text-sm">Kategori :</label>
-            <select id="kategori" name="kategori" class="w-full border rounded px-3 py-2 bg-[#f5f5dc]">
-                <option value="women">Women</option>
-                <option value="men">Men</option>
-                <option value="unisex">Unisex</option>
-            </select>
-        </div>
+    <!-- Deskripsi Produk -->
+    <div class="mb-4">
+        <label class="block text-sm font-medium text-[#3E3A39] mb-1">Deskripsi Produk</label>
+        <textarea rows="5" class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]" placeholder="Tulis deskripsi lengkap, termasuk karakter aroma (top, middle, base notes), kondisi pemakaian, dan lainnya..."></textarea>
+        <p class="text-xs text-[#3E3A39] mt-1">Deskripsi akan ditampilkan sesuai format (paragraf, numbering, dll) yang diinput penjual.</p>
+    </div>
 
-        <!-- Nama Produk -->
-        <div class="mb-4">
-            <label for="nama_produk" class="block mb-1 font-medium text-sm">Nama Produk:</label>
-            <input type="text" id="nama_produk" name="nama_produk" class="w-full border rounded px-3 py-2 bg-[#f5f5dc]" placeholder="Contoh: Ethereal - Parfume 30ml">
-        </div>
+    <!-- Label Gender -->
+    <div class="mb-4">
+        <label class="block text-sm font-medium text-[#3E3A39] mb-1">Label Gender</label>
+        <select class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]">
+            <option>Unisex</option>
+            <option>Pria</option>
+            <option>Wanita</option>
+        </select>
+    </div>
 
-        <!-- Ukuran -->
-        <div class="mb-4">
-            <label for="ukuran" class="block mb-1 font-medium text-sm">Ukuran:</label>
-            <input type="text" id="ukuran" name="ukuran" class="w-full border rounded px-3 py-2 bg-[#f5f5dc]" placeholder="Contoh: 70ml">
-        </div>
+    <!-- Tipe Produk -->
+    <div class="mb-4">
+        <label class="block text-sm font-medium text-[#3E3A39] mb-1">Tipe Produk</label>
+        <select class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]">
+            <option>Eau De Parfum (EDP)</option>
+            <option>Eau De Toilette (EDT)</option>
+            <option>Body Mist</option>
+        </select>
+    </div>
 
-        <!-- Deskripsi -->
-        <div class="mb-4">
-            <label for="deskripsi" class="block mb-1 font-medium text-sm">Deskripsi</label>
-            <textarea id="deskripsi" name="deskripsi" rows="4" class="w-full border rounded px-3 py-2 bg-[#f5f5dc]" placeholder="Deskripsikan aroma, karakter, dan keunggulan produk..."></textarea>
-        </div>
+    <!-- Volume -->
+    <div class="mb-4">
+        <label class="block text-sm font-medium text-[#3E3A39] mb-1">Volume</label>
+        <input type="text" class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]" placeholder="contoh: 50ml" />
+    </div>
 
-        <!-- Harga & Stok -->
-        <div class="mb-4 flex flex-col md:flex-row gap-4">
-            <div class="w-full md:w-1/2">
-                <label for="harga" class="block mb-1 font-medium text-sm">Harga:</label>
-                <div class="flex">
-                    <span class="inline-flex items-center px-3 bg-gray-200 border border-r-0 rounded-l text-gray-600">Rp</span>
-                    <input type="number" id="harga" name="harga" class="w-full border rounded-r px-3 py-2 bg-[#f5f5dc]" placeholder="105000">
-                </div>
-            </div>
-            <div class="w-full md:w-1/2">
-                <label for="stok" class="block mb-1 font-medium text-sm">Stok:</label>
-                <input type="number" id="stok" name="stok" class="w-full border rounded px-3 py-2 bg-[#f5f5dc]" placeholder="Contoh: 7">
-            </div>
-        </div>
+    <!-- Harga -->
+    <div class="mb-4">
+        <label class="block text-sm font-medium text-[#3E3A39] mb-1">Harga</label>
+        <input type="number" class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]" placeholder="Masukkan harga produk" />
+    </div>
 
-        <!-- Foto -->
-        <div class="mb-6">
-            <label for="foto" class="block mb-1 font-medium text-sm">Foto:</label>
-            <input type="file" id="foto" name="foto" class="w-full border rounded px-3 py-2 bg-[#f5f5dc]">
-        </div>
-
-        <!-- Submit Button -->
-        <div class="text-right">
-            <button type="submit" class="bg-green-700 hover:bg-green-800 text-white px-5 py-2 rounded text-sm">
-                Tambah Produk
+    <!-- Kategori -->
+    <div x-data="{ selected: [] }" class="mb-4">
+        <label class="block text-sm font-medium text-[#3E3A39] mb-2">Kategori</label>
+        <div class="flex flex-wrap gap-2">
+            @foreach ($categories as $category)
+            <button type="button"
+                @click="selected.includes('{{ $category }}') ? selected = selected.filter(i => i !== '{{ $category }}') : selected.push('{{ $category }}')"
+                :class="selected.includes('{{ $category }}') ? 'bg-[#9BAF9A] text-white' : 'bg-[#F6F1EB] text-[#3E3A39]'"
+                class="border border-[#9BAF9A] px-3 py-1 rounded-full text-sm">
+                {{ $category }}
             </button>
+            @endforeach
         </div>
-    </form>
+
+        <!-- Hidden inputs -->
+        <template x-for="item in selected" :key="item">
+            <input type="hidden" name="categories[]" :value="item">
+        </template>
+    </div>
+
+    <!-- Stok -->
+    <div class="mb-4">
+        <label class="block text-sm font-medium text-[#3E3A39] mb-1">Stok</label>
+        <input type="number" min="0" class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]" placeholder="Masukkan jumlah stok tersedia" />
+    </div>
+
+    <!-- Foto Produk -->
+    <div class="mb-4">
+        <label class="block text-sm font-medium text-[#3E3A39] mb-1">Foto Produk</label>
+        <input type="file" multiple class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
+      file:rounded-lg file:border-0
+      file:text-sm file:font-semibold
+      file:bg-[#D6C6B8] file:text-[#3E3A39]
+      hover:file:bg-[#BFA6A0]">
+        <p class="text-xs text-[#3E3A39] mt-1">Upload 1 atau lebih foto produk (maks 5 MB per file)</p>
+    </div>
+
+    <!-- Clean Formula -->
+    <!--<div class="mb-4">
+        <label class="flex items-center gap-2 text-[#3E3A39]">
+            <input type="checkbox" class="rounded text-[#9BAF9A] focus:ring-[#9BAF9A]" />
+            Clean Formula
+        </label>
+    </div>-->
+
+    <!-- Aktifkan Produk -->
+    <!--<div class="mb-6">
+        <label class="flex items-center gap-2 text-[#3E3A39]">
+            <input type="checkbox" checked class="rounded text-[#9BAF9A] focus:ring-[#9BAF9A]" />
+            Aktifkan Produk
+        </label>
+    </div> -->
+
+    <!-- Tombol Submit -->
+    <a href="{{ route('produk.index') }}" class="bg-[#9BAF9A] hover:bg-[#8DA089] text-white font-semibold px-6 py-2 rounded-lg shadow transition-all">
+        Tambah Produk
+    </a>
 </div>
 @endsection

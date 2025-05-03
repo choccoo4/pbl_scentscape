@@ -1,52 +1,66 @@
-@extends('layouts.penjual')
+@extends('layouts.seller')
+@section('title', 'Dashboard - Scentscape')
 
 @section('content')
-<head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-</head>
-<h1 class="text-2xl mb-4 flex items-center gap-2 ">
-<i class="fa-solid fa-gauge"></i>Dashboard</h1>
-<hr class="mb-6 border-gray-400">
-
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-  <div class="bg-white shadow p-4 rounded flex justify-between items-center">
-    <div>
-      <p class="text-sm text-gray-500">Total Penjualan</p>
-      <p class="text-lg">Rp 2.500.000</p>
-    </div>
-    <span class="text-2xl">
-    <i class="fa-solid fa-hand-holding-dollar" style="color: #000000;"></i>
-    </span>
-  </div>
-
-  <div class="bg-white shadow p-4 rounded flex justify-between items-center">
-    <div>
-      <p class="text-sm text-gray-500">Pesanan Masuk</p>
-      <p class="text-lg">3 Pesanan</p>
-    </div>
-    <span class="text-2xl">
-    <i class="fa-solid fa-bag-shopping" style="color: #000000;"></i>
-    </span>
-  </div>
-
-  <div class="bg-white shadow p-4 rounded flex justify-between items-center">
-    <div>
-      <p class="text-sm text-gray-500">Produk Terjual</p>
-      <p class="text-lg">15 Produk</p>
-    </div>
-    <span class="text-2xl">
-    <i class="fa-solid fa-truck-fast" style="color: #000000;"></i>
-    </span>
-  </div>
-
-  <div class="bg-white shadow p-4 rounded flex justify-between items-center">
-    <div>
-      <p class="text-sm text-gray-500">Total Stok Produk</p>
-      <p class="text-lg">140 Produk</p>
-    </div>
-    <span class="text-2xl">
-    <i class="fa-solid fa-box" style="color: #000000;"></i>
-    </span>
-  </div>
+<div class="mb-6">
+    <h1 class="text-3xl font-semibold text-[#414833] flex items-center gap-3">
+        <i class="fa-solid fa-gauge"></i> Selamat datang di Dashboard
+    </h1>
+    <p class="text-[#9BAF9A] text-sm mt-1">Toko kamu terlihat wangi hari ini 🌿</p>
 </div>
+
+<!-- Ringkasan -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <div class="bg-[#F6F1EB] shadow p-4 rounded-xl flex items-center gap-4">
+        <div class="p-3 rounded-full bg-[#9BAF9A] text-white">
+            <i class="fa-solid fa-hand-holding-dollar text-lg"></i>
+        </div>
+        <div>
+            <p class="text-sm text-[#BFA6A0]">Total Penjualan</p>
+            <p class="text-lg font-semibold text-[#3E3A39]">Rp 2.500.000</p>
+        </div>
+    </div>
+    <div class="bg-[#F6F1EB] shadow p-4 rounded-xl flex items-center gap-4">
+        <div class="p-3 rounded-full bg-[#BFA6A0] text-white">
+            <i class="fa-solid fa-bag-shopping text-lg"></i>
+        </div>
+        <div>
+            <p class="text-sm text-[#BFA6A0]">Pesanan Masuk</p>
+            <p class="text-lg font-semibold text-[#3E3A39]">3 Pesanan</p>
+        </div>
+    </div>
+    <div class="bg-[#F6F1EB] shadow p-4 rounded-xl flex items-center gap-4">
+        <div class="p-3 rounded-full bg-[#D6C6B8] text-white">
+            <i class="fa-solid fa-truck-fast text-lg"></i>
+        </div>
+        <div>
+            <p class="text-sm text-[#BFA6A0]">Produk Terjual</p>
+            <p class="text-lg font-semibold text-[#3E3A39]">15 Produk</p>
+        </div>
+    </div>
+    <div class="bg-[#F6F1EB] shadow p-4 rounded-xl flex items-center gap-4">
+        <div class="p-3 rounded-full bg-[#9BAF9A] text-white">
+            <i class="fa-solid fa-box text-lg"></i>
+        </div>
+        <div>
+            <p class="text-sm text-[#BFA6A0]">Total Stok Produk</p>
+            <p class="text-lg font-semibold text-[#3E3A39]">140 Produk</p>
+        </div>
+    </div>
+</div>
+
+<!-- Highlight aktivitas -->
+<div class="bg-[#9BAF9A]/10 border-l-4 border-[#9BAF9A] text-[#414833] p-4 rounded-lg mb-6">
+    <p class="text-sm">
+        Hari ini kamu mendapatkan <span class="font-bold">3 pesanan baru</span> dan <span class="font-bold">5 produk</span> sudah dikirim ke pembeli. Tetap semangat! 🌟
+    </p>
+</div>
+
+<!-- Placeholder Chart Section -->
+<div class="bg-white rounded-xl shadow p-6 mt-6 max-w-4xl mx-auto">
+  <p class="mb-4 font-semibold text-[#3E3A39] text-left">Statistik Penjualan Mingguan</p>
+  <canvas id="salesChart" height="100"></canvas>
+</div>
+
+
 @endsection

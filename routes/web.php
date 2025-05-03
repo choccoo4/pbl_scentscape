@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\BuyerController; 
+use App\Http\Controllers\ProdukController;
 
 Route::get('/home', function () {
     return view('buyer.home');
@@ -36,9 +36,7 @@ Route::get('/daftarproduk', function () {
     return view('sellers.daftarproduk');
 })->name('produk.index');
 
-Route::get('/tambahproduk', function () {
-    return view('sellers.tambahproduk');
-})->name('tambahproduk');
+Route::get('/tambahproduk', [ProdukController::class, 'create'])->name('tambahproduk');
 
 Route::get('/updateproduk', function () {
     return view('sellers.updateproduk');
@@ -55,7 +53,15 @@ Route::get('/rekapitulasi', function () {
 
 Route::get('/laporan', function () {
     return view('sellers.laporan');
-});
+})->name('laporan');
+
+Route::get('/profil-penjual', function () {
+    return view('sellers.profile');
+})->name('profil-penjual');
+
+Route::get('/Ubahpasswrod-penjual', function () {
+    return view('sellers.change-pw');
+})->name('Ubahpasswrod-penjual');
 
 Route::get('/login', function () {
     return view('auth.login');

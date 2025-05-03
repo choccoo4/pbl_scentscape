@@ -91,7 +91,7 @@
 </section>
 
 {{-- Section: What Others Say --}}
-<section class="max-w-6xl mx-auto mt-20 px-4">
+<!--<section class="max-w-6xl mx-auto mt-20 px-4">
     <h3 class="text-xl font-semibold mb-4 text-[#3E3A39]">What Others Say</h3>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 text-sm text-gray-700">
         <div class="bg-white p-4 rounded-lg shadow">
@@ -107,7 +107,7 @@
             <p class="mt-2 text-right font-semibold text-xs text-[#9BAF9A]">— Nadine, Bali</p>
         </div>
     </div>
-</section>
+</section>-->
 
 @php
 $products = [
@@ -140,37 +140,16 @@ $products = [
 ];
 @endphp
 
-{{-- Section: Pair it with --}}
-<section class="max-w-6xl mx-auto mt-20 px-4">
-    <h3 class="text-xl font-semibold mb-4 text-[#3E3A39]">Pair it with</h3>
-    <div class="flex gap-4 overflow-x-auto pb-4">
-        @foreach ($products as $product)
-            <a href="{{ route('product-detail', ['slug' => $product['slug']]) }}">
-                <x-product-card
-                    name="{{ $product['name'] }}"
-                    price="{{ $product['price'] }}"
-                    image="{{ asset('images/products/' . $product['img']) }}"
-                    gender="{{ $product['gender'] }}"
-                    volume="{{ $product['volume'] }}"
-                    type="{{ $product['type'] }}"
-                    :aromas="$product['aromas']"
-                    extraClass="border border-gray-200 w-60 shrink-0" />
-            </a>
-        @endforeach
-    </div>
-</section>
-
 <div class="max-w-4xl mx-auto px-6 py-12 space-y-10 text-[#3E3A39]">
-
     {{-- Fragrance Vibe --}}
-    <section class="bg-[#F6F1EB] rounded-xl p-6 shadow-md">
+    <!--<section class="bg-[#F6F1EB] rounded-xl p-6 shadow-md">
         <h2 class="text-xl font-semibold mb-4">Fragrance Vibe</h2>
         <div class="flex flex-wrap gap-4">
             <span class="bg-[#D6C6B8] text-sm font-medium px-4 py-2 rounded-full shadow">🌙 Nighttime Vibe</span>
             <span class="bg-[#BFA6A0] text-sm font-medium px-4 py-2 rounded-full shadow">🔥 Warm & Sensual</span>
             <span class="bg-[#9BAF9A] text-sm font-medium px-4 py-2 rounded-full shadow">🕯️ Mysterious & Bold</span>
         </div>
-    </section>
+    </section>-->
 
     {{-- Usage Tips --}}
     <section class="bg-[#F6F1EB] rounded-xl p-6 shadow-md">
@@ -178,7 +157,6 @@ $products = [
         <ul class="list-disc list-inside space-y-2 text-base">
             <li>Semprot di titik nadi: pergelangan tangan, leher, belakang telinga.</li>
             <li>Gunakan setelah mandi agar aroma lebih tahan lama.</li>
-            <li>Coba layer dengan aroma citrus untuk hasil yang lebih fresh dan unik.</li>
         </ul>
     </section>
 
@@ -207,17 +185,35 @@ $products = [
         </div>
     </section>
 
-    {{-- Behind the Scent --}}
-    <section class="bg-[#F6F1EB] rounded-xl p-6 shadow-md">
+    {{-- Behind the Scent --}} 
+    <!--<section class="bg-[#F6F1EB] rounded-xl p-6 shadow-md">
         <h2 class="text-xl font-semibold mb-4">Behind the Scent</h2>
         <p class="text-base leading-relaxed">
             Terinspirasi dari kehangatan matahari senja dan aroma angin sore, parfum ini diciptakan untuk menghadirkan nuansa ketenangan dan pesona yang abadi.
             Dirancang sebagai wewangian harian yang elegan, cocok untuk kamu yang ingin tampil lembut namun berkarakter.
         </p>
-    </section>
-
-    {{-- Extra Bottom Space --}}
-    <div class="h-20"></div>
+    </section>-->
 </div>
+
+{{-- Section: Pair it with --}}
+<section class="max-w-6xl mx-auto mt-20 px-4">
+    <h3 class="text-xl font-semibold mb-4 text-[#3E3A39]">Pair it with</h3>
+    <div class="flex gap-4 overflow-x-auto pb-4">
+        @foreach ($products as $product)
+            <a href="{{ route('product-detail', ['slug' => $product['slug']]) }}">
+                <x-product-card
+                    name="{{ $product['name'] }}"
+                    price="{{ $product['price'] }}"
+                    image="{{ asset('images/products/' . $product['img']) }}"
+                    gender="{{ $product['gender'] }}"
+                    volume="{{ $product['volume'] }}"
+                    type="{{ $product['type'] }}"
+                    :aromas="$product['aromas']"
+                    extraClass="border border-gray-200 w-60 shrink-0" />
+            </a>
+        @endforeach
+        <div class="h-20"></div>
+    </div>
+</section>
 
 @endsection
