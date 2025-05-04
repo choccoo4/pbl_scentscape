@@ -3,14 +3,14 @@
 
 @section('content')
 <div class="min-h-screen bg-[#FDF6EF] py-10 px-4">
-    <div class="flex max-w-6xl mx-auto gap-6">
+    <div class="flex flex-col md:flex-row max-w-6xl mx-auto gap-6">
         <!-- Sidebar -->
-        <aside class="w-full md:w-1/5 bg-[#FDF6EF] p-6">
+        <aside class="w-full md:w-1/5 bg-[#FDF6EF] p-4 md:p-6">
             <div class="flex items-center gap-4 mb-6 px-2">
                 <img src="/images/profile.png" class="w-10 h-10 rounded-full" alt="Profile Icon">
                 <p class="font-semibold text-lg">username</p>
             </div>
-            <ul class="space-y-2 text-left font-medium ml-4 group">
+            <ul class="space-y-2 text-left font-medium ml-2 md:ml-4 group">
                 <li class="relative">
                     <div class="flex items-center space-x-2 hover:text-[#9BAF9A] transition-all cursor-pointer group-hover:text-[#9BAF9A]">
                         <i class="fas fa-user"></i>
@@ -29,7 +29,7 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 bg-white p-8 rounded shadow">
+        <main class="w-full bg-white p-6 md:p-8 rounded shadow">
             <h2 class="text-2xl font-semibold mb-6 border-b pb-2">Change Password</h2>
 
             <form method="POST" action="#" class="space-y-6" x-data="{ showCurrent: false, showNew: false, showConfirm: false }">

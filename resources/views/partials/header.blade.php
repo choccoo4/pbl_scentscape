@@ -50,7 +50,7 @@
         </button>
     </div>
 
-    <div x-show="menuOpen" x-transition class="md:hidden bg-teal-800 px-6 py-4">
+    <div x-show="menuOpen" x-transition class="md:hidden bg-[#414833] px-6 py-4">
         <ul class="flex flex-col space-y-4">
             <li><a href="{{ route('best-sellers') }}" class="hover:text-gray-300">Best Sellers</a></li>
             <li><a href="{{ route('about') }}" class="hover:text-gray-300">About</a></li>

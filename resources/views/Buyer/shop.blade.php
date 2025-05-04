@@ -114,7 +114,7 @@
     @endphp
 
 
-    <div class="grid pt-5 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-5">
         @foreach ($products as $product)
         <a href="{{ route('product-detail', ['slug' => $product['slug']]) }}">
             <x-product-card
@@ -128,7 +128,6 @@
                 extraClass="border border-gray-300 w-60" />
         </a>
         @endforeach
-
     </div>
 </section>
 @endsection

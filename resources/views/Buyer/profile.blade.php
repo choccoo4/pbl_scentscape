@@ -4,9 +4,9 @@
 
 @section('content')
 <div class="bg-[#FDF6EF] min-h-screen py-12">
-    <div class="flex max-w-6xl mx-auto">
+    <div class="flex flex-col md:flex-row max-w-6xl mx-auto px-4">
         <!-- Sidebar -->
-        <aside class="w-full md:w-1/5 bg-[#FDF6EF] p-6">
+        <aside class="w-full md:w-1/5 bg-[#FDF6EF] p-4 md:p-6">
             <div class="flex items-center gap-4 mb-6 px-2">
                 <img src="/images/profile.png" class="w-10 h-10 rounded-full" alt="Profile Icon">
                 <p class="font-semibold text-lg">username</p>
@@ -31,7 +31,7 @@
         </aside>
 
         <!-- Profile Content -->
-        <section class="flex-1 bg-white p-10 rounded-lg shadow-md mx-6">
+        <section class="w-full md:flex-1 bg-white p-6 md:p-10 rounded-lg shadow-md mx-0 md:mx-6 mt-6 md:mt-0">
             <!-- Greeting -->
             <div class="mb-6">
                 <h2 class="text-2xl font-semibold text-[#3E3A39]">Welcome back, <span class="text-[#9BAF9A]">username</span>!</h2>

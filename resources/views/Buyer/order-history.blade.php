@@ -2,10 +2,10 @@
 @section('title', 'History Order')
 
 @section('content')
-<div class="bg-[#FDF6EF] min-h-screen py-10">
-    <div class="flex flex-col md:flex-row max-w-6xl mx-auto">
+<div class="bg-[#FDF6EF] min-h-screen py-10 px-4">
+    <div class="flex flex-col md:flex-row max-w-6xl mx-auto gap-6">
         <!-- Sidebar -->
-        <aside class="w-full md:w-1/5 bg-[#FDF6EF] p-6">
+        <aside class="w-full md:w-1/5 bg-[#FDF6EF] p-4 md:p-6">
             <div class="flex items-center gap-4 mb-6 px-2">
                 <img src="/images/profile.png" class="w-10 h-10 rounded-full" alt="Profile Icon">
                 <p class="font-semibold text-lg">username</p>
@@ -29,33 +29,31 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 p-6">
-            <div class="bg-white p-6 rounded-xl shadow-md">
-                <h2 class="text-2xl font-semibold mb-6 border-b pb-3 text-[#3E3A39]">Order History</h2>
+        <main class="flex-1 bg-white p-6 rounded-xl shadow">
+            <h2 class="text-2xl font-semibold mb-6 border-b pb-3 text-[#3E3A39]">Order History</h2>
 
-                <div class="overflow-x-auto">
-                    <table class="min-w-full text-sm text-left border border-gray-200">
-                        <thead class="bg-gray-100 text-[#3E3A39]">
-                            <tr class="text-center">
-                                <th class="px-4 py-3 border">No. Pesanan</th>
-                                <th class="px-4 py-3 border">Tanggal</th>
-                                <th class="px-4 py-3 border">Jumlah Total</th>
-                                <th class="px-4 py-3 border">Status</th>
-                                <th class="px-4 py-3 border">Invoice</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-gray-700">
-                            <tr class="text-center">
-                                <td class="px-4 py-3 border">143999</td>
-                                <td class="px-4 py-3 border">12/08/2025</td>
-                                <td class="px-4 py-3 border">Rp 774.000</td>
-                                <td class="px-4 py-3 border text-green-600 font-semibold">Terkirim</td>
-                                <td class="px-4 py-3 border text-blue-600 underline"><a href="#">Detail</a></td>
-                            </tr>
-                            {{-- Tambahkan baris lainnya di sini --}}
-                        </tbody>
-                    </table>
-                </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm text-left border border-gray-200">
+                    <thead class="bg-gray-100 text-[#3E3A39]">
+                        <tr class="text-center">
+                            <th class="px-4 py-3 border">No. Pesanan</th>
+                            <th class="px-4 py-3 border">Tanggal</th>
+                            <th class="px-4 py-3 border">Jumlah Total</th>
+                            <th class="px-4 py-3 border">Status</th>
+                            <th class="px-4 py-3 border">Invoice</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700">
+                        <tr class="text-center">
+                            <td class="px-4 py-3 border">143999</td>
+                            <td class="px-4 py-3 border">12/08/2025</td>
+                            <td class="px-4 py-3 border">Rp 774.000</td>
+                            <td class="px-4 py-3 border text-green-600 font-semibold">Terkirim</td>
+                            <td class="px-4 py-3 border text-blue-600 underline"><a href="#">Detail</a></td>
+                        </tr>
+                        {{-- Tambahkan baris lainnya di sini --}}
+                    </tbody>
+                </table>
             </div>
         </main>
     </div>

@@ -90,7 +90,7 @@ $products = [
       <a href="#" class="text-sm text-gray-600 hover:text-gray-800 font-medium font-serif">SEE MORE</a>
     </div>
 
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
       @foreach ($products as $product)
       <a href="{{ route('product-detail', ['slug' => $product['slug']]) }}">
         <x-product-card
@@ -101,12 +101,13 @@ $products = [
           volume="{{ $product['volume'] }}"
           type="{{ $product['type'] }}"
           :aromas="$product['aromas']"
-          extraClass="border border-gray-300 w-60" />
+          extraClass="border border-gray-300" />
       </a>
       @endforeach
     </div>
   </div>
 </section>
+
 
 <section class="bg-[#f2ede4] py-16 px-6 text-center">
   <h2 class="text-3xl font-semibold text-gray-900 mb-3 font-serif">Ingredients</h2>

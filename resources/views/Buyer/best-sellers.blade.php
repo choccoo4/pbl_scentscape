@@ -83,7 +83,7 @@ $products = [
 <!-- Card Produk -->
 <section class="bg-[#f2ede4] py-10">
     <div class="max-w-7xl mx-auto px-6">
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             @foreach ($products as $product)
             <a href="{{ route('product-detail', ['slug' => $product['slug']]) }}">
                 <x-product-card
@@ -94,7 +94,7 @@ $products = [
                     volume="{{ $product['volume'] }}"
                     type="{{ $product['type'] }}"
                     :aromas="$product['aromas']"
-                    extraClass="border border-gray-300 w-60" />
+                    extraClass="border border-gray-300" />
             </a>
             @endforeach
         </div>
