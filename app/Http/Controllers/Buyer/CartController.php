@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Buyer;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
     public function index()
     {
-        // Dummy data untuk cartItems
+        // Dummy data buat cartItems
         $cartItems = [
             [
                 'name' => 'Almalika',

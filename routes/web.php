@@ -1,111 +1,48 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\ProdukController;
+//use App\Http\Controllers\SellerController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Buyer\AboutController;
+use App\Http\Controllers\Buyer\BestSellersController;
+use App\Http\Controllers\Buyer\ChangePwController;
+use App\Http\Controllers\Buyer\CheckoutController;
+use App\Http\Controllers\Buyer\GiftsController;
+use App\Http\Controllers\Buyer\HomeController;
+use App\Http\Controllers\Buyer\OrderHistoryController;
+use App\Http\Controllers\Buyer\ProductDetailController;
+use App\Http\Controllers\Buyer\ProfileController;
+use App\Http\Controllers\Buyer\ShopController;
+use App\Http\Controllers\Buyer\TransaksiController;
+use App\Http\Controllers\Buyer\CartController;
 
-Route::get('/home', function () {
-    return view('buyer.home');
-})->name('home');
+use App\Http\Controllers\Seller\ProdukController;
 
-Route::get('/shop', function () {
-    return view('buyer.shop');
-})->name('shop');
-
-Route::get('/best-sellers', function () {
-    return view('buyer.best-sellers');
-})->name('best-sellers');
-
-Route::get('/gifts', function () {
-    return view('buyer.gifts');
-})->name('gifts');
-
-Route::get('/product-detail/{slug}', function () {
-    return view('buyer.product-detail');
-})->name('product-detail');
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/dashboard', function () {
-    return view('sellers.dashboard');
-})->name('dashboard');
-
-Route::get('/daftarproduk', function () {
-    return view('sellers.daftarproduk');
-})->name('produk.index');
 
 Route::get('/tambahproduk', [ProdukController::class, 'create'])->name('tambahproduk');
-
-Route::get('/updateproduk', function () {
-    return view('sellers.updateproduk');
-})->name('updateproduk');
-
-
-Route::get('/daftarpesanan', function () {
-    return view('sellers.daftarpesanan');
-})->name('pesanan.index');
-
-Route::get('/rekapitulasi', function () {
-    return view('sellers.rekapitulasi');
-})->name('rekap.index');
-
-Route::get('/laporan', function () {
-    return view('sellers.laporan');
-})->name('laporan');
-
-Route::get('/profil-penjual', function () {
-    return view('sellers.profile');
-})->name('profil-penjual');
-
-Route::get('/Ubahpasswrod-penjual', function () {
-    return view('sellers.change-pw');
-})->name('Ubahpasswrod-penjual');
-
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
-
-
-Route::get('/profile', function () {
-    return view('buyer.profile');
-})->name('profile');
-
-Route::get('/change-pw', function () {
-    return view('buyer.change-pw');
-})->name('change-pw');
-
-Route::get('/transaksi', function () {
-    return view('buyer.transaksi');
-})->name('transaksi');
-
-Route::get('/checkout', function () {
-    return view('buyer.chekout');
-})->name('chekout');
-
-// routes/web.php
-Route::get('/about', function () {
-    return view('buyer.about');
-})->name('about');
-
-Route::get('/order-history', function () {
-    return view('buyer.order-history');
-})->name('order.history');
-
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
+Route::get('/home', [HomeController::class, 'home'])->name('home');
+Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
+Route::get('/best-sellers', [BestSellersController::class, 'bestSellers'])->name('best-sellers');
+Route::get('/gifts', [GiftsController::class, 'gifts'])->name('gifts');
+Route::get('/product-detail/{slug}', [ProductDetailController::class, 'productDetail'])->name('product-detail');
+Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
+Route::get('/change-pw', [ChangePwController::class, 'changePw'])->name('change-pw');
+Route::get('/transaksi', [TransaksiController::class, 'transaksi'])->name('transaksi');
+Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+Route::get('/about', [AboutController::class, 'about'])->name('about');
+Route::get('/order-history', [OrderHistoryController::class, 'orderHistory'])->name('order.history');
 
-Route::get('/pengaturan', function () {
-    return view('sellers.pengaturan');
-})->name('pengaturan.index');
-
-//Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-
-use Illuminate\Support\Facades\Auth;
+//Route::get('/dashboard', [SellerController::class, 'dashboard'])->name('dashboard');
+//Route::get('/daftarproduk', [SellerController::class, 'daftarProduk'])->name('produk.index');
+//Route::get('/tambahproduk', [SellerController::class, 'tambahProduk'])->name('tambahproduk');
+//Route::get('/updateproduk', [SellerController::class, 'updateProduk'])->name('updateproduk');
+//Route::get('/daftarpesanan', [SellerController::class, 'daftarPesanan'])->name('pesanan.index');
+//Route::get('/rekapitulasi', [SellerController::class, 'rekapitulasi'])->name('rekap.index');
+//Route::get('/laporan', [SellerController::class, 'laporan'])->name('laporan');
+//Route::get('/profil-penjual', [SellerController::class, 'profilPenjual'])->name('profil-penjual');
+//Route::get('/Ubahpasswrod-penjual', [SellerController::class, 'ubahPasswordPenjual'])->name('Ubahpasswrod-penjual');
+//Route::get('/pengaturan', [SellerController::class, 'pengaturan'])->name('pengaturan.index');
 
 Route::post('/logout', function () {
     Auth::logout();
