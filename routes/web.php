@@ -17,6 +17,11 @@ use App\Http\Controllers\Buyer\TransaksiController;
 use App\Http\Controllers\Buyer\CartController;
 
 use App\Http\Controllers\Seller\ProdukController;
+use App\Http\Controllers\seller\ProfilController;
+use App\Http\Controllers\seller\TambahprodukController;
+use App\Http\Controllers\seller\UpdateprodukController;
+use App\Http\Controllers\seller\RekapitulasiController;
+use App\Http\Controllers\seller\LaporanController;
 
 
 Route::get('/tambahproduk', [ProdukController::class, 'create'])->name('tambahproduk');
@@ -33,16 +38,12 @@ Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout
 Route::get('/about', [AboutController::class, 'about'])->name('about');
 Route::get('/order-history', [OrderHistoryController::class, 'orderHistory'])->name('order.history');
 
-//Route::get('/dashboard', [SellerController::class, 'dashboard'])->name('dashboard');
-//Route::get('/daftarproduk', [SellerController::class, 'daftarProduk'])->name('produk.index');
-//Route::get('/tambahproduk', [SellerController::class, 'tambahProduk'])->name('tambahproduk');
-//Route::get('/updateproduk', [SellerController::class, 'updateProduk'])->name('updateproduk');
-//Route::get('/daftarpesanan', [SellerController::class, 'daftarPesanan'])->name('pesanan.index');
-//Route::get('/rekapitulasi', [SellerController::class, 'rekapitulasi'])->name('rekap.index');
-//Route::get('/laporan', [SellerController::class, 'laporan'])->name('laporan');
-//Route::get('/profil-penjual', [SellerController::class, 'profilPenjual'])->name('profil-penjual');
-//Route::get('/Ubahpasswrod-penjual', [SellerController::class, 'ubahPasswordPenjual'])->name('Ubahpasswrod-penjual');
-//Route::get('/pengaturan', [SellerController::class, 'pengaturan'])->name('pengaturan.index');
+Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
+Route::get('/tambahproduk', [ProdukController::class, 'create'])->name('tambahproduk');
+Route::get('/updateproduk', [UpdateprodukController::class, 'updateProduk'])->name('updateproduk');
+Route::get('/rekapitulasi', [RekapitulasiController::class, 'rekapitulasi'])->name('rekap.index');
+Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
+Route::get('/profil-penjual', [ProfilController::class, 'index'])->name('profil-penjual');
 
 Route::post('/logout', function () {
     Auth::logout();

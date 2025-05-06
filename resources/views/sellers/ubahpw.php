@@ -18,7 +18,8 @@
                     </div>
                     <ul class="pl-6 mt-2 space-y-1 text-sm transition-all duration-300 group-hover:max-h-32 max-h-0 overflow-hidden">
                         <li><a href="{{ route('profil-penjual') }}" class="hover:text-[#BFA6A0]">Profile</a></li>
-                        <li><a href="{{ route('Ubahpasswrod-penjual') }}" class="hover:text-[#BFA6A0]">Change Password</a></li>
+                        <li><a href="{{ route('ubahpw') }}" class="hover:text-[#BFA6A0]">Change Password</a>
+                        </li>
                     </ul>
                 </li>
             </ul>
