@@ -18,7 +18,7 @@ use App\Http\Controllers\Buyer\CartController;
 
 use App\Http\Controllers\Seller\ProdukController;
 use App\Http\Controllers\seller\ProfilController;
-use App\Http\Controllers\seller\TambahprodukController;
+//use App\Http\Controllers\seller\TambahprodukController;
 use App\Http\Controllers\seller\UpdateprodukController;
 use App\Http\Controllers\seller\RekapitulasiController;
 use App\Http\Controllers\seller\LaporanController;
@@ -51,7 +51,7 @@ Route::get('/rekapitulasi', [RekapitulasiController::class, 'rekapitulasi'])->na
 Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
 Route::get('/profil-penjual', [ProfilController::class, 'index'])->name('profil-penjual');
 
-Route::get('/ubahpw', [UbahpwController::class, 'ubahpw'])->name('ubahpw');
+Route::get('/ubahpassword', [UbahpwController::class, 'ubahpw'])->name('ubahpw');
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 Route::get('/daftarproduk', [DaftarProdukController::class, 'index'])->name('daftarproduk.index');
 Route::get('/daftarpesanan', [DaftarpesananController::class, 'daftarpesanan'])->name('pesanan.index');
@@ -62,3 +62,11 @@ Route::post('/logout', function () {
     Auth::logout();
     return redirect('/login');
 })->name('logout');
+
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');

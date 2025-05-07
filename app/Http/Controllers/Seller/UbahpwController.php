@@ -8,6 +8,6 @@ class UbahpwController extends Controller
 {
     public function ubahpw()
     {
-        return view('sellers.ubahpw'); // pastikan file view ini ada
-}
+        return view('sellers.changePassword'); // pastikan file view ini ada
+    }
 }
