@@ -23,6 +23,12 @@ use App\Http\Controllers\seller\UpdateprodukController;
 use App\Http\Controllers\seller\RekapitulasiController;
 use App\Http\Controllers\seller\LaporanController;
 
+use App\Http\Controllers\seller\UbahpwController;
+use App\Http\Controllers\seller\DashboardController;
+use App\Http\Controllers\Seller\DaftarProdukController;
+use App\Http\Controllers\seller\DaftarpesananController;
+
+
 
 Route::get('/tambahproduk', [ProdukController::class, 'create'])->name('tambahproduk');
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
@@ -44,6 +50,13 @@ Route::get('/updateproduk', [UpdateprodukController::class, 'updateProduk'])->na
 Route::get('/rekapitulasi', [RekapitulasiController::class, 'rekapitulasi'])->name('rekap.index');
 Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
 Route::get('/profil-penjual', [ProfilController::class, 'index'])->name('profil-penjual');
+
+Route::get('/ubahpw', [UbahpwController::class, 'ubahpw'])->name('ubahpw');
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+Route::get('/daftarproduk', [DaftarProdukController::class, 'index'])->name('daftarproduk.index');
+Route::get('/daftarpesanan', [DaftarpesananController::class, 'daftarpesanan'])->name('pesanan.index');
+
+
 
 Route::post('/logout', function () {
     Auth::logout();
