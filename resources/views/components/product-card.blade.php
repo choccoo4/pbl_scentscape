@@ -36,11 +36,21 @@
             </div>
 
             <!-- Aroma Icons -->
-            <div class="flex gap-2 text-lg mt-1">
+             <div class="flex gap-2 text-lg mt-1">
                 @foreach ($aromas as $aroma)
                 <div class="relative group">
-                    <i class="ph ph-{{ $aroma['icon'] }} cursor-pointer"></i>
-                    <div class="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 w-max px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition duration-200 z-10">
+                    <!-- Aroma Icon with Button for hover and active -->
+                     <button
+                     type="button"
+                     data-tooltip-target="tooltip-{{ Str::slug($name) }}-{{ $aroma['icon'] }}"
+                     data-tooltip-placement="top"
+                     class="relative p-2 rounded-full hover:text-green-700 active:text-red-500 transition duration-200"
+                     >
+                     <i class="ph ph-{{ $aroma['icon'] }} cursor-pointer"></i>
+                    </button>
+                    
+                    <!-- Tooltip -->
+                     <div class="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 w-max px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition duration-200 z-10">
                         {{ $aroma['label'] }}
                     </div>
                 </div>

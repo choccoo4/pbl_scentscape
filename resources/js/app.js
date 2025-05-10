@@ -1,4 +1,6 @@
 import './bootstrap';
+import 'flowbite';
+
 
 import Alpine from 'alpinejs';
 import { registerForm } from './regist.js';
