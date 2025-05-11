@@ -8,89 +8,14 @@
   background="{{ asset('images/hero-home.png') }}"
   title="Scents that Speak Softly"
   subtitle="A curated selection of fragrances with feminine nuances,<br>made for every person, every moment." />
-
-@php
-$products = [
-[
-'name' => 'Floraison',
-'price' => 'Rp 401.000',
-'img' => 'image.png',
-'gender' => 'For Her',
-'volume' => '50ml',
-'type' => 'EDP',
-'aromas' => [
-['icon' => 'flower', 'label' => 'Floral'],
-['icon' => 'drop', 'label' => 'Watery'],
-],
-'slug' => 'floraison',
-],
-[
-'name' => 'Ethereal',
-'price' => 'Rp 401.000',
-'img' => 'image2.png',
-'gender' => 'Unisex',
-'volume' => '30ml',
-'type' => 'EDT',
-'aromas' => [
-['icon' => 'leaf', 'label' => 'Green'],
-['icon' => 'sparkle', 'label' => 'Fresh'],
-],
-'slug' => 'floraison',
-],
-[
-'name' => 'Beige 96',
-'price' => 'Rp 401.000',
-'img' => 'image3.png',
-'gender' => 'For Him',
-'volume' => '75ml',
-'type' => 'Parfum',
-'aromas' => [
-['icon' => 'fire', 'label' => 'Spicy'],
-['icon' => 'drop', 'label' => 'Aquatic'],
-['icon' => 'smiley', 'label' => 'Playful'],
-],
-'slug' => 'floraison',
-],
-[
-'name' => 'Almalika',
-'price' => 'Rp 401.000',
-'img' => 'image4.png',
-'gender' => 'Unisex',
-'volume' => '50ml',
-'type' => 'EDP',
-'aromas' => [
-['icon' => 'crown', 'label' => 'Royal Oud'],
-['icon' => 'flower', 'label' => 'Rose'],
-],
-'slug' => 'floraison',
-],
-[
-'name' => 'La Bohème',
-'price' => 'Rp 401.000',
-'img' => 'image5.png',
-'gender' => 'For Her',
-'volume' => '40ml',
-'type' => 'EDT',
-'aromas' => [
-['icon' => 'sparkle', 'label' => 'Bright'],
-['icon' => 'star', 'label' => 'Powdery'],
-],
-'slug' => 'floraison',
-],
-];
-@endphp
-
-
-
 <!-- Latest Releases -->
 <section class="bg-[#f2ede4] py-10">
-  <div class="max-w-7xl mx-auto px-6">
+  <div class="max-w-screen-xl mx-auto">
     <div class="flex justify-between items-center mb-6">
-      <h2 class="text-lg md:text-xl font-semibold text-gray-800 font-serif">Latest releases</h2>
-      <a href="#" class="text-sm text-gray-600 hover:text-gray-800 font-medium font-serif">SEE MORE</a>
+      <h2 class="text-lg md:text-xl font-semibold text-gray-800 font-serif pl-5">Latest releases</h2>
+      <a href="{{ route('shop')}}" class="text-sm text-gray-600 hover:text-gray-800 font-medium font-serif pr-5">SEE MORE</a>
     </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-x-2 gap-y-4 px-2 xl:px-4">
       @foreach ($products as $product)
       <a href="{{ route('product-detail', ['slug' => $product['slug']]) }}">
         <x-product-card
@@ -112,7 +37,7 @@ $products = [
 <section class="bg-[#f2ede4] py-16 px-6 text-center">
   <h2 class="text-3xl font-semibold text-gray-900 mb-3 font-serif">Ingredients</h2>
   <p class="text-gray-600 max-w-xl mx-auto mb-8">
-    Check the characteristics of more than 1505 ingredients and discover the perfumes in which they are present.
+    Check the characteristics of more than 100 ingredients and discover the perfumes in which they are present.
   </p>
 
   <div class="flex justify-center flex-wrap gap-6 mb-8">
@@ -139,9 +64,9 @@ $products = [
     @endforeach
   </div>
 
-  <a href="#" class="text-sm text-black underline hover:text-gray-700 transition-all duration-200">
+  <!--<a href="#" class="text-sm text-black underline hover:text-gray-700 transition-all duration-200">
     EXPLORE CATALOGUE
-  </a>
+  </a>-->
 </section>
 
 <section class="bg-[#f6f1eb] py-16 px-6">
@@ -173,7 +98,7 @@ $products = [
     <h2 class="text-3xl font-serif font-semibold text-gray-900 mb-10">Best Sellers</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
       <div class="flex flex-col md:flex-row items-center bg-white rounded-lg overflow-hidden shadow-md">
-        <img src="{{ asset('images/products/image2.png') }}" alt="Ethereal" class="w-full md:w-1/2 h-60 object-cover" />
+        <img src="{{ asset('images/products/image2-1.jpg') }}" alt="Ethereal" class="w-full md:w-1/2 h-60 object-cover" />
         <div class="p-6 text-left">
           <h3 class="text-lg font-serif font-semibold text-gray-900">Ethereal</h3>
           <p class="text-gray-700 text-sm mt-2 mb-4">Soft yet striking, this fragrance whispers elegance for everyday moments.</p>
@@ -181,9 +106,9 @@ $products = [
         </div>
       </div>
       <div class="flex flex-col md:flex-row items-center bg-white rounded-lg overflow-hidden shadow-md">
-        <img src="{{ asset('images/products/image5.png') }}" alt="La Bohème" class="w-full md:w-1/2 h-60 object-cover" />
+        <img src="{{ asset('images/products/image10 (3).jpg') }}" alt="Victoria's Secret" class="w-full md:w-1/2 h-60 object-cover" />
         <div class="p-6 text-left">
-          <h3 class="text-lg font-serif font-semibold text-gray-900">La Bohème</h3>
+          <h3 class="text-lg font-serif font-semibold text-gray-900">Victoria's Secret</h3>
           <p class="text-gray-700 text-sm mt-2 mb-4">An artistic blend of rosewood and vanilla, this scent is bold and poetic.</p>
           <a href="#" class="text-[#3e3a39] font-medium underline">Shop Now</a>
         </div>

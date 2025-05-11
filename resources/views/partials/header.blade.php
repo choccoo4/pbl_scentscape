@@ -1,4 +1,4 @@
-<header x-data="{ menuOpen: false, searchOpen: false }" class="bg-[#414833] text-white py-4 relative">
+<header x-data="{ menuOpen: false, searchOpen: false, profileOpen: false }" class="bg-[#414833] text-white py-2 relative">
     <div class="container mx-auto px-6 flex justify-between items-center">
         <div class="flex items-center">
             <a href="{{ route('home') }}">
@@ -16,8 +16,7 @@
             <div class="flex items-center space-x-4 ml-6">
                 <div x-data="{ open: false }" class="relative">
                     <!-- Avatar/Profile Icon -->
-                    <button @mouseenter="open = true" @mouseleave.away="open = false" @click="open = !open"
-                        class="flex items-center space-x-2 focus:outline-none">
+                    <button @click="open = !open" class="flex items-center space-x-2 focus:outline-none">
                         <img src="/images/profile.png" alt="Profile" class="w-8 h-8 rounded-full border border-gray-300">
                         <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2"
                             viewBox="0 0 24 24">
@@ -27,8 +26,8 @@
 
                     <!-- Dropdown -->
                     <div x-show="open" x-transition
-                        class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-50"
-                        @mouseenter="open = true" @mouseleave="open = false">
+                        class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-40"
+                        @click.outside="open = false" @mouseenter="open = true" @mouseleave="open = false">
                         <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
                         <form method="POST" action="/logout">
                             @csrf
@@ -64,7 +63,7 @@
         </div>
     </div>
 
-    <div x-show="searchOpen" x-transition class="absolute top-full left-0 w-full bg-white text-black flex items-center px-6 py-3 z-50">
+    <div x-show="searchOpen" x-transition class="absolute top-full left-0 w-full bg-white text-black flex items-center px-6 py-2 z-30">
         <i class="fas fa-search mr-3"></i>
         <input type="text" placeholder="Search..." class="w-full bg-transparent outline-none">
         <button @click="searchOpen = false" class="ml-4 text-xl"><i class="fas fa-times"></i></button>
