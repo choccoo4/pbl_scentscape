@@ -19,7 +19,7 @@
         @include('components.sidebar') <!-- Pindahkan sidebar ke komponen tersendiri untuk rapi -->
 
         <!-- Konten utama -->
-        <main class="flex-1 p-4 sm:ml-64 transition-all duration-300">
+        <main class="flex-1 p-4 sm:ml-50 transition-all duration-300">
             @yield('content')
         </main>
     </div>
