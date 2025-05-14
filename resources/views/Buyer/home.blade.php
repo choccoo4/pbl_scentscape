@@ -41,19 +41,6 @@
   </p>
 
   <div class="flex justify-center flex-wrap gap-6 mb-8">
-    @php
-    $ingredients = [
-    ['name' => 'Musk', 'img' => 'musk.jpg'],
-    ['name' => 'Bergamot', 'img' => 'bergamot.jpeg'],
-    ['name' => 'Amber', 'img' => 'amber.jpeg'],
-    ['name' => 'Patchouli', 'img' => 'patchouli.jpg'],
-    ['name' => 'Sandalwood', 'img' => 'sandalwood.jpeg'],
-    ['name' => 'Vanilla', 'img' => 'vanilla.jpg'],
-    ['name' => 'Jasmine', 'img' => 'jasmine.jpeg'],
-    ['name' => 'Cedarwood', 'img' => 'cedarwood.jpg'],
-    ];
-    @endphp
-
     @foreach ($ingredients as $item)
     <div class="flex flex-col items-center w-20">
       <div class="w-20 h-20 rounded-full overflow-hidden border border-gray-200">

@@ -64,6 +64,17 @@ class HomeController extends Controller
                 'slug' => 'floraison',
             ],
         ];
-        return view('buyer.home', compact('products'));
+
+        $ingredients = [
+            ['name' => 'Musk', 'img' => 'musk.jpg'],
+            ['name' => 'Bergamot', 'img' => 'bergamot.jpeg'],
+            ['name' => 'Amber', 'img' => 'amber.jpeg'],
+            ['name' => 'Patchouli', 'img' => 'patchouli.jpg'],
+            ['name' => 'Sandalwood', 'img' => 'sandalwood.jpeg'],
+            ['name' => 'Vanilla', 'img' => 'vanilla.jpg'],
+            ['name' => 'Jasmine', 'img' => 'jasmine.jpeg'],
+            ['name' => 'Cedarwood', 'img' => 'cedarwood.jpg'],
+        ];
+        return view('buyer.home', compact('products', 'ingredients'));
     }
 }

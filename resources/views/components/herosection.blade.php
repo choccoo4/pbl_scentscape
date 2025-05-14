@@ -1,9 +1,13 @@
 {{-- resources/views/components/hero.blade.php --}}
-<div class="relative h-[400px] md:h-[500px] lg:h-[550px] overflow-hidden">
-    <img src="{{ $background }}" alt="Hero Background" class="absolute inset-0 w-full h-full object-cover z-0" />
-    <div class="absolute inset-0 bg-black/30 z-10"></div>
-    <div class="relative z-20 flex flex-col items-center justify-center h-full text-center text-white px-4">
-        <h1 class="text-2xl md:text-4xl font-semibold mb-3">{{ $title }}</h1>
-        <p class="text-sm md:text-lg max-w-xl leading-relaxed">{!! $subtitle !!}</p>
+<section
+    class="bg-center bg-no-repeat bg-cover bg-gray-700 bg-blend-multiply"
+    style="background-image: url('{{ $background }}'); background-color: rgba(0, 0, 0, 0.3);">
+    <div class="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
+        <h1 class="mb-4 text-3xl font-bold tracking-tight leading-tight text-white md:text-4xl lg:text-5xl">
+            {!! $title !!}
+        </h1>
+        <p class="mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">
+            {!! $subtitle !!}
+        </p>
     </div>
-</div>
+</section>
