@@ -32,12 +32,49 @@ export function registerForm() {
       return Object.keys(this.errors).length === 0;
     },
 
-    submitForm(e) {
-      e.preventDefault(); // cegah reload form
+    submitForm() {
+      console.log('Submit form clicked!');
 
       if (this.validate()) {
-        alert('Akun berhasil dibuat, silakan login');
-        window.location.href = '/login'; // arahkan ke halaman login
+        fetch('/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+          body: JSON.stringify({
+            name: this.name,
+            email: this.email,
+            username: this.username,
+            password: this.password
+          })
+        })
+          .then(async response => {
+            const data = await response.json();
+
+            if (!response.ok) {
+              Swal.fire({
+                title: 'Registrasi Gagal',
+                text: data.message || 'Terjadi kesalahan.',
+                icon: 'error'
+              });
+              return;
+            }
+
+            // Kalau berhasil
+            Swal.fire({
+              title: 'Registrasi Berhasil!',
+              text: 'Anda akan diarahkan ke halaman login...',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false,
+              willClose: () => {
+                window.location.href = '/login';
+              }
+            });
+          })
+
       }
     }
   };

@@ -3,8 +3,10 @@
 
 <head>
   <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Login - Scentscape</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
@@ -17,7 +19,7 @@
   <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
 
   <!-- Login Box -->
-  <div class="relative z-10 bg-white/80 backdrop-blur-md shadow-xl rounded-2xl px-8 py-10 w-full max-w-md text-center">
+  <div class="relative z-10 bg-white/80 backdrop-blur-md shadow-xl rounded-2xl px-8 py-10 w-full max-w-md text-center" x-data="loginForm()">
     <img src="{{ asset('images/Scentscape1.png') }}" alt="Scentscape Logo" class="mx-auto h-12 mb-6">
 
     <h2 class="text-[#3E3A39] text-lg font-semibold mb-2">Welcome Back</h2>
@@ -27,7 +29,7 @@
     <div class="mb-4 text-green-600 text-sm">{{ session('success') }}</div>
     @endif
 
-    <form x-data="loginForm()" @submit="submitForm">
+    <form @submit.prevent="submitForm">
       @csrf
 
       <!-- Email Field -->

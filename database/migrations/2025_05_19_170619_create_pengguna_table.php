@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('foto_profil')->nullable();
             $table->string('nama');
+            $table->string('username');
             $table->enum('role', ['pembeli', 'penjual']);
             $table->timestamp('waktu_pembuatan')->useCurrent();
             $table->timestamp('waktu_perubahan')->useCurrent()->useCurrentOnUpdate();

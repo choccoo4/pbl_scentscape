@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" x-data="registerForm()">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Register - Scentscape</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
@@ -20,13 +22,13 @@
   <div class="absolute w-80 h-80 bg-[#9BAF9A]/40 rounded-full blur-2xl bottom-0 right-0 z-0"></div>
 
   <!-- Form Container -->
-  <div class="relative z-10 bg-white/80 backdrop-blur-md shadow-xl rounded-2xl px-8 py-10 w-full max-w-md text-center">
+  <div class="relative z-10 bg-white/80 backdrop-blur-md shadow-xl rounded-2xl px-8 py-10 w-full max-w-md text-center" x-data="registerForm()">
     <!-- Logo -->
     <img src="{{ asset('images/Scentscape1.png') }}" alt="Scentscape Logo" class="h-12 mx-auto mb-4">
 
     <h2 class="text-[#3E3A39] text-sm font-medium mb-6">Create an account to explore aromatic elegance</h2>
 
-    <form @submit="submitForm">
+    <form @submit.prevent="submitForm">
       @csrf
 
       <!-- Email -->
