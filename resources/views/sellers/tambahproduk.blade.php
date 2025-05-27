@@ -31,13 +31,31 @@
     </div>
 
     <!-- Tipe Produk -->
-    <div class="mb-4">
-        <label class="block text-sm font-medium text-[#3E3A39] mb-1">Tipe Produk</label>
-        <select class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]">
+    <div x-data="{ showTipeForm: false }" class="mb-6">
+        <label for="tipe_produk" class="block text-sm font-medium text-[#3E3A39] mb-1">
+            Tipe Produk
+        </label>
+        <select id="tipe_produk" class="w-full border border-[#9BAF9A] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]">
+            <option selected disabled>Pilih Tipe</option>
             <option>Eau De Parfum (EDP)</option>
             <option>Eau De Toilette (EDT)</option>
             <option>Body Mist</option>
         </select>
+        <button type="button" @click="showTipeForm = true" class="mt-2 text-sm bg-[#9BAF9A] text-white px-3 py-1.5 rounded-md hover:bg-[#8DA089] shadow">
+            + Tambah Tipe Produk
+        </button>
+
+        <!-- Modal pop-up -->
+        <div x-show="showTipeForm" @click.outside="showTipeForm = false" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+            <div class="bg-white rounded-xl shadow-lg p-6 w-80">
+                <h3 class="text-lg font-semibold text-[#3E3A39] mb-3">Tambah Tipe Produk</h3>
+                <input type="text" placeholder="Contoh: Solid Perfume" class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 mb-4 focus:ring-[#9BAF9A] focus:outline-none">
+                <div class="flex justify-end space-x-2">
+                    <button @click="showTipeForm = false" class="px-4 py-1 rounded bg-gray-200 text-gray-700 hover:bg-gray-300">Batal</button>
+                    <button @click="showTipeForm = false" class="px-4 py-1 rounded bg-[#9BAF9A] text-white hover:bg-[#8DA089]">Simpan</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Volume -->
@@ -53,9 +71,16 @@
     </div>
 
     <!-- Kategori -->
-    <div x-data="{ selected: [] }" class="mb-4">
+    <div x-data="{ selected: [], showAromaForm: false }" class="mb-4">
         <label class="block text-sm font-medium text-[#3E3A39] mb-2">Kategori</label>
         <div class="flex flex-wrap gap-2">
+            <!-- Tombol untuk tambah aroma -->
+            <button type="button" @click="showAromaForm = true"
+                class="w-8 h-8 rounded-full flex items-center justify-center bg-[#9BAF9A] text-white text-lg hover:bg-[#8DA089] shadow">
+                +
+            </button>
+
+            <!-- Semua kategori -->
             @foreach ($categories as $category)
             <button type="button"
                 @click="selected.includes('{{ $category }}') ? selected = selected.filter(i => i !== '{{ $category }}') : selected.push('{{ $category }}')"
@@ -70,6 +95,22 @@
         <template x-for="item in selected" :key="item">
             <input type="hidden" name="categories[]" :value="item">
         </template>
+
+        <!-- Modal pop-up untuk tambah aroma -->
+        <div x-show="showAromaForm" @click.outside="showAromaForm = false"
+            class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+            <div class="bg-white rounded-xl shadow-lg p-6 w-80">
+                <h3 class="text-lg font-semibold text-[#3E3A39] mb-3">Tambah Aroma</h3>
+                <input type="text" placeholder="Contoh: Citrus Fresh"
+                    class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 mb-4 focus:ring-[#9BAF9A] focus:outline-none">
+                <div class="flex justify-end space-x-2">
+                    <button @click="showAromaForm = false"
+                        class="px-4 py-1 rounded bg-gray-200 text-gray-700 hover:bg-gray-300">Batal</button>
+                    <button @click="showAromaForm = false"
+                        class="px-4 py-1 rounded bg-[#9BAF9A] text-white hover:bg-[#8DA089]">Simpan</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Stok -->
@@ -81,29 +122,14 @@
     <!-- Foto Produk -->
     <div class="mb-4">
         <label class="block text-sm font-medium text-[#3E3A39] mb-1">Foto Produk</label>
-        <input type="file" multiple class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-      file:rounded-lg file:border-0
-      file:text-sm file:font-semibold
-      file:bg-[#D6C6B8] file:text-[#3E3A39]
-      hover:file:bg-[#BFA6A0]">
+        <input type="file" multiple class="block w-full text-sm text-gray-500 file:py-2 file:px-4
+        file:rounded-lg file:border-0
+        file:text-sm file:font-semibold
+        file:bg-[#D6C6B8] file:text-[#3E3A39]
+        hover:file:bg-[#BFA6A0]
+        file:w-auto file:ml-2" />
         <p class="text-xs text-[#3E3A39] mt-1">Upload 1 atau lebih foto produk (maks 5 MB per file)</p>
     </div>
-
-    <!-- Clean Formula -->
-    <!--<div class="mb-4">
-        <label class="flex items-center gap-2 text-[#3E3A39]">
-            <input type="checkbox" class="rounded text-[#9BAF9A] focus:ring-[#9BAF9A]" />
-            Clean Formula
-        </label>
-    </div>-->
-
-    <!-- Aktifkan Produk -->
-    <!--<div class="mb-6">
-        <label class="flex items-center gap-2 text-[#3E3A39]">
-            <input type="checkbox" checked class="rounded text-[#9BAF9A] focus:ring-[#9BAF9A]" />
-            Aktifkan Produk
-        </label>
-    </div> -->
 
     <!-- Tombol Submit -->
     <a href="{{ route('produk.index') }}" class="bg-[#9BAF9A] hover:bg-[#8DA089] text-white font-semibold px-6 py-2 rounded-lg shadow transition-all">
