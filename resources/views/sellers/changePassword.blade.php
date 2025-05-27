@@ -5,7 +5,7 @@
 <div class="min-h-screen bg-[#FDF6EF] py-10 px-4">
     <div class="flex max-w-6xl mx-auto gap-6">
         <!-- Sidebar -->
-        <aside class="w-full md:w-1/5 bg-[#FDF6EF] p-6">
+        <aside class="w-1/4 md:w-1/5 bg-[#FDF6EF] p-6">
             <div class="flex items-center gap-4 mb-6 px-2">
                 <img src="/images/profile.png" class="w-10 h-10 rounded-full" alt="Profile Icon">
                 <p class="font-semibold text-lg">Admin</p>

@@ -6,7 +6,7 @@
 <div class="bg-[#FDF6EF] min-h-screen py-12">
     <div class="flex max-w-6xl mx-auto">
         <!-- Sidebar -->
-        <aside class="w-full md:w-1/5 bg-[#FDF6EF] p-6">
+        <aside class="w-1/4 md:w-1/5 bg-[#FDF6EF] p-6">
             <div class="flex items-center gap-4 mb-6 px-2">
                 <img src="/images/profile.png" class="w-10 h-10 rounded-full" alt="Profile Icon">
                 <p class="font-semibold text-lg">Admin</p>
@@ -65,6 +65,13 @@
                     </label>
                     <textarea class="w-full border px-4 py-2 rounded bg-gray-100" rows="4" placeholder="Your Address"></textarea>
                 </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-1 flex items-center gap-2">
+                        <i class="fas fa-store text-[#BFA6A0]"></i> Deskripsi Toko
+                    </label>
+                    <textarea class="w-full border px-4 py-2 rounded bg-gray-100" rows="5" placeholder="Beritahu pelanggan tentang toko Anda..."></textarea>
+                </div>
+
 
                 <button class="bg-[#9BAF9A] text-white px-6 py-2 rounded hover:bg-[#8aa38a] transition-colors">
                     Save

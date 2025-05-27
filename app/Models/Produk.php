@@ -1,14 +1,30 @@
 <?php
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Produk extends Model
 {
-    use HasFactory;
+    protected $table = 'produk';
+    protected $primaryKey = 'no_produk';
+    public $timestamps = false;
 
-    // Menambahkan kolom yang boleh diisi secara massal
-    protected $fillable = ['name', 'category', 'price'];
+    protected $fillable = [
+        'nama_produk',
+        'tipe_parfum',
+        'label_kategori',
+        'deskripsi',
+        'gambar',
+        'stok',
+        'harga',
+        'volume',
+        'id_kategori',
+    ];
+
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class, 'id_kategori');
+    }
 }
+
+
