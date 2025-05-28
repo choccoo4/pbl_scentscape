@@ -43,7 +43,7 @@ class SellerController extends Controller
 
     public function profilPenjual()
     {
-        return view('sellers.profile');
+        return view('sellers.profil-penjual');
     }
 
     public function ubahPasswordPenjual()
