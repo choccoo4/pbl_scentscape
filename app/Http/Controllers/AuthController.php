@@ -30,8 +30,8 @@ class AuthController extends Controller
         }
 
         // Simpan ke session atau token
-        session(['user_id' => $pengguna->id, 'role' => $pengguna->role]);
-
+        Auth::login($pengguna);
+        session(['role' => $pengguna->role]);
         return response()->json(['message' => 'Login berhasil', 'role' => $pengguna->role]);
     }
 
@@ -46,6 +46,8 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        $pengguna = new Pengguna();
+        $pengguna->password = Hash::make($request->password);
         try {
             // Validasi input secara manual agar bisa kasih respon lebih detail
             $validator = Validator::make($request->all(), [

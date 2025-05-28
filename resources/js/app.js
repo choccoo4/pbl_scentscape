@@ -7,7 +7,7 @@ import { registerForm } from './regist.js';
 import { loginForm } from './login.js';
 import { cartRoot, cartItem } from './cart.js';
 import './seller-dashboard-chart';
-
+import './tambah-produk.js';
 
 
 

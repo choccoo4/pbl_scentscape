@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Login - Scentscape</title>
   @vite(['resources/css/app.css', 'resources/js/app.js'])
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

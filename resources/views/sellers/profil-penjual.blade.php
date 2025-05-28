@@ -4,9 +4,8 @@
 
 @section('content')
 <div class="bg-[#FDF6EF] min-h-screen py-12">
-    <div class="flex max-w-6xl mx-auto">
-        <!-- Sidebar -->
-        <aside class="w-full md:w-1/5 bg-[#FDF6EF] p-6">
+    <div class="flex max-w-6xl mx-auto gap-6">
+        <aside class="w-[180px] shrink-0 bg-[#FDF6EF] p-6">
             <div class="flex items-center gap-4 mb-6 px-2">
                 <img src="/images/profile.png" class="w-10 h-10 rounded-full" alt="Profile Icon">
                 <p class="font-semibold text-lg">Admin</p>
@@ -15,7 +14,7 @@
                 <li class="relative">
                     <div class="flex items-center space-x-2 hover:text-[#9BAF9A] transition-all cursor-pointer group-hover:text-[#9BAF9A]">
                         <i class="fas fa-user"></i>
-                        <span>My Account</span>
+                        <span>Akun Saya</span>
                     </div>
                     <ul class="pl-6 mt-2 space-y-1 text-sm transition-all duration-300 group-hover:max-h-32 max-h-0 overflow-hidden">
                         <li><a href="{{ route('profil-penjual') }}" class="hover:text-[#BFA6A0]">Profile</a></li>
@@ -29,8 +28,8 @@
         <section class="flex-1 bg-white p-10 rounded-lg shadow-md mx-6">
             <!-- Greeting -->
             <div class="mb-6">
-                <h2 class="text-2xl font-semibold text-[#3E3A39]">Welcome back, <span class="text-[#9BAF9A]">Admin</span>!</h2>
-                <p class="text-sm text-gray-500">Update your profile to keep everything up-to-date ✨</p>
+                <h2 class="text-2xl font-semibold text-[#3E3A39]">Selamat Datang Kembali, <span class="text-[#9BAF9A]">Admin</span>!</h2>
+                <p class="text-sm text-gray-500">Perbarui profil Anda untuk menjaga semuanya tetap terkini✨</p>
             </div>
 
             <!-- Profile Picture -->
@@ -40,7 +39,7 @@
                     alt="Profile Picture">
 
                 <label for="profilePicInput" class="text-sm text-[#9BAF9A] hover:underline cursor-pointer">
-                    ✎ Change profile picture
+                    ✎ Ubah Foto Profil
                 </label>
                 <input id="profilePicInput" type="file" class="hidden" accept="image/*">
             </div>
@@ -49,25 +48,19 @@
             <form>
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-1 flex items-center gap-2">
-                        <i class="fas fa-user text-[#BFA6A0]"></i> Name
+                        <i class="fas fa-user text-[#BFA6A0]"></i> Nama Toko
                     </label>
-                    <input type="text" class="w-full border px-4 py-2 rounded bg-gray-100" placeholder="Your Name">
+                    <input type="text" class="w-full border px-4 py-2 rounded bg-gray-100" placeholder="Nama Toko Anda">
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-1 flex items-center gap-2">
-                        <i class="fas fa-phone text-[#BFA6A0]"></i> Phone Number
+                        <i class="fas fa-map-marker-alt text-[#BFA6A0]"></i> Deskripsi Toko
                     </label>
-                    <input type="text" class="w-full border px-4 py-2 rounded bg-gray-100" placeholder="Your Phone Number">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 mb-1 flex items-center gap-2">
-                        <i class="fas fa-map-marker-alt text-[#BFA6A0]"></i> Address
-                    </label>
-                    <textarea class="w-full border px-4 py-2 rounded bg-gray-100" rows="4" placeholder="Your Address"></textarea>
+                    <textarea class="w-full border px-4 py-2 rounded bg-gray-100" rows="4" placeholder="Deskripsi Toko Anda"></textarea>
                 </div>
 
                 <button class="bg-[#9BAF9A] text-white px-6 py-2 rounded hover:bg-[#8aa38a] transition-colors">
-                    Save
+                    Simpan
                 </button>
             </form>
 

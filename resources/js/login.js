@@ -54,7 +54,7 @@ export function loginForm() {
               showConfirmButton: false,
               willClose: () => {
                 if (data.role === 'penjual') {
-                  window.location.href = '/dashboard';
+                  window.location.href = '/seller/dashboard';
                 } else {
                   window.location.href = '/home';
                 }

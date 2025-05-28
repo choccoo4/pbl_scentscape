@@ -5,14 +5,18 @@ namespace App\Http\Controllers\Seller;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Produk; // Pastikan model Produk sudah ada
+use App\Models\Aroma;
 use Illuminate\Support\Facades\Validator;
+
 
 class TambahprodukController extends Controller
 {
     // Menampilkan form untuk tambah produk
     public function create()
     {
-        return view('sellers.tambahproduk'); // Pastikan view tambahproduk.blade.php ada
+        $categories = Aroma::all()->pluck('nama');  // ambil kolom 'nama' aja sebagai array
+
+        return view('sellers.tambahproduk', compact('categories')); // Pastikan view tambahproduk.blade.php ada
     }
 
     // Menyimpan produk baru ke database

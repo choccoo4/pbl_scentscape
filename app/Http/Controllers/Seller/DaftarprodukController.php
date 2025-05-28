@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
+use App\Models\Produk;
+
 
 class DaftarprodukController extends Controller
 {
     public function index()
     {
-        return view('sellers.daftarproduk');
+        $produk = Produk::paginate(5); // pagination 5 per halaman
+        return view('sellers.daftarproduk', compact('produk'));
     }
 
     public function create()
@@ -16,8 +19,9 @@ class DaftarprodukController extends Controller
         return view('sellers.tambahproduk');
     }
 
-    public function edit()
+    public function edit($id)
     {
-        return view('sellers.updateproduk');
+        $produk = Produk::findOrFail($id);
+        return view('sellers.updateproduk', compact('produk'));
     }
 }

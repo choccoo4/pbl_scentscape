@@ -11,7 +11,7 @@
 
     <!-- Baris Tambah Produk & Search -->
     <div class="flex justify-between items-center w-full flex-wrap gap-2 mb-6">
-        <a href="{{ route('tambahproduk') }}"
+        <a href="{{ route('produk.create') }}"
             class="bg-[#9BAF9A] hover:bg-[#819b83] text-white px-4 py-2 rounded-md text-sm transition shadow-sm flex items-center gap-2">
             <i class="fa-solid fa-plus"></i> Tambah Produk
         </a>
@@ -33,80 +33,38 @@
             </tr>
         </thead>
         <tbody>
-            @php
-            $page = request()->get('page', 1);
-            $start = ($page - 1) * 5 + 1;
-            @endphp
-
-            @php
-            $productImages = [
-            'image2-1.jpg',
-            'image2-2.jpg',
-            'image2-3.jpg',
-            'image2-4.jpg',
-            'image7.jpg',
-            'image8 (1).jpg',
-            'image8 (2).jpg',
-            'image8 (3).jpg',
-            'image8 (4).jpg',
-            'image9 (1).jpg',
-            'image9 (2).jpg',
-            'image9 (3).jpg',
-            'image9 (4).jpg',
-            'image9 (5).jpg',
-            'image10 (1).jpg',
-            'image10 (2).jpg',
-            'image10 (3).jpg',
-            'image11 (1).jpg',
-            'image11 (2).jpg',
-            'image11 (3).jpg',
-            'image11 (4).jpg',
-            ];
-            @endphp
-
-            @for ($i = $start; $i < $start + 5; $i++)
-                <tr class="border-b hover:bg-gray-50">
-                <td class="p-3">{{ $i }}</td>
+            @foreach ($produk as $index => $item)
+            <tr class="border-b hover:bg-gray-50">
+                <td class="p-3">{{ $produk->firstItem() + $index }}</td>
                 <td class="p-3">
-                    <img src="{{ asset('images/products/' . $productImages[($i - 1) % count($productImages)]) }}"
-                        class="w-12 h-12 object-cover rounded">
+                    <img src="{{ asset('storage/' . ($item->gambar[0] ?? 'default.jpg')) }}" class="w-12 h-12 object-cover rounded" alt="{{ $item->nama_produk }}">
                 </td>
-                <td class="p-3">Produk {{ $i }}</td>
-                <td class="p-3">{{ rand(1, 10) }} Unit</td>
-                <td class="p-3">Rp{{ number_format(100000 + $i * 1000, 0, ',', '.') }}</td>
-                <td class="p-3">{{ rand(5, 20) }}</td>
+                <td class="p-3">{{ $item->nama_produk }}</td>
+                <td class="p-3">{{ $item->penjualan ?? 0 }} Unit</td>
+                <td class="p-3">Rp{{ number_format($item->harga, 0, ',', '.') }}</td>
+                <td class="p-3">{{ $item->stok }}</td>
                 <td class="p-3">
                     <div class="flex justify-center gap-2">
-                        <a href="{{ route('updateproduk') }}"
-                            class="bg-[#BFA6A0] hover:bg-[#a78c87] text-white px-3 py-1 rounded text-xs transition">
+                        <a href="{{ route('updateproduk') }}" class="bg-[#BFA6A0] hover:bg-[#a78c87] text-white px-3 py-1 rounded text-xs transition">
                             <i class="fa-solid fa-pen"></i>
                         </a>
-                        <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs transition">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
+                        <form action="{{ route('produk.destroy', $item->no_produk) }}" method="POST" onsubmit="return confirm('Yakin mau hapus produk ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs transition">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </form>
                     </div>
                 </td>
-                </tr>
-                @endfor
+            </tr>
+            @endforeach
         </tbody>
     </table>
 
     <!-- Pagination -->
     <div class="pt-4 flex justify-center">
-        <div class="flex gap-2 text-sm">
-            <a href="?page=1"
-                class="{{ request()->get('page', 1) == 1 ? 'bg-[#9BAF9A] text-white' : 'bg-[#D6C6B8] text-[#3E3A39] hover:bg-[#c9b6aa]' }} px-3 py-1 rounded-md shadow-sm">
-                1
-            </a>
-            <a href="?page=2"
-                class="{{ request()->get('page') == 2 ? 'bg-[#9BAF9A] text-white' : 'bg-[#D6C6B8] text-[#3E3A39] hover:bg-[#c9b6aa]' }} px-3 py-1 rounded-md shadow-sm">
-                2
-            </a>
-            <a href="?page={{ request()->get('page', 1) + 1 }}"
-                class="px-3 py-1 bg-[#D6C6B8] text-[#3E3A39] rounded-md hover:bg-[#c9b6aa] cursor-pointer shadow-sm">
-                &gt;
-            </a>
-        </div>
+        {{ $produk->links() }}
     </div>
 </div>
 @endsection

@@ -4,9 +4,8 @@
 
 @section('content')
 <div class="bg-[#FDF6EF] min-h-screen py-12">
-    <div class="flex flex-col md:flex-row max-w-6xl mx-auto px-4">
-        <!-- Sidebar -->
-        <aside class="w-full md:w-1/5 bg-[#FDF6EF] p-4 md:p-6">
+    <div class="flex max-w-6xl mx-auto gap-6">
+        <aside class="w-[180px] shrink-0 bg-[#FDF6EF] p-6">
             <div class="flex items-center gap-4 mb-6 px-2">
                 <img src="/images/profile.png" class="w-10 h-10 rounded-full" alt="Profile Icon">
                 <p class="font-semibold text-lg">username</p>

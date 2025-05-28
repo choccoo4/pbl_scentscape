@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>@yield('title')</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -16,8 +17,6 @@
     @include('components.navbar')
 
     <div class="flex pt-16">
-        @include('components.sidebar') <!-- Pindahkan sidebar ke komponen tersendiri untuk rapi -->
-
         <!-- Konten utama -->
         <main class="flex-1 p-4 sm:ml-50 transition-all duration-300">
             @yield('content')

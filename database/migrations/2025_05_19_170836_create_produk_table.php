@@ -18,9 +18,16 @@ return new class extends Migration
             $table->text('deskripsi');
             $table->integer('stok')->default(0);
             $table->string('gambar');
-            $table->enum('volume', ['30ml', '50ml', '100ml', '200ml']);
+            $table->string('volume');
             $table->enum('label_kategori', ['Unisex', 'For Him', 'For Her', 'Gifts']);
-            $table->enum('tipe_parfum', ['EDP', 'EDT', 'Body Mist']);
+            $table->enum('tipe_parfum', [
+                'Eau De Parfum (EDP)',
+                'Eau De Toilette (EDT)',
+                'Body Mist',
+                'Cologne',
+                'Perfume Oil',
+                'Solid Perfume'
+            ]);
             $table->timestamp('waktu_dibuat')->useCurrent();
             $table->timestamp('waktu_diperbarui')->useCurrent()->useCurrentOnUpdate();
         });
