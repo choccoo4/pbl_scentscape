@@ -190,9 +190,20 @@ class ProdukController extends Controller
         $newGambarPaths = [];
         if ($request->hasFile('gambar')) {
             foreach ($request->file('gambar') as $img) {
-                $newGambarPaths[] = $img->store('produk', 'public');
+                $slug = Str::slug(Str::words($validated['nama_produk'], 1, ''));
+                $filename = $slug . '-' . Str::random(6) . '.' . $img->getClientOriginalExtension();
+                $img->storeAs('produk', $filename, 'public');
+                $newGambarPaths[] = 'produk/' . $filename;
             }
         }
+
+        //coba hapus foto yang ga kepakai sisa update
+        //$gambarLama = json_decode($produk->gambar, true) ?? [];
+        //foreach ($gambarLama as $lama) {
+            //if (!in_array($lama, $existingGambar)) {
+                //Storage::disk('public')->delete($lama);
+            //}
+        //}
 
         // Gabungkan gambar lama yang dipertahankan + gambar baru
         $allGambar = array_merge($existingGambar, $newGambarPaths);

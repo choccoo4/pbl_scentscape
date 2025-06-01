@@ -161,19 +161,39 @@
         </div>
 
         <!-- Gambar -->
-        <div x-data="{
-    images: @json($produk->gambar ? array_map(fn($g) => ['url' => asset('storage/' . $g)], $produk->gambar) : []),
-    storageUrl: '{{ asset('storage') }}/',
-    updatePreview(event) {
-        // kode updatePreview kamu
-    },
-    removeImage(index) {
-        this.images.splice(index, 1);
-    }
-}" class="mb-4">
+        <div
+            x-data="{
+        images: [],
+        storageUrl: '{{ asset('storage') }}/',
+        updatePreview(event) {
+            const files = Array.from(event.target.files);
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    this.images.push({ url: e.target.result, file });
+                };
+                reader.readAsDataURL(file);
+            });
+        },
+        removeImage(index) {
+            this.images.splice(index, 1);
+        }
+    }"
+            x-init="
+        images = {{ Js::from(
+            $produk->gambar 
+            ? array_map(fn($g) => [
+                'url' => asset('storage/' . $g),
+                'isExisting' => true
+              ], $produk->gambar)
+            : []
+        ) }};
+    "
+            class="mb-4">
             <label class="block text-sm font-medium text-[#3E3A39] mb-1">Foto Produk</label>
             <input type="file" name="gambar[]" accept="image/*" multiple
                 @change="updatePreview($event)" class="block w-full text-sm text-gray-600" />
+
             <!-- Preview Gambar -->
             <div class="flex flex-wrap gap-4 mt-4">
                 <template x-for="(image, index) in images" :key="index">
@@ -183,10 +203,11 @@
                     </div>
                 </template>
             </div>
-            <input type="hidden" name="existing_gambar"
-        x-bind:value="JSON.stringify(images.filter(i => i.url && !i.file).map(i => i.url.replace(storageUrl, '')))">
-        </div>
 
+            <!-- Hidden untuk gambar lama -->
+            <input type="hidden" name="existing_gambar"
+                x-bind:value="JSON.stringify(images.filter(i => i.isExisting).map(i => i.url.replace(storageUrl, '')))">
+        </div>
 
         <!-- Tombol -->
         <div class="flex justify-end gap-4 mt-8">
