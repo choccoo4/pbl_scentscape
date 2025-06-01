@@ -2,28 +2,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-@push('scripts')
-<script>
-    function confirmLogout() {
-        Swal.fire({
-            title: 'Konfirmasi Logout',
-            text: 'Anda yakin ingin keluar dari akun?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yakin',
-            cancelButtonText: 'Batal',
-            confirmButtonColor: '#ef4444',
-            cancelButtonColor: '#9ca3af'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('logoutForm').submit();
-            }
-        });
-    }
-</script>
-@endpush
-
-
 <header x-data="{ menuOpen: false, searchOpen: false, profileOpen: false }" class="bg-[#414833] text-white py-2 relative">
     <div class="container mx-auto px-6 flex justify-between items-center">
         <div class="flex items-center">
@@ -55,7 +33,7 @@
                         class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-40"
                         @click.outside="open = false" @mouseenter="open = true" @mouseleave="open = false">
                         <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
-                        <form id="logoutForm" method="POST" action="/logout">
+                        <form id="logoutForm" method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="button" onclick="confirmLogout()" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
                                 Logout

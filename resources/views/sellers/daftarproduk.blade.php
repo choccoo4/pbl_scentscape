@@ -45,7 +45,8 @@
                 <td class="p-3">{{ $item->stok }}</td>
                 <td class="p-3">
                     <div class="flex justify-center gap-2">
-                        <a href="{{ route('updateproduk') }}" class="bg-[#BFA6A0] hover:bg-[#a78c87] text-white px-3 py-1 rounded text-xs transition">
+                        <a href="{{ route('produk.edit', $item->no_produk) }}"
+                            class="bg-[#BFA6A0] hover:bg-[#a78c87] text-white px-3 py-1 rounded text-xs transition">
                             <i class="fa-solid fa-pen"></i>
                         </a>
                         <form action="{{ route('produk.destroy', $item->no_produk) }}" method="POST" onsubmit="return confirm('Yakin mau hapus produk ini?')">

@@ -19,14 +19,11 @@ use App\Http\Controllers\Buyer\CartController;
 use App\Http\Controllers\ProdukController as ControllersProdukController;
 use App\Http\Controllers\seller\ProdukController;
 use App\Http\Controllers\seller\ProfilController;
-//use App\Http\Controllers\seller\TambahprodukController;
-use App\Http\Controllers\seller\UpdateprodukController;
 use App\Http\Controllers\seller\RekapitulasiController;
 use App\Http\Controllers\seller\LaporanController;
 use App\Http\Controllers\seller\AromaController;
 use App\Http\Controllers\seller\UbahpwController;
 use App\Http\Controllers\seller\DashboardController;
-use App\Http\Controllers\Seller\DaftarProdukController;
 use App\Http\Controllers\seller\DaftarpesananController;
 
 
@@ -47,15 +44,16 @@ Route::middleware(['auth', 'role:penjual'])->prefix('seller')->group(function ()
     Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create'); // Tampil form tambah produk
     Route::post('/produk', [ProdukController::class, 'store'])->name('produk.store');        // Proses simpan produk
     Route::post('/aroma/store', [AromaController::class, 'store'])->name('aroma.store');
-    Route::get('/updateproduk', [UpdateprodukController::class, 'updateProduk'])->name('updateproduk');
     Route::get('/rekapitulasi', [RekapitulasiController::class, 'rekapitulasi'])->name('rekap.index');
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
     Route::get('/profil-penjual', [ProfilController::class, 'index'])->name('profil-penjual');
     Route::get('/ubahpassword', [UbahpwController::class, 'ubahpw'])->name('ubahpw');
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-    Route::get('/daftarproduk', [DaftarProdukController::class, 'index'])->name('produk.index');
+    Route::get('/daftarproduk', [ProdukController::class, 'index'])->name('produk.index');
     Route::get('/daftarpesanan', [DaftarpesananController::class, 'daftarpesanan'])->name('pesanan.index');
-    Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+    Route::delete('/produk/{no_produk}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+    Route::get('{no_produk}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
+    Route::put('{no_produk}', [ProdukController::class, 'update'])->name('produk.update');
 });
 
 

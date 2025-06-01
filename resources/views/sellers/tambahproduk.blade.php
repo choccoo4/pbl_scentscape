@@ -2,10 +2,6 @@
 @section('title', 'Tambah Produk - Scentscape')
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-<head>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-</head>
-
 @section('content')
 <form method="POST" action="{{ route('produk.store') }}" enctype="multipart/form-data">
     @csrf
@@ -18,6 +14,9 @@
         <div class="mb-4">
             <label class="block text-sm font-medium text-[#3E3A39] mb-1">Nama Produk</label>
             <input type="text" name="nama_produk" class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]" placeholder="Masukkan nama produk" />
+            @if($errors->has('nama_produk'))
+            <p class="text-sm text-red-600 mt-1">{{ $errors->first('nama_produk') }}</p>
+            @endif
         </div>
 
         <!-- Deskripsi Produk -->
@@ -25,6 +24,9 @@
             <label class="block text-sm font-medium text-[#3E3A39] mb-1">Deskripsi Produk</label>
             <textarea rows="5" name="deskripsi" class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]" placeholder="Tulis deskripsi lengkap, termasuk karakter aroma (top, middle, base notes), kondisi pemakaian, dan lainnya..."></textarea>
             <p class="text-xs text-[#3E3A39] mt-1">Deskripsi akan ditampilkan sesuai format (paragraf, numbering, dll) yang diinput penjual.</p>
+            @if($errors->has('deskripsi'))
+            <p class="text-sm text-red-600 mt-1">{{ $errors->first('deskripsi') }}</p>
+            @endif
         </div>
 
         <!-- Label Kategori Gender -->
@@ -36,6 +38,9 @@
                 <option value="{{ $label }}">{{ $label }}</option>
                 @endforeach
             </select>
+            @if($errors->has('label_kategori'))
+            <p class="text-sm text-red-600 mt-1">{{ $errors->first('label_kategori') }}</p>
+            @endif
         </div>
 
         <!-- Tipe Parfum -->
@@ -53,18 +58,27 @@
                 <option value="Perfume Oil">Perfume Oil</option>
                 <option value="Solid Perfume">Solid Perfume</option>
             </select>
+            @if($errors->has('tipe_parfum'))
+            <p class="text-sm text-red-600 mt-1">{{ $errors->first('tipe_parfum') }}</p>
+            @endif
         </div>
 
         <!-- Volume -->
         <div class="mb-4">
             <label class="block text-sm font-medium text-[#3E3A39] mb-1">Volume</label>
             <input type="text" name="volume" class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]" placeholder="contoh: 50ml" />
+            @if($errors->has('volume'))
+            <p class="text-sm text-red-600 mt-1">{{ $errors->first('volume') }}</p>
+            @endif
         </div>
 
         <!-- Harga -->
         <div class="mb-4">
             <label class="block text-sm font-medium text-[#3E3A39] mb-1">Harga</label>
             <input type="number" name="harga" class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]" placeholder="Masukkan harga produk" />
+            @if($errors->has('harga'))
+            <p class="text-sm text-red-600 mt-1">{{ $errors->first('harga') }}</p>
+            @endif
         </div>
 
         <!-- Kategori Aroma -->
@@ -115,30 +129,109 @@
                     </div>
                 </div>
             </div>
+            @if($errors->has('categories'))
+            <p class="text-sm text-red-600 mt-1">{{ $errors->first('categories') }}</p>
+            @endif
         </div>
 
         <!-- Stok -->
         <div class="mb-4">
             <label class="block text-sm font-medium text-[#3E3A39] mb-1">Stok</label>
             <input type="number" name="stok" min="0" class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]" placeholder="Masukkan jumlah stok tersedia" />
+            @if($errors->has('stok'))
+            <p class="text-sm text-red-600 mt-1">{{ $errors->first('stok') }}</p>
+            @endif
         </div>
 
-        <!-- Foto Produk -->
-        <div class="mb-4">
+        <!-- Gambar -->
+        <div x-data="previewImages()" class="mb-4">
             <label class="block text-sm font-medium text-[#3E3A39] mb-1">Foto Produk</label>
-            <input type="file" name="gambar[]" multiple accept="image/*" multiple class="block w-full text-sm text-gray-500 file:py-2 file:px-4
-        file:rounded-lg file:border-0
-        file:text-sm file:font-semibold
-        file:bg-[#D6C6B8] file:text-[#3E3A39]
-        hover:file:bg-[#BFA6A0]
-        file:w-auto file:ml-2" />
-            <p class="text-xs text-[#3E3A39] mt-1">Upload 1 atau lebih foto produk (maks 5 MB per file)</p>
+            <input type="file" name="gambar[]" multiple accept="image/*"
+                @change="preview($event)"
+                class="block w-full text-sm text-gray-600" />
+
+            <p class="text-xs text-[#3E3A39] mt-1">Upload maksimal 4 gambar (maks 2MB per file)</p>
+
+            <!-- Error dari Laravel -->
+            @if($errors->has('gambar') || $errors->has('gambar.*'))
+            <ul class="text-sm text-red-600 mt-1 space-y-1">
+                @foreach ($errors->get('gambar') as $err)
+                <li>{{ $err }}</li>
+                @endforeach
+                @foreach ($errors->get('gambar.*') as $fieldErrors)
+                @foreach ($fieldErrors as $err)
+                <li>{{ $err }}</li>
+                @endforeach
+                @endforeach
+            </ul>
+            @endif
+
+            <!-- Error dari Alpine -->
+            <template x-if="errorMessage">
+                <p class="text-sm text-red-600 mt-1" x-text="errorMessage"></p>
+            </template>
+
+            <!-- Preview -->
+            <div class="mt-4 flex flex-wrap gap-2">
+                <template x-for="(image, index) in images" :key="index">
+                    <div class="relative w-24 h-24 border rounded overflow-hidden group">
+                        <img :src="image" alt="Preview" class="w-full h-full object-cover">
+                        <button
+                            type="button"
+                            @click="removeImage(index)"
+                            class="absolute top-1 right-1 bg-[#BFA6A0] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+                            title="Hapus gambar"><i class="fas fa-xmark"></i>
+                        </button>
+                    </div>
+                </template>
+            </div>
         </div>
 
-        <!-- Tombol Submit -->
-        <button type="submit" class="bg-[#9BAF9A] hover:bg-[#8DA089] text-white font-semibold px-6 py-2 rounded-lg shadow transition-all">
-            Tambah Produk
-        </button>
+        <!-- Tombol -->
+        <div class="flex justify-end gap-4 mt-8">
+            <a href="{{ route('produk.index') }}"
+                class="px-6 py-2 rounded-lg bg-[#BFA6A0] text-white hover:bg-[#A89089] transition duration-200">Batal</a>
+            <button type="submit"
+                class="px-6 py-2 rounded-lg bg-[#9BAF9A] text-white hover:bg-[#8DA089] transition duration-200">Simpan</button>
+        </div>
     </div>
 </form>
+
+<script>
+function previewImages() {
+    return {
+        images: [],
+        errorMessage: '',
+
+        preview(event) {
+            this.errorMessage = '';
+            const files = event.target.files;
+            if(files.length > 4) {
+                this.errorMessage = 'Maksimal upload 4 gambar saja.';
+                return;
+            }
+
+            this.images = [];
+
+            for(let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if(file.size > 2 * 1024 * 1024) {
+                    this.errorMessage = 'Ukuran file tidak boleh lebih dari 2MB.';
+                    continue;
+                }
+                const reader = new FileReader();
+                reader.onload = e => {
+                    this.images.push(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        },
+
+        removeImage(index) {
+            this.images.splice(index, 1);
+        }
+    }
+}
+</script>
+
 @endsection

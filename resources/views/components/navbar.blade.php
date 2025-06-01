@@ -1,3 +1,7 @@
+<head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+
 <!-- NAVBAR -->
 <nav class="fixed top-0 z-50 w-full bg-[#414833]">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
@@ -42,7 +46,12 @@
                                 <a href="{{ route('profil-penjual') }}" class="block px-4 py-2 rounded hover:bg-[#d6c6b8] hover:text-[#414833] transition-colors">Profile</a>
                             </li>
                             <li>
-                                <a href="{{ route('logout') }}" class="block px-4 py-2 rounded hover:bg-[#d6c6b8] hover:text-[#414833] transition-colors">Sign out</a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="block w-full text-left px-4 py-2 rounded hover:bg-[#d6c6b8] hover:text-[#414833] transition-colors">
+                                        Sign out
+                                    </button>
+                                </form>
                             </li>
                         </ul>
                     </div>
