@@ -4,7 +4,10 @@
 
 @section('content')
 <form
-    x-data="previewImagesEdit({{ Js::from(collect($produk->gambar ?? [])->map(fn($g) => Storage::url($g))) }})"
+    x-data="editProduk(
+        {{ Js::from(collect($produk->gambar ?? [])->map(fn($g) => Storage::url($g))) }},
+        {{ Js::from(old('categories', $produkCategories ?? [])) }}
+    )"
     action="{{ route('produk.update', $produk->no_produk) }}"
     method="POST"
     enctype="multipart/form-data">
@@ -101,11 +104,7 @@
                 showAromaForm: false,
                 newAroma: ''
             }"
-            x-init="
-                window.selected = selected;
-                window.getAromaForm = () => $el;
-                window.closeAromaForm = () => { showAromaForm = false; newAroma = ''; };
-            "
+            x-init="window.selectedData = @json(old('categories', $produkCategories ?? []))"
             x-ref="modalAroma"
             class="mb-4">
             <label class="block text-sm font-medium text-[#3E3A39] mb-2">Kategori</label>
@@ -162,38 +161,18 @@
 
         <!-- Gambar -->
         <div
-            x-data="{
-        images: [],
-        storageUrl: '{{ asset('storage') }}/',
-        updatePreview(event) {
-            const files = Array.from(event.target.files);
-            files.forEach(file => {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    this.images.push({ url: e.target.result, file });
-                };
-                reader.readAsDataURL(file);
-            });
-        },
-        removeImage(index) {
-            this.images.splice(index, 1);
-        }
-    }"
-            x-init="
-        images = {{ Js::from(
-            $produk->gambar 
-            ? array_map(fn($g) => [
-                'url' => asset('storage/' . $g),
-                'isExisting' => true
-              ], $produk->gambar)
+            x-data="previewImagesEdit({{ Js::from(
+        $produk->gambar 
+            ? array_map(fn($g) => asset('storage/' . $g), $produk->gambar) 
             : []
-        ) }};
-    "
+    ) }})"
             class="mb-4">
             <label class="block text-sm font-medium text-[#3E3A39] mb-1">Foto Produk</label>
             <input type="file" name="gambar[]" accept="image/*" multiple
                 @change="updatePreview($event)" class="block w-full text-sm text-gray-600" />
-
+            <!-- Error Message -->
+            <p x-text="errorMessage" x-show="errorMessage"
+                class="text-sm text-red-600 mt-1"></p>
             <!-- Preview Gambar -->
             <div class="flex flex-wrap gap-4 mt-4">
                 <template x-for="(image, index) in images" :key="index">
@@ -205,8 +184,10 @@
             </div>
 
             <!-- Hidden untuk gambar lama -->
-            <input type="hidden" name="existing_gambar"
-                x-bind:value="JSON.stringify(images.filter(i => i.isExisting).map(i => i.url.replace(storageUrl, '')))">
+            <input
+                type="hidden"
+                name="existing_gambar"
+                x-bind:value="JSON.stringify(images.filter(i => i.isExisting).map(i => i.url.replace('{{ asset('storage') }}/', '')))">
         </div>
 
         <!-- Tombol -->

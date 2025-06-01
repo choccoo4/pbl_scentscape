@@ -138,14 +138,42 @@ class ProdukController extends Controller
         $tipeList = Produk::select('tipe_parfum')->distinct()->pluck('tipe_parfum')->toArray();
         $volumeList = Produk::select('volume')->distinct()->pluck('volume')->toArray();
         $labelKategoriList = ['Unisex', 'For Him', 'For Her', 'Gifts'];
+        $produkCategories = $produk->aroma()->pluck('nama')->toArray(); // ambil nama aroma yang sudah dipilih
+        $categories = Aroma::all()->pluck('nama'); // semua aroma
 
-        return view('sellers.updateproduk', compact('produk', 'categories', 'tipeList', 'volumeList', 'labelKategoriList'));
+        return view('sellers.updateproduk', compact(
+            'produk',
+            'produkCategories',
+            'categories',
+            'tipeList',
+            'volumeList',
+            'labelKategoriList'
+        ));
     }
 
     public function update(Request $request, $no_produk)
     {
         $produk = Produk::where('no_produk', $no_produk)->firstOrFail();
 
+        // Ambil array gambar lama yang dipertahankan
+        $existingGambar = [];
+        if ($request->filled('existing_gambar')) {
+            $existingGambar = json_decode($request->existing_gambar, true);
+            if (!is_array($existingGambar)) {
+                $existingGambar = [];
+            }
+        }
+
+        // Cek total gambar tidak boleh lebih dari 4
+        $newImages = $request->file('gambar') ?? [];
+        $totalImages = count($existingGambar) + count($newImages);
+        if ($totalImages > 4) {
+            return back()->withInput()->withErrors([
+                'gambar' => 'Total gambar (lama + baru) tidak boleh lebih dari 4.'
+            ]);
+        }
+
+        // Validasi data
         $validated = $request->validate([
             'nama_produk' => [
                 'required',
@@ -159,14 +187,20 @@ class ProdukController extends Controller
             'volume' => 'required|string|max:20',
             'harga' => 'required|numeric|min:0',
             'stok' => 'required|integer|min:0',
-            'gambar' => 'nullable|array|max:4',
+            'gambar' => 'nullable|array',
             'gambar.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'categories' => 'required|array|min:1',
             'categories.*' => 'string',
-            'existing_gambar' => 'nullable|string', // JSON string gambar lama yang dipertahankan
+            'existing_gambar' => 'nullable|string',
+        ], [
+            'gambar.max' => 'Maksimal 4 gambar.',
+            'gambar.*.image' => 'Setiap file harus berupa gambar.',
+            'gambar.*.mimes' => 'Format gambar harus jpg, jpeg, atau png.',
+            'gambar.*.max' => 'Ukuran gambar maksimal 2MB.',
+            'categories.required' => 'Minimal satu aroma harus dipilih.',
         ]);
 
-        // Update data produk dasar
+        // Update kolom utama produk
         $produk->update([
             'nama_produk' => $validated['nama_produk'],
             'deskripsi' => $validated['deskripsi'],
@@ -177,19 +211,10 @@ class ProdukController extends Controller
             'stok' => $validated['stok'],
         ]);
 
-        // Ambil array gambar lama yang dipertahankan
-        $existingGambar = [];
-        if ($request->existing_gambar) {
-            $existingGambar = json_decode($request->existing_gambar, true);
-            if (!is_array($existingGambar)) {
-                $existingGambar = [];
-            }
-        }
-
-        // Upload gambar baru kalau ada
+        // Upload gambar baru
         $newGambarPaths = [];
-        if ($request->hasFile('gambar')) {
-            foreach ($request->file('gambar') as $img) {
+        if (!empty($newImages)) {
+            foreach ($newImages as $img) {
                 $slug = Str::slug(Str::words($validated['nama_produk'], 1, ''));
                 $filename = $slug . '-' . Str::random(6) . '.' . $img->getClientOriginalExtension();
                 $img->storeAs('produk', $filename, 'public');
@@ -197,30 +222,23 @@ class ProdukController extends Controller
             }
         }
 
-        //coba hapus foto yang ga kepakai sisa update
-        //$gambarLama = json_decode($produk->gambar, true) ?? [];
-        //foreach ($gambarLama as $lama) {
-            //if (!in_array($lama, $existingGambar)) {
-                //Storage::disk('public')->delete($lama);
-            //}
-        //}
+        // Opsional: hapus gambar lama yang tidak dipertahankan
+        $gambarSebelumnya = $produk->gambar ?? [];
+        foreach ($gambarSebelumnya as $lama) {
+            if (!in_array($lama, $existingGambar)) {
+                Storage::disk('public')->delete($lama);
+            }
+        }
 
-        // Gabungkan gambar lama yang dipertahankan + gambar baru
-        $allGambar = array_merge($existingGambar, $newGambarPaths);
-
-        // Batasi maksimal 4 gambar
-        $allGambar = array_slice($allGambar, 0, 4);
-
-        // Update kolom gambar di database
+        // Gabungkan gambar lama + baru lalu update
+        $finalGambar = array_merge($existingGambar, $newGambarPaths);
         $produk->update([
-            'gambar' => $allGambar, // cukup array saja, Laravel yang encode
+            'gambar' => $finalGambar, // otomatis disimpan sebagai JSON
         ]);
 
-        // Update aroma
-        if ($request->has('categories')) {
-            $aromaIds = Aroma::whereIn('nama', $request->categories)->pluck('id_kategori');
-            $produk->aroma()->sync($aromaIds);
-        }
+        // Update relasi aroma
+        $aromaIds = Aroma::whereIn('nama', $validated['categories'])->pluck('id_kategori');
+        $produk->aroma()->sync($aromaIds);
 
         return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui.');
     }
