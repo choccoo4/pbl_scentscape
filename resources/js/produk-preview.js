@@ -30,8 +30,6 @@ export function previewImages() {
                 };
                 reader.readAsDataURL(file);
             }
-
-            event.target.value = '';
         },
         removeImage(index) {
             this.images.splice(index, 1);

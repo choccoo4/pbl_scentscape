@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use App\Models\Produk;
 use App\Models\Aroma;
@@ -81,7 +82,8 @@ class ProdukController extends Controller
         if ($request->hasFile('gambar')) {
             foreach ($request->file('gambar') as $index => $file) {
                 if ($index >= 4) break;
-                $filename = time() . '_' . $index . '.' . $file->getClientOriginalExtension();
+                $slug = Str::slug(Str::words($request->nama_produk, 1, ''));
+                $filename = $slug . '-' . Str::random(6) . '.' . $file->getClientOriginalExtension();
                 $path = $file->storeAs('produk', $filename, 'public');
 
                 if (!$path) {

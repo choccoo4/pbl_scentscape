@@ -196,42 +196,4 @@
         </div>
     </div>
 </form>
-
-<script>
-function previewImages() {
-    return {
-        images: [],
-        errorMessage: '',
-
-        preview(event) {
-            this.errorMessage = '';
-            const files = event.target.files;
-            if(files.length > 4) {
-                this.errorMessage = 'Maksimal upload 4 gambar saja.';
-                return;
-            }
-
-            this.images = [];
-
-            for(let i = 0; i < files.length; i++) {
-                const file = files[i];
-                if(file.size > 2 * 1024 * 1024) {
-                    this.errorMessage = 'Ukuran file tidak boleh lebih dari 2MB.';
-                    continue;
-                }
-                const reader = new FileReader();
-                reader.onload = e => {
-                    this.images.push(e.target.result);
-                };
-                reader.readAsDataURL(file);
-            }
-        },
-
-        removeImage(index) {
-            this.images.splice(index, 1);
-        }
-    }
-}
-</script>
-
 @endsection
