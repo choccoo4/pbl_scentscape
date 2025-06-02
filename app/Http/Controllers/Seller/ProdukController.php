@@ -140,6 +140,7 @@ class ProdukController extends Controller
         $labelKategoriList = ['Unisex', 'For Him', 'For Her', 'Gifts'];
         $produkCategories = $produk->aroma()->pluck('nama')->toArray(); // ambil nama aroma yang sudah dipilih
         $categories = Aroma::all()->pluck('nama'); // semua aroma
+        
 
         return view('sellers.updateproduk', compact(
             'produk',

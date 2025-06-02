@@ -82,7 +82,7 @@
         </div>
 
         <!-- Kategori Aroma -->
-        <div x-data="{ selected: [], showAromaForm: false, newAroma: '' }"
+        <div x-data="{ selected: [], showAromaForm: false, newAroma: '', categories: @js($categories) }"
             x-init="
             window.selected = selected;
             window.getAromaForm = () => $el;
@@ -98,14 +98,14 @@
                 </button>
 
                 <!-- Semua kategori -->
-                @foreach ($categories as $category)
-                <button type="button"
-                    @click="selected.includes('{{ $category }}') ? selected = selected.filter(i => i !== '{{ $category }}') : selected.push('{{ $category }}')"
-                    :class="selected.includes('{{ $category }}') ? 'bg-[#9BAF9A] text-white' : 'bg-[#F6F1EB] text-[#3E3A39]'"
-                    class="border border-[#9BAF9A] px-3 py-1 rounded-full text-sm">
-                    {{ $category }}
-                </button>
-                @endforeach
+                <template x-for="category in categories" :key="category">
+                    <button type="button"
+                        @click="selected.includes(category) ? selected = selected.filter(i => i !== category) : selected.push(category)"
+                        :class="selected.includes(category) ? 'bg-[#9BAF9A] text-white' : 'bg-[#F6F1EB] text-[#3E3A39]'"
+                        class="border border-[#9BAF9A] px-3 py-1 rounded-full text-sm"
+                        x-text="category">
+                    </button>
+                </template>
             </div>
 
             <!-- Hidden inputs -->

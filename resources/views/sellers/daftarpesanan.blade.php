@@ -10,15 +10,19 @@
 
     <!-- Tab Status + Search -->
     <div class="mb-4 flex flex-wrap items-end justify-between gap-4">
-        <!-- Tab Status -->
-        <div class="flex flex-wrap gap-2">
-            @foreach (['Semua', 'Konfirmasi', 'Dikemas', 'Dikirim', 'Selesai'] as $tab)
-            <button class="px-4 py-2 rounded-md font-medium text-sm 
-                {{ request('status') === strtolower($tab) || ($tab === 'Semua' && !request('status')) ? 'bg-[#8B3E00] text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
-                {{ $tab }}
-            </button>
-            @endforeach
-        </div>
+        @foreach (['Semua', 'Menunggu Pembayaran', 'Menunggu Verifikasi', 'Dikemas', 'Dikirim', 'Selesai', 'Dibatalkan'] as $tab)
+        @php
+        $statusParam = strtolower(str_replace(' ', '_', $tab));
+        // misal 'Menunggu Pembayaran' => 'menunggu_pembayaran'
+        // khusus 'Semua' jadi kosong ''
+        $statusParam = $tab === 'Semua' ? '' : $statusParam;
+        @endphp
+        <a href="{{ url()->current() }}{{ $statusParam ? '?status=' . $statusParam : '' }}"
+            class="px-4 py-2 rounded-md font-medium text-sm 
+        {{ (request('status') === $statusParam) || ($tab === 'Semua' && !request('status')) ? 'bg-[#8B3E00] text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+            {{ $tab }}
+        </a>
+        @endforeach
 
         <!-- Search Box -->
         <form action="{{ url()->current() }}" method="GET" class="flex-grow max-w-md">
@@ -41,28 +45,23 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
+                @forelse ($pesanan as $index => $p)
                 <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-3">1</td>
-                    <td class="px-4 py-3">03 Maret 2025</td>
-                    <td class="px-4 py-3">03/09/6578ebZ</td>
-                    <td class="px-4 py-3">Cash On Delivery</td>
-                    <td class="px-4 py-3">Rp105.615</td>
-                    <td class="px-4 py-3">Dikonfirmasi</td>
+                    <td class="px-4 py-3">{{ $pesanan->firstItem() + $index }}</td>
+                    <td class="px-4 py-3">{{ $p->waktu_pemesanan->format('d M Y') }}</td>
+                    <td class="px-4 py-3">{{ $p->nomor_pesanan }}</td>
+                    <td class="px-4 py-3">{{ $p->metode_pembayaran ?? 'N/A' }}</td> <!-- sesuaikan nama kolom metode pembayaran -->
+                    <td class="px-4 py-3">Rp{{ number_format($p->total, 0, ',', '.') }}</td>
+                    <td class="px-4 py-3">{{ $p->status }}</td>
                     <td class="px-4 py-3">
                         <a href="#" class="bg-green-700 hover:bg-green-800 text-white text-xs px-3 py-1 rounded">Detail Transaksi</a>
                     </td>
                 </tr>
-                <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-3">2</td>
-                    <td class="px-4 py-3">04 Maret 2025</td>
-                    <td class="px-4 py-3">03/09/egrj675sset</td>
-                    <td class="px-4 py-3">Cash On Delivery</td>
-                    <td class="px-4 py-3">Rp256.615</td>
-                    <td class="px-4 py-3">Selesai</td>
-                    <td class="px-4 py-3">
-                        <a href="#" class="bg-green-700 hover:bg-green-800 text-white text-xs px-3 py-1 rounded">Detail Transaksi</a>
-                    </td>
+                @empty
+                <tr>
+                    <td colspan="7" class="text-center py-4">Tidak ada data pesanan</td>
                 </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

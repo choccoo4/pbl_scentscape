@@ -10,7 +10,7 @@ import { cartRoot, cartItem } from './cart.js';
 import { previewImages } from './produk-preview.js';
 import { editProduk } from './edit-produk.js';
 import './seller-dashboard-chart';
-import './tambah-produk.js';
+import './aroma.js';
 import './produk.js';
 
 window.Alpine = Alpine;

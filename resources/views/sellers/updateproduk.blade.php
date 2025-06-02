@@ -99,12 +99,16 @@
         </div>
 
         <!-- Kategori Aroma -->
-        <div x-data="{
-                selected: @json(old('categories', $produkCategories ?? [])),
-                showAromaForm: false,
-                newAroma: ''
-            }"
-            x-init="window.selectedData = @json(old('categories', $produkCategories ?? []))"
+        <div
+            x-data="{
+  selected: {{ Js::from(old('categories', $produkCategories ?? ['musk'])) }},
+  showAromaForm: false,
+  newAroma: ''
+}"
+            x-init="
+  window.selected = selected;
+  window.getAromaForm = () => $el;
+  window.closeAromaForm = () => { showAromaForm = false; newAroma = ''; };"
             x-ref="modalAroma"
             class="mb-4">
             <label class="block text-sm font-medium text-[#3E3A39] mb-2">Kategori</label>
@@ -135,8 +139,12 @@
                     <input type="text" id="inputAromaBaru" x-model="newAroma" placeholder="Contoh: Citrus Fresh"
                         class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 mb-4 focus:ring-[#9BAF9A] focus:outline-none">
                     <div class="flex justify-end space-x-2">
-                        <button type="button" id="BatalSimpanAroma"
-                            class="px-4 py-1 rounded bg-gray-200 text-gray-700 hover:bg-gray-300">Batal</button>
+                        <button type="button"
+                            @click="newAroma = ''; showAromaForm = false;"
+                            class="px-4 py-1 rounded bg-gray-200 text-gray-700 hover:bg-gray-300">
+                            Batal
+                        </button>
+
                         <button type="button" id="simpanAroma"
                             class="px-4 py-1 rounded bg-[#9BAF9A] text-white hover:bg-[#8DA089]">Simpan</button>
                     </div>
@@ -161,7 +169,7 @@
 
         <!-- Gambar -->
         <div
-            x-data="previewImagesEdit({{ Js::from(
+            x-data="editProduk({{ Js::from(
         $produk->gambar 
             ? array_map(fn($g) => asset('storage/' . $g), $produk->gambar) 
             : []

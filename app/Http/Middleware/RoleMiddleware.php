@@ -13,7 +13,6 @@ class RoleMiddleware
         // Pastikan user sudah login
         if (!Auth::check()) {
             return redirect('/login')->with('error', 'Silakan login dulu');
-            return redirect('/login')->with('error', 'Silakan login dulu');
         }
 
         // Cek rolenya

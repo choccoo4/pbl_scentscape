@@ -17,7 +17,7 @@
         </div>
         <div>
             <p class="text-sm text-[#BFA6A0]">Total Penjualan</p>
-            <p class="text-lg font-semibold text-[#3E3A39]">Rp 2.500.000</p>
+            <p class="text-lg font-semibold text-[#3E3A39]">Rp {{ number_format($totalPenjualan, 0, ',', '.') }}</p>
         </div>
     </div>
     <div class="bg-[#F6F1EB] shadow p-5 rounded-xl flex items-center gap-4">
@@ -26,7 +26,7 @@
         </div>
         <div>
             <p class="text-sm text-[#BFA6A0]">Pesanan Masuk</p>
-            <p class="text-lg font-semibold text-[#3E3A39]">3 Pesanan</p>
+            <p class="text-lg font-semibold text-[#3E3A39]">{{ $pesananMasuk }} Pesanan</p>
         </div>
     </div>
     <div class="bg-[#F6F1EB] shadow p-5 rounded-xl flex items-center gap-4">
@@ -35,7 +35,7 @@
         </div>
         <div>
             <p class="text-sm text-[#BFA6A0]">Produk Terjual</p>
-            <p class="text-lg font-semibold text-[#3E3A39]">15 Produk</p>
+            <p class="text-lg font-semibold text-[#3E3A39]">{{ $produkTerjual }} Produk</p>
         </div>
     </div>
     <div class="bg-[#F6F1EB] shadow p-5 rounded-xl flex items-center gap-4">
@@ -44,7 +44,7 @@
         </div>
         <div>
             <p class="text-sm text-[#BFA6A0]">Total Stok Produk</p>
-            <p class="text-lg font-semibold text-[#3E3A39]">140 Produk</p>
+            <p class="text-lg font-semibold text-[#3E3A39]">{{ $totalStokProduk }} Produk</p>
         </div>
     </div>
 </div>
@@ -52,13 +52,13 @@
 <!-- Highlight aktivitas -->
 <div class="bg-[#9BAF9A]/10 border-l-4 border-[#9BAF9A] text-[#414833] p-4 md:p-5 rounded-lg mb-6 mx-4 md:mx-6 lg:mx-10">
     <p class="text-sm">
-        Hari ini kamu mendapatkan <span class="font-bold">3 pesanan baru</span> dan <span class="font-bold">5 produk</span> sudah dikirim ke pembeli. Tetap semangat! 🌟
+        Hari ini kamu mendapatkan <span class="font-bold">{{ $pesananBaruHariIni }} pesanan baru</span> dan <span class="font-bold">{{ $produkTerkirimHariIni }} produk</span> dikirim ke pembeli. Tetap semangat! 🌟
     </p>
 </div>
 
 <!-- Placeholder Chart Section -->
 <div class="bg-white rounded-xl shadow p-6 mt-6 max-w-4xl mx-auto">
-  <p class="mb-4 font-semibold text-[#3E3A39] text-left">Statistik Penjualan Mingguan</p>
-  <canvas id="salesChart" height="100"></canvas>
+    <p class="mb-4 font-semibold text-[#3E3A39] text-left">Statistik Penjualan Mingguan</p>
+    <canvas id="salesChart" height="100"></canvas>
 </div>
 @endsection

@@ -22,81 +22,69 @@
             </div>
         </div>
 
-       <div class="mt-6 flex gap-4">
-    <a href="{{ route('rekap.index') }}" class="bg-[#414833] hover:bg-[#3e3a39] text-white px-6 py-2 rounded-full shadow transition inline-flex items-center">
-        <i class="fa-solid fa-file-pdf mr-2 text-red-400"></i> Export PDF
-    </a>
-    <a href="{{ route('rekap.index') }}" class="bg-[#bfa6a0] hover:bg-[#a98f89] text-white px-6 py-2 rounded-full shadow transition inline-flex items-center">
-        <i class="fa-solid fa-file-excel mr-2 text-green-500"></i> Export Excel
-    </a>
-</div>
+        <div class="mt-6 flex gap-4">
+            <button type="submit"
+                class="inline-flex items-center px-4 py-2 rounded-lg bg-[#9baf9a] text-white hover:bg-[#89a48a] hover:shadow transition-all">
+                <i class="fa-solid fa-magnifying-glass mr-2"></i> Tampilkan
+            </button>
 
+            <a href="{{ route('rekap.pdf', request()->all()) }}"
+                class="inline-flex items-center px-4 py-2 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 hover:shadow transition-all">
+                <i class="fa-solid fa-file-pdf mr-2 text-red-400"></i> Export PDF
+            </a>
+
+            <a href="{{ route('rekap.excel', request()->all()) }}"
+                class="inline-flex items-center px-4 py-2 rounded-lg bg-green-100 text-green-600 hover:bg-green-200 hover:shadow transition-all">
+                <i class="fa-solid fa-file-excel mr-2 text-green-500"></i> Export Excel
+            </a>
+        </div>
     </form>
 
+    @if (request('tanggal_awal') && request('tanggal_akhir'))
     <div class="mt-8 overflow-x-auto rounded-lg border border-[#d6c6b8]">
         <table class="min-w-full text-sm text-left">
             <thead class="bg-[#9baf9a] text-white">
                 <tr>
                     <th class="px-5 py-3 text-center">Tanggal</th>
-                    <th class="px-5 py-3 text-center">Produk</th> <!-- Foto dan Nama Produk jadi satu -->
+                    <th class="px-5 py-3 text-center">Produk</th>
                     <th class="px-5 py-3 text-center">Harga</th>
                     <th class="px-5 py-3 text-center">QTY</th>
                     <th class="px-5 py-3 text-center">Total</th>
                 </tr>
             </thead>
-           <tbody class="bg-white text-[#3e3a39] text-center">
-    <!-- Contoh Data Statis -->
-    <tr class="hover:bg-[#f6f1eb] transition">
-        <td class="px-5 py-3">11-02-2025</td>
-        <td class="px-5 py-3">
-            <div class="flex items-center justify-center gap-3">
-                <img src="{{ asset('images/products/image.png') }}" alt="Vanilla Mist" class="w-12 h-12 object-cover rounded">
-                <span>Parfum Vanilla Mist</span>
-            </div>
-        </td>
-        <td class="px-5 py-3">Rp. 150.000</td>
-        <td class="px-5 py-3">2</td>
-        <td class="px-5 py-3">Rp. 300.000</td>
-    </tr>
-    <tr class="hover:bg-[#f6f1eb] transition">
-        <td class="px-5 py-3">13-03-2025</td>
-        <td class="px-5 py-3">
-            <div class="flex items-center justify-center gap-3">
-                <img src="{{ asset('images/products/image2-1.jpg') }}" alt="Citrus Bloom" class="w-12 h-12 object-cover rounded">
-                <span>Parfum Citrus Bloom</span>
-            </div>
-        </td>
-        <td class="px-5 py-3">Rp. 120.000</td>
-        <td class="px-5 py-3">1</td>
-        <td class="px-5 py-3">Rp. 120.000</td>
-    </tr>
-</tbody>
-
-                <!-- Jika ingin looping data dari controller -->
-                {{-- @foreach ($penjualan as $item)
+            <tbody class="bg-white text-[#3e3a39] text-center">
+                @forelse ($penjualan as $item)
                 <tr class="hover:bg-[#f6f1eb] transition">
-                    <td class="px-5 py-3">{{ \Carbon\Carbon::parse($item->tanggal)->format('d-m-Y') }}</td>
-                    <td class="px-5 py-3 flex items-center gap-3">
-                        <img src="{{ asset('storage/' . $item->foto_produk) }}" alt="{{ $item->nama_produk }}" class="w-12 h-12 object-cover rounded">
-                        <span>{{ $item->nama_produk }}</span>
+                    <td class="px-5 py-3">{{ $item->pesanan->waktu_pemesanan->format('d-m-Y') }}</td>
+                    <td class="px-5 py-3">
+                        <div class="flex items-center justify-center gap-3">
+                            <img src="{{ asset('storage/' . $item->produk->gambar) }}" alt="{{ $item->produk->nama_produk }}" class="w-12 h-12 object-cover rounded">
+                            <span>{{ $item->produk->nama_produk }}</span>
+                        </div>
                     </td>
-                    <td class="px-5 py-3">Rp. {{ number_format($item->harga, 0, ',', '.') }}</td>
-                    <td class="px-5 py-3">{{ $item->qty }}</td>
-                    <td class="px-5 py-3">Rp. {{ number_format($item->harga * $item->qty, 0, ',', '.') }}</td>
+                    <td class="px-5 py-3">Rp. {{ number_format($item->harga_satuan, 0, ',', '.') }}</td>
+                    <td class="px-5 py-3">{{ $item->jumlah }}</td>
+                    <td class="px-5 py-3">Rp. {{ number_format($item->harga_satuan * $item->jumlah, 0, ',', '.') }}</td>
                 </tr>
-                @endforeach --}}
+                @empty
+                <tr>
+                    <td colspan="5" class="py-4 text-center text-[#3e3a39]">Tidak ada data penjualan pada rentang tanggal tersebut.</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
 
         <div class="flex justify-end mt-6 pr-6">
-    <div class="text-right">
-        <div class="text-lg text-[#3e3a39]">Grand Total</div>
-        <div class="text-2xl font-semibold text-[#3e3a39]">Rp. 420.000</div>
+            <div class="text-right">
+                <div class="text-lg text-[#3e3a39]">Grand Total</div>
+                <div class="text-2xl font-semibold text-[#3e3a39]">Rp. {{ number_format($grandTotal, 0, ',', '.') }}</div>
+            </div>
+        </div>
     </div>
-</div>
-
-
-
+    @else
+    <div class="mt-8 p-6 text-center text-[#3e3a39] bg-[#fff] border border-[#d6c6b8] rounded-lg shadow-sm">
+        <p class="text-lg">Silakan pilih <strong>tanggal awal</strong> dan <strong>tanggal akhir</strong> terlebih dahulu untuk melihat rekapitulasi.</p>
     </div>
+    @endif
 </div>
 @endsection

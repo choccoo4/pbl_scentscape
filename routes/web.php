@@ -17,6 +17,7 @@ use App\Http\Controllers\Buyer\ShopController;
 use App\Http\Controllers\Buyer\TransaksiController;
 use App\Http\Controllers\Buyer\CartController;
 use App\Http\Controllers\ProdukController as ControllersProdukController;
+use App\Http\Controllers\RekapitulasiController as ControllersRekapitulasiController;
 use App\Http\Controllers\seller\ProdukController;
 use App\Http\Controllers\seller\ProfilController;
 use App\Http\Controllers\seller\RekapitulasiController;
@@ -26,34 +27,37 @@ use App\Http\Controllers\seller\UbahpwController;
 use App\Http\Controllers\seller\DashboardController;
 use App\Http\Controllers\seller\DaftarpesananController;
 
-
-Route::get('/cart', [CartController::class, 'index'])->name('cart');
-Route::get('/home', [HomeController::class, 'home'])->name('home');
-Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
-Route::get('/best-sellers', [BestSellersController::class, 'bestSellers'])->name('best-sellers');
-Route::get('/gifts', [GiftsController::class, 'gifts'])->name('gifts');
-Route::get('/product-detail/{slug}', [ProductDetailController::class, 'productDetail'])->name('product-detail');
-Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
-Route::get('/change-pw', [ChangePwController::class, 'changePw'])->name('change-pw');
-Route::get('/transaksi', [TransaksiController::class, 'transaksi'])->name('transaksi');
-Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
-Route::get('/about', [AboutController::class, 'about'])->name('about');
-Route::get('/order-history', [OrderHistoryController::class, 'orderHistory'])->name('order.history');
+Route::middleware(['auth', 'role:pembeli'])->group(function () {
+    Route::get('/cart', [CartController::class, 'index'])->name('cart');
+    Route::get('/home', [HomeController::class, 'home'])->name('home');
+    Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
+    Route::get('/best-sellers', [BestSellersController::class, 'bestSellers'])->name('best-sellers');
+    Route::get('/gifts', [GiftsController::class, 'gifts'])->name('gifts');
+    Route::get('/product-detail/{slug}', [ProductDetailController::class, 'productDetail'])->name('product-detail');
+    Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
+    Route::get('/change-pw', [ChangePwController::class, 'changePw'])->name('change-pw');
+    Route::get('/transaksi', [TransaksiController::class, 'transaksi'])->name('transaksi');
+    Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+    Route::get('/about', [AboutController::class, 'about'])->name('about');
+    Route::get('/order-history', [OrderHistoryController::class, 'orderHistory'])->name('order.history');
+});
 
 Route::middleware(['auth', 'role:penjual'])->prefix('seller')->group(function () {
     Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create'); // Tampil form tambah produk
     Route::post('/produk', [ProdukController::class, 'store'])->name('produk.store');        // Proses simpan produk
     Route::post('/aroma/store', [AromaController::class, 'store'])->name('aroma.store');
-    Route::get('/rekapitulasi', [RekapitulasiController::class, 'rekapitulasi'])->name('rekap.index');
+    Route::get('/rekapitulasi', [RekapitulasiController::class, 'index'])->name('rekap.index');
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
     Route::get('/profil-penjual', [ProfilController::class, 'index'])->name('profil-penjual');
     Route::get('/ubahpassword', [UbahpwController::class, 'ubahpw'])->name('ubahpw');
-    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/daftarproduk', [ProdukController::class, 'index'])->name('produk.index');
     Route::get('/daftarpesanan', [DaftarpesananController::class, 'daftarpesanan'])->name('pesanan.index');
     Route::delete('/produk/{no_produk}', [ProdukController::class, 'destroy'])->name('produk.destroy');
     Route::get('{no_produk}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
     Route::put('{no_produk}', [ProdukController::class, 'update'])->name('produk.update');
+    Route::get('/rekapitulasi/pdf', [RekapitulasiController::class, 'exportPdf'])->name('rekap.pdf');
+    Route::get('/rekapitulasi/excel', [RekapitulasiController::class, 'exportExcel'])->name('rekap.excel');
 });
 
 
