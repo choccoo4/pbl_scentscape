@@ -33,7 +33,7 @@ Route::middleware(['auth', 'role:pembeli'])->group(function () {
     Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
     Route::get('/best-sellers', [BestSellersController::class, 'bestSellers'])->name('best-sellers');
     Route::get('/gifts', [GiftsController::class, 'gifts'])->name('gifts');
-    Route::get('/product-detail/{slug}', [ProductDetailController::class, 'productDetail'])->name('product-detail');
+    Route::get('/produk/{id}', [ProductDetailController::class, 'productDetail'])->name('produk.show');
     Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
     Route::get('/change-pw', [ChangePwController::class, 'changePw'])->name('change-pw');
     Route::get('/transaksi', [TransaksiController::class, 'transaksi'])->name('transaksi');

@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('produk_aromas', function (Blueprint $table) {
+        Schema::create('aroma_kategori', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('nama');
+            $table->string('icon')->nullable();     // contoh: ph-flower
+            $table->string('gambar')->nullable();   // contoh: floral.jpg
         });
     }
 
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('produk_aromas');
+        Schema::dropIfExists('aroma_kategori');
     }
 };

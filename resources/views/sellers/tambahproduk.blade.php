@@ -82,7 +82,14 @@
         </div>
 
         <!-- Kategori Aroma -->
-        <div x-data="{ selected: [], showAromaForm: false, newAroma: '', categories: @js($categories) }"
+        <div x-data="{
+            selected: [],
+            showAromaForm: false,
+            newAroma: '',
+            selectedKategori: '',
+            categories: @js($categories),
+            kategoriList: @js($kategoriList)
+        }"
             x-init="
             window.selected = selected;
             window.getAromaForm = () => $el;
@@ -120,6 +127,12 @@
                     <h3 class="text-lg font-semibold text-[#3E3A39] mb-3">Tambah Aroma</h3>
                     <input type="text" id="inputAromaBaru" x-model="newAroma" placeholder="Contoh: Citrus Fresh"
                         class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 mb-4 focus:ring-[#9BAF9A] focus:outline-none">
+                    <select x-model="selectedKategori" class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 mb-4">
+                        <option value="">-- Pilih Aroma Induk --</option>
+                        <template x-for="kat in kategoriList" :key="kat.id">
+                            <option :value="kat.id" x-text="kat.nama"></option>
+                        </template>
+                    </select>
                     <div class="flex justify-end space-x-2">
                         <button type="button" id="BatalSimpanAroma"
                             class="px-4 py-1 rounded bg-gray-200 text-gray-700 hover:bg-gray-300">Batal</button>

@@ -1,5 +1,6 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <header x-data="{ menuOpen: false, searchOpen: false, profileOpen: false }" class="bg-[#414833] text-white py-2 relative">

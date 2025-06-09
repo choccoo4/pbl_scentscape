@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Aroma;
-
+use Illuminate\Support\Str;
 
 class Produk extends Model
 {
@@ -37,5 +38,10 @@ class Produk extends Model
             'no_produk',
             'id_kategori'
         );
+    }
+
+    public function getSlugAttribute()
+    {
+        return Str::slug($this->nama_produk);
     }
 }

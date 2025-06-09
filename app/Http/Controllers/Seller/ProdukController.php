@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use App\Models\Produk;
 use App\Models\Aroma;
-
+use App\Models\AromaKategori;
 
 class ProdukController extends Controller
 {
@@ -27,7 +27,8 @@ class ProdukController extends Controller
         $volumeList = Produk::select('volume')->distinct()->pluck('volume')->toArray();
         $labelKategoriList = ['Unisex', 'For Him', 'For Her', 'Gifts'];
 
-        return view('sellers.tambahproduk', compact('categories', 'tipeList', 'volumeList', 'labelKategoriList'));
+        $kategoriList = AromaKategori::all(['id', 'nama']);
+        return view('sellers.tambahproduk', compact('categories', 'tipeList', 'volumeList', 'labelKategoriList', 'kategoriList'));
     }
 
     public function store(Request $request)
@@ -140,7 +141,7 @@ class ProdukController extends Controller
         $labelKategoriList = ['Unisex', 'For Him', 'For Her', 'Gifts'];
         $produkCategories = $produk->aroma()->pluck('nama')->toArray(); // ambil nama aroma yang sudah dipilih
         $categories = Aroma::all()->pluck('nama'); // semua aroma
-        
+        $kategoriList = AromaKategori::all(['id', 'nama']);
 
         return view('sellers.updateproduk', compact(
             'produk',
@@ -148,7 +149,8 @@ class ProdukController extends Controller
             'categories',
             'tipeList',
             'volumeList',
-            'labelKategoriList'
+            'labelKategoriList',
+            'kategoriList'
         ));
     }
 

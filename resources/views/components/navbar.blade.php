@@ -1,7 +1,3 @@
-<head>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-</head>
-
 <!-- NAVBAR -->
 <nav class="fixed top-0 z-50 w-full bg-[#414833]">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">

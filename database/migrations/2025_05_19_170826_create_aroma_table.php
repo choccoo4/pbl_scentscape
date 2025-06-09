@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('aroma', function (Blueprint $table) {
             $table->id('id_kategori');
             $table->string('nama');
+            $table->unsignedBigInteger('aroma_kategori_id')->nullable(); // FK ke induk aroma
+            $table->foreign('aroma_kategori_id')->references('id')->on('aroma_kategori')->onDelete('set null');
         });
     }
 

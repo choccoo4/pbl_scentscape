@@ -13,10 +13,12 @@ class AromaController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|unique:aroma,nama|max:255',
+            'kategori_id' => 'required|exists:aroma_kategori,id'
         ]);
 
         $aroma = Aroma::create([
-            'nama' => $request->nama
+            'nama' => $request->nama,
+            'aroma_kategori_id' => $request->kategori_id
         ]);
 
         return response()->json([

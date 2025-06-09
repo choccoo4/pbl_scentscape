@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\AromaKategori;
 
 class Aroma extends Model
 {
@@ -11,10 +12,15 @@ class Aroma extends Model
 
     public $timestamps = false; // karena migrasi kamu ga ada created_at/updated_at
 
-    protected $fillable = ['nama'];
+    protected $fillable = ['nama', 'aroma_kategori_id'];
 
     public function produk()
     {
-        return $this->belongsToMany(Produk::class, 'produk_aroma', 'aroma_id', 'produk_id');
+        return $this->belongsToMany(Produk::class, 'produk_aroma', 'id_kategori', 'no_produk');
+    }
+
+    public function aromaKategori()
+    {
+        return $this->belongsTo(AromaKategori::class, 'aroma_kategori_id');
     }
 }

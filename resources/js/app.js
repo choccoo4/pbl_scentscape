@@ -14,6 +14,7 @@ import './aroma.js';
 import './produk.js';
 
 window.Alpine = Alpine;
+window.confirmLogout = confirmLogout;
 
 Alpine.data('registerForm', registerForm);
 Alpine.data('loginForm', loginForm);

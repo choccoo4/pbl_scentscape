@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Buyer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Produk;
 
 class ProductDetailController extends Controller
 {
-    public function productDetail()
+    public function productDetail($id)
     {
-        return view('buyer.product-detail');
+        $product = Produk::with('aroma')->findOrFail($id);
+
+        return view('buyer.product-detail', compact('product'));
     }
 }

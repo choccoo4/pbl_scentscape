@@ -17,43 +17,41 @@
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-x-2 gap-y-4 px-2 xl:px-4">
       @foreach ($products as $product)
-      <a href="{{ route('product-detail', ['slug' => $product['slug']]) }}">
+      <a href="{{ route('produk.show', ['id' => $product['id']]) }}">
         <x-product-card
+          id="{{ $product['id'] }}"
           name="{{ $product['name'] }}"
           price="{{ $product['price'] }}"
-          image="{{ asset('images/products/' . $product['img']) }}"
+          image="{{ asset('storage/' . $product['img']) }}"
           gender="{{ $product['gender'] }}"
           volume="{{ $product['volume'] }}"
           type="{{ $product['type'] }}"
-          :aromas="$product['aromas']"
-          extraClass="border border-gray-300" />
+          type_full="{{ $product['type_full'] }}"
+          :aroma="$product['aroma']"
+          extraClass="border border-gray-300"
+          slug="{{ $product['slug'] }}" />
       </a>
       @endforeach
     </div>
   </div>
 </section>
 
-
 <section class="bg-[#f2ede4] py-16 px-6 text-center">
   <h2 class="text-3xl font-semibold text-gray-900 mb-3 font-serif">Ingredients</h2>
   <p class="text-gray-600 max-w-xl mx-auto mb-8">
-    Check the characteristics of more than 100 ingredients and discover the perfumes in which they are present.
+    Discover the 12 core scent families and explore the wide world of perfumes built around them.
   </p>
 
   <div class="flex justify-center flex-wrap gap-6 mb-8">
     @foreach ($ingredients as $item)
     <div class="flex flex-col items-center w-20">
       <div class="w-20 h-20 rounded-full overflow-hidden border border-gray-200">
-        <img src="{{ asset('images/ingredients/' . $item['img']) }}" alt="{{ $item['name'] }}" class="w-full h-full object-cover" />
+        <img src="{{ asset('storage/aroma/' . $item['img']) }}" alt="{{ $item['name'] }}" class="w-full h-full object-cover" />
       </div>
       <p class="mt-2 text-sm text-gray-800 font-medium">{{ $item['name'] }}</p>
     </div>
     @endforeach
   </div>
-
-  <!--<a href="#" class="text-sm text-black underline hover:text-gray-700 transition-all duration-200">
-    EXPLORE CATALOGUE
-  </a>-->
 </section>
 
 <section class="bg-[#f6f1eb] py-16 px-6">
