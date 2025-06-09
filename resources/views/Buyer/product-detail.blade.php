@@ -63,7 +63,7 @@
 
             {{-- Deskripsi --}}
             <p class="leading-relaxed text-justify text-sm">
-                {{ $product->deskripsi }}
+                {!! nl2br(e($product->deskripsi)) !!}
             </p>
 
             {{-- Aroma --}}
