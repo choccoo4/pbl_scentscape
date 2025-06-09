@@ -12,7 +12,7 @@
 'extraClass' => '',
 ])
 
-<div class="rounded-xl overflow-hidden shadow-md border border-[#D6C6B8] bg-[#F6F1EB] transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg {{ $extraClass }} w-full max-w-[220px] mx-auto group">
+<div class="rounded-xl overflow-hidden shadow-md border border-[#D6C6B8] bg-[#F6F1EB] transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg {{ $extraClass }} w-full max-w-[250px] mx-auto group">
     <!-- Gambar Produk + Overlay -->
     <div class="aspect-square bg-[#F6F1EB] relative group">
         <img src="{{ $image }}" alt="{{ $name }}" class="w-full h-full object-cover transition duration-300 group-hover:brightness-105">
@@ -24,13 +24,13 @@
                 class="bg-white text-[#3E3A39] p-2 rounded-full shadow hover:bg-[#D6C6B8] transition"
                 data-tooltip-target="tooltip-detail-{{ Str::slug($name) }}">
                 <i class="ph ph-eye text-lg"></i>
-            </a>
             <div id="tooltip-detail-{{ Str::slug($name) }}"
                 role="tooltip"
                 class="absolute z-10 invisible px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded-md shadow tooltip dark:bg-gray-700">
                 Lihat Detail
                 <div class="tooltip-arrow" data-popper-arrow></div>
             </div>
+            </a>
 
             <!-- Tambah ke Keranjang -->
             <button type="button"

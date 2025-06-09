@@ -15,7 +15,7 @@ class HomeController extends Controller
     {
         $products = Produk::with('aroma.aromaKategori')
             ->latest('waktu_dibuat')
-            ->take(10)
+            ->take(4)
             ->get()
             ->map(fn($product) => ProductCardFormatter::from($product));
 

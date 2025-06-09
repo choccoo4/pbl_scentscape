@@ -32,17 +32,18 @@
 
     <div class="pt-5 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-x-2 gap-y-4 px-2 xl:px-4">
         @foreach ($products as $product)
-        <a href="{{ route('product-detail', ['slug' => $product['slug']]) }}">
             <x-product-card
+                id="{{ $product['id'] }}"
                 name="{{ $product['name'] }}"
                 price="{{ $product['price'] }}"
-                image="{{ asset('images/products/' . $product['img']) }}"
+                image="{{ asset('storage/' . $product['img']) }}"
                 gender="{{ $product['gender'] }}"
                 volume="{{ $product['volume'] }}"
                 type="{{ $product['type'] }}"
-                :aromas="$product['aromas']"
-                extraClass="border border-gray-300 w-60" />
-        </a>
+                type_full="{{ $product['type_full'] }}"
+                :aroma="$product['aroma']"
+                extraClass="border border-gray-300"
+                slug="{{ $product['slug'] }}" />
         @endforeach
     </div>
 </section>

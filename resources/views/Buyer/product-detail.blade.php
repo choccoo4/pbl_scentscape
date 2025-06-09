@@ -81,12 +81,6 @@
                             <i class="ph {{ $aroma->aromaKategori?->icon ?? 'ph-flower' }} text-xl text-[#9BAF9A]"></i>
                             <span>{{ $aroma->nama }}</span>
                         </button>
-                        <div id="tooltip-aroma-detail-{{ $index }}"
-                            role="tooltip"
-                            class="absolute z-10 invisible px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded-lg shadow-sm tooltip dark:bg-gray-700">
-                            {{ $aroma->nama }}
-                            <div class="tooltip-arrow" data-popper-arrow></div>
-                        </div>
                     </div>
                     @endforeach
                 </div>

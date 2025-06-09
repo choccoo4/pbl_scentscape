@@ -1,69 +1,40 @@
 <?php
 
 namespace App\Http\Controllers\Buyer;
-
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Produk;
+use App\Models\PesananItem;
+use App\Helpers\ProductCardFormatter;
 
 class BestSellersController extends Controller
 {
     public function bestSellers()
     {
-        $products = [
-            [
-                'name' => 'Floraison',
-                'price' => 'Rp 401.000',
-                'img' => 'image.png',
-                'gender' => 'For Her',
-                'volume' => '50ml',
-                'type' => 'EDP',
-                'aromas' => [
-                    ['icon' => 'flower', 'label' => 'Floral'],
-                    ['icon' => 'drop', 'label' => 'Watery'],
-                ],
-                'slug' => 'floraison',
-            ],
-            [
-                'name' => 'Ethereal',
-                'price' => 'Rp 401.000',
-                'img' => 'image2.png',
-                'gender' => 'Unisex',
-                'volume' => '30ml',
-                'type' => 'EDT',
-                'aromas' => [
-                    ['icon' => 'leaf', 'label' => 'Green'],
-                    ['icon' => 'sparkle', 'label' => 'Fresh'],
-                ],
-                'slug' => 'floraison',
-            ],
-            [
-                'name' => 'Beige 96',
-                'price' => 'Rp 401.000',
-                'img' => 'image3.png',
-                'gender' => 'For Him',
-                'volume' => '75ml',
-                'type' => 'Parfum',
-                'aromas' => [
-                    ['icon' => 'fire', 'label' => 'Spicy'],
-                    ['icon' => 'drop', 'label' => 'Aquatic'],
-                    ['icon' => 'smiley', 'label' => 'Playful'],
-                ],
-                'slug' => 'floraison',
-            ],
-            [
-                'name' => 'Almalika',
-                'price' => 'Rp 401.000',
-                'img' => 'image4.png',
-                'gender' => 'Unisex',
-                'volume' => '50ml',
-                'type' => 'EDP',
-                'aromas' => [
-                    ['icon' => 'crown', 'label' => 'Royal Oud'],
-                    ['icon' => 'flower', 'label' => 'Rose'],
-                ],
-                'slug' => 'floraison',
-            ],
-        ];
+        // Ambil produk yang pernah dibeli, urutkan berdasarkan total terjual
+        $bestsellerProduk = PesananItem::select('no_produk', DB::raw('SUM(jumlah) as total_terjual'))
+            ->groupBy('no_produk')
+            ->orderByDesc('total_terjual')
+            ->take(8)
+            ->pluck('no_produk');
+
+        // Cek apakah ada data bestseller
+        if ($bestsellerProduk->count() > 0) {
+            // Ambil data produk dari ID bestseller
+            $products = Produk::with('aroma.aromaKategori')
+                ->whereIn('id', $bestsellerProduk)
+                ->get()
+                ->map(fn($product) => ProductCardFormatter::from($product));
+        } else {
+            // Kalau belum ada penjualan, fallback ke produk terbaru
+            $products = Produk::with('aroma.aromaKategori')
+                ->latest('waktu_dibuat')
+                ->take(8)
+                ->get()
+                ->map(fn($product) => ProductCardFormatter::from($product));
+        }
+
         return view('buyer.best-sellers', compact('products'));
     }
 }

@@ -9,15 +9,19 @@
   title="Scents that Speak Softly"
   subtitle="A curated selection of fragrances with feminine nuances,<br>made for every person, every moment." />
 <!-- Latest Releases -->
-<section class="bg-[#f2ede4] py-10">
-  <div class="max-w-screen-xl mx-auto">
+<section class="bg-[#f2ede4] py-16 px-6">
+  <!-- Header & SEE MORE dibatasi max width -->
+  <div class="max-w-screen-xl mx-auto px-5">
     <div class="flex justify-between items-center mb-6">
-      <h2 class="text-lg md:text-xl font-semibold text-gray-800 font-serif pl-5">Latest releases</h2>
-      <a href="{{ route('shop')}}" class="text-sm text-gray-600 hover:text-gray-800 font-medium font-serif pr-5">SEE MORE</a>
+      <h2 class="text-lg md:text-xl font-semibold text-gray-800 font-serif">Latest releases</h2>
+      <a href="{{ route('shop')}}" class="text-sm text-gray-600 hover:text-gray-800 font-medium font-serif">SEE MORE</a>
     </div>
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-x-2 gap-y-4 px-2 xl:px-4">
+  </div>
+
+  <!-- Grid produk dibuat keluar dari max-w agar bisa nempel kiri -->
+  <div class="px-4">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-6">
       @foreach ($products as $product)
-      <a href="{{ route('produk.show', ['id' => $product['id']]) }}">
         <x-product-card
           id="{{ $product['id'] }}"
           name="{{ $product['name'] }}"
@@ -30,7 +34,6 @@
           :aroma="$product['aroma']"
           extraClass="border border-gray-300"
           slug="{{ $product['slug'] }}" />
-      </a>
       @endforeach
     </div>
   </div>
