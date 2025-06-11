@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../laravel/pbl_scentscape-1"
+		},
+		{
+			"name": "pbl_scentscape",
+			"path": ".."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "pbl_scentscape"
+	}
+}

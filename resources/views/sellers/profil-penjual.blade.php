@@ -3,13 +3,16 @@
 @section('title', 'My Profile')
 
 @section('content')
+
+
 <div class="bg-[#FDF6EF] min-h-screen py-12">
     <div class="flex max-w-6xl mx-auto gap-6">
         <aside class="w-[180px] shrink-0 bg-[#FDF6EF] p-6">
             <div class="flex items-center gap-4 mb-6 px-2">
-                <img src="/images/profile.png" class="w-10 h-10 rounded-full" alt="Profile Icon">
-                <p class="font-semibold text-lg">Admin</p>
+                <img src="{{ $penjual->pengguna->foto_profil ? asset('storage/' . $penjual->pengguna->foto_profil) : '/images/profile.png' }}" class="w-10 h-10 rounded-full" alt="Profile Icon">
+                <p class="font-semibold text-sm">{{ $penjual->pengguna->nama ?? Auth::user()->nama ?? 'Admin' }}</p>
             </div>
+
             <ul class="space-y-2 text-left font-medium ml-4 group">
                 <li class="relative">
                     <div class="flex items-center space-x-2 hover:text-[#9BAF9A] transition-all cursor-pointer group-hover:text-[#9BAF9A]">
@@ -28,40 +31,62 @@
         <section class="flex-1 bg-white p-10 rounded-lg shadow-md mx-6">
             <!-- Greeting -->
             <div class="mb-6">
-                <h2 class="text-2xl font-semibold text-[#3E3A39]">Selamat Datang Kembali, <span class="text-[#9BAF9A]">Admin</span>!</h2>
+                <h2 class="text-2xl font-semibold text-[#3E3A39]">Selamat Datang Kembali, <span class="text-[#9BAF9A]">
+                    {{ $penjual->pengguna->nama ?? 'Admin' }}</span>!
+                </h2>
                 <p class="text-sm text-gray-500">Perbarui profil Anda untuk menjaga semuanya tetap terkini✨</p>
             </div>
 
-            <!-- Profile Picture -->
-            <div class="text-center mb-8">
-                <img src="/images/profile.png"
-                    class="w-24 h-24 rounded-full border-4 border-[#D6C6B8] mx-auto mb-2 shadow-md"
-                    alt="Profile Picture">
+            <!-- Form Update Profil -->
+            <form action="{{ route('profil-penjual.update') }}" method="POST" enctype="multipart/form-data" id="profilForm">
+                @csrf
+                @method('PUT')
 
-                <label for="profilePicInput" class="text-sm text-[#9BAF9A] hover:underline cursor-pointer">
-                    ✎ Ubah Foto Profil
-                </label>
-                <input id="profilePicInput" type="file" class="hidden" accept="image/*">
-            </div>
+                <!-- Foto Profil -->
+                <div class="text-center mb-8">
+                    <img id="profilePicPreview"
+                        src="{{ $penjual->pengguna->foto_profil ? asset('storage/' . $penjual->pengguna->foto_profil) : asset('/images/profile.png') }}"
+                        class="w-24 h-24 rounded-full border-4 border-[#D6C6B8] mx-auto mb-2 shadow-md"
+                        alt="Profil Penjual">
 
-            <!-- Profile Form -->
-            <form>
-                <div class="mb-4">
-                    <label class="block text-gray-700 mb-1 flex items-center gap-2">
-                        <i class="fas fa-user text-[#BFA6A0]"></i> Nama Toko
+                    <label for="profilePicInput" class="text-sm text-[#9BAF9A] hover:underline cursor-pointer">
+                        ✎ Ubah Foto Profil
                     </label>
-                    <input type="text" class="w-full border px-4 py-2 rounded bg-gray-100" placeholder="Nama Toko Anda">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 mb-1 flex items-center gap-2">
-                        <i class="fas fa-map-marker-alt text-[#BFA6A0]"></i> Deskripsi Toko
-                    </label>
-                    <textarea class="w-full border px-4 py-2 rounded bg-gray-100" rows="4" placeholder="Deskripsi Toko Anda"></textarea>
+                    <input id="profilePicInput" type="file" name="foto_profil" class="hidden" accept="image/*"
+                        {{ !$penjual->pengguna->foto_profil ? 'required' : '' }}>
                 </div>
 
-                <button class="bg-[#9BAF9A] text-white px-6 py-2 rounded hover:bg-[#8aa38a] transition-colors">
-                    Simpan
-                </button>
+                <!-- Nama Toko -->
+                <div class="mb-6">
+                    <label class="block mb-2 font-medium text-[#3E3A39]" for="nama_toko">Nama Toko</label>
+                    <input
+                        type="text"
+                        name="nama_toko"
+                        id="nama_toko"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]"
+                        value="{{ old('nama_toko', $penjual->pengguna->nama ?? Auth::user()->nama) }}"
+                        placeholder="Nama Toko Anda"
+                        required>
+                </div>
+
+                <!-- Deskripsi Toko -->
+                <div class="mb-6">
+                    <label class="block mb-2 font-medium text-[#3E3A39]" for="deskripsi_toko">Deskripsi Toko</label>
+                    <textarea
+                        name="deskripsi_toko"
+                        id="deskripsi_toko"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]"
+                        rows="4"
+                        placeholder="Deskripsi Toko Anda"
+                        required>{{ old('deskripsi_toko', $penjual->deskripsi_toko ?? '') }}</textarea>
+                </div>
+
+                <!-- Tombol Simpan -->
+                <div class="text-right">
+                    <button type="submit" class="bg-[#9BAF9A] text-white px-6 py-2 rounded-lg hover:bg-[#889d87] transition-all">
+                        Simpan Perubahan
+                    </button>
+                </div>
             </form>
 
             <!-- Divider -->
@@ -69,10 +94,45 @@
 
             <!-- Extra Info Section -->
             <div class="text-sm text-gray-500 italic">
-                <p>📅 Last updated: <span class="text-[#BFA6A0]">April 22, 2025</span></p>
+                <p>📅 Last updated: <span class="text-[#BFA6A0]">
+                    {{ $penjual->pengguna->waktu_perubahan ? $penjual->pengguna->waktu_perubahan->format('d F Y H:i:s') : '-' }}
+                </span></p>
                 <p class="mt-1">💡 Tip: Keeping your info up-to-date helps with smooth checkout and delivery!</p>
             </div>
         </section>
     </div>
 </div>
+<!-- JavaScript untuk preview gambar sebelum upload & validasi foto profil wajib jika belum ada -->
+<script>
+    document.getElementById('profilePicInput').addEventListener('change', function(event) {
+        const [file] = event.target.files;
+        if (file) {
+            document.getElementById('profilePicPreview').src = URL.createObjectURL(file);
+        }
+    });
+
+    document.getElementById('profilForm').addEventListener('submit', function(e) {
+        var profilePicInput = document.getElementById('profilePicInput');
+        var hasProfilePic = "{{ $penjual->pengguna->foto_profil ? '1' : '' }}";
+        if (!hasProfilePic && !profilePicInput.value) {
+            alert('Foto profil wajib diisi.');
+            profilePicInput.click();
+            e.preventDefault();
+        }
+    });
+</script>
+
+<!-- Tambahkan ini untuk SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if(session('success'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: @json(session('success')),
+        confirmButtonColor: '#9BAF9A'
+    });
+</script>
+@endif
 @endsection

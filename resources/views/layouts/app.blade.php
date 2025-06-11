@@ -22,18 +22,6 @@
 <body>
     @include('partials.header')
 
-    @if (session('success'))
-    <div class="bg-green-500 text-white text-sm p-3 rounded-md">
-        {{ session('success') }}
-    </div>
-    @endif
-
-    @if (session('error'))
-    <div class="bg-red-500 text-white text-sm p-3 rounded-md">
-        {{ session('error') }}
-    </div>
-    @endif
-
     <main>
         @yield('content')
     </main>

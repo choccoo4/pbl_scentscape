@@ -22,17 +22,19 @@
                 <div x-data="{ open: false }" class="relative">
                     <!-- Avatar/Profile Icon -->
                     <button @click="open = !open" class="flex items-center space-x-2 focus:outline-none">
-                        <img src="/images/profile.png" alt="Profile" class="w-8 h-8 rounded-full border border-gray-300">
+                        <img src="{{ Auth::user()->foto_profil ? asset('storage/' . Auth::user()->foto_profil) : asset('/images/profile.png') }}"
+                             alt="Profile"
+                             class="w-8 h-8 rounded-full border border-gray-300 object-cover">
                         <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2"
-                            viewBox="0 0 24 24">
+                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
 
                     <!-- Dropdown -->
                     <div x-show="open" x-transition
-                        class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-40"
-                        @click.outside="open = false" @mouseenter="open = true" @mouseleave="open = false">
+                         class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-40"
+                         @click.outside="open = false" @mouseenter="open = true" @mouseleave="open = false">
                         <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
                         <form id="logoutForm" method="POST" action="{{ route('logout') }}">
                             @csrf

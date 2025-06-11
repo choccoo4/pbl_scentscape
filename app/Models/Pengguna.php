@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Pembeli;
 use App\Models\Penjual;
 
 class Pengguna extends Authenticatable
@@ -14,11 +13,13 @@ class Pengguna extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $table = 'pengguna';
-    protected $primaryKey = 'id_pengguna';  // tambah ini
+    protected $primaryKey = 'id_pengguna';
+    public $incrementing = false;
     public $timestamps = false;
 
     protected $fillable = [
         'nama',
+        'foto_profil',
         'email',
         'username',
         'password',
@@ -31,13 +32,18 @@ class Pengguna extends Authenticatable
         'password',
     ];
 
-    public function pembeli()
-    {
-        return $this->hasOne(Pembeli::class, 'id_pengguna');
-    }
+    protected $casts = [
+    'waktu_perubahan' => 'datetime',
+    ];
 
     public function penjual()
     {
-        return $this->hasOne(Penjual::class, 'id_pengguna');
+        return $this->hasOne(Penjual::class, 'id_pengguna', 'id_pengguna');
     }
+
+    public function pembeli()
+{
+    return $this->hasOne(Pembeli::class, 'id_pengguna', 'id_pengguna');
+}
+
 }

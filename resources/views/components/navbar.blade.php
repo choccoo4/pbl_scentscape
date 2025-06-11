@@ -28,26 +28,23 @@
                     <button type="button" class="flex items-center text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300"
                         data-dropdown-toggle="dropdown-user" aria-expanded="false">
                         <span class="sr-only">Open user menu</span>
-                        <img class="w-8 h-8 rounded-full" src="{{ $authUser && $authUser->profile_photo_url ? $authUser->profile_photo_url : asset('images/profile.png') }}" alt="user photo">
+                        <img class="w-8 h-8 rounded-full" 
+                             src="{{ Auth::user()->foto_profil ? asset('storage/' . Auth::user()->foto_profil) : asset('/images/profile.png') }}" 
+                             alt="user photo">
                     </button>
 
                     <!-- Dropdown -->
                     <div id="dropdown-user" class="hidden absolute right-0 mt-2 w-48 bg-[#f8f4e9] rounded shadow divide-y divide-[#d6c6b8] z-50">
                         <div class="px-4 py-3">
-                            <p class="text-sm font-semibold text-[#414833]">{{ $authUser ? $authUser->name : 'Guest' }}</p>
-                            <p class="text-sm font-medium text-[#5a614f] truncate">{{ $authUser ? $authUser->email : '-' }}</p>
+                            <p class="text-sm font-semibold text-[#414833]">{{ Auth::user()->nama ?? 'Admin' }}</p>
+                            <p class="text-sm font-medium text-[#5a614f] truncate">{{ Auth::user()->email ?? '' }}</p>
                         </div>
                         <ul class="py-1 text-sm text-[#414833]">
                             <li>
                                 <a href="{{ route('profil-penjual') }}" class="block px-4 py-2 rounded hover:bg-[#d6c6b8] hover:text-[#414833] transition-colors">Profile</a>
                             </li>
                             <li>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="block w-full text-left px-4 py-2 rounded hover:bg-[#d6c6b8] hover:text-[#414833] transition-colors">
-                                        Sign out
-                                    </button>
-                                </form>
+                                <a href="{{ route('logout') }}" class="block px-4 py-2 rounded hover:bg-[#d6c6b8] hover:text-[#414833] transition-colors">Sign out</a>
                             </li>
                         </ul>
                     </div>
@@ -80,17 +77,14 @@
                     <span class="ms-3">Produk</span>
                 </a>
             </li>
+
             <li>
                 <a href="{{ route('pesanan.index') }}"
                     class="flex items-center p-2 rounded-lg hover:bg-[#5a614f] transition-colors group">
                     <i class="fa-solid fa-clipboard-list" style="color: #ffffff;"></i>
                     <span class="flex-1 ms-3 whitespace-nowrap">Pesanan</span>
-                    @if($notifCount > 0)
                     <span
-                        class="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
-                        {{ $notifCount }}
-                    </span>
-                    @endif
+                        class="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">3</span>
                 </a>
             </li>
             <li>
