@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('ongkir')->default(0);
             $table->enum('status', ['Menunggu Pembayaran', 'Menunggu Verifikasi', 'Ditolak', 'Dikemas', 'Dikirim', 'Terkirim', 'Selesai', 'Dibatalkan']);
             $table->timestamp('waktu_pemesanan')->useCurrent();
-            $table->timestamp('batas_waktu_pembayaran');
+            $table->timestamp('batas_waktu_pembayaran')->nullable();
         });
     }
 

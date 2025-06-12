@@ -21,7 +21,7 @@ class AromaKategoriSeeder extends Seeder
             ['nama' => 'Aromatic Fougere', 'icon' => 'ph-wind', 'gambar' => 'aromatic-fougere.jpeg'],
             ['nama' => 'Aldehydic', 'icon' => 'ph-sparkle', 'gambar' => 'aldehydic.jpg'],
             ['nama' => 'Floral', 'icon' => 'ph-flower', 'gambar' => 'floral.jpeg'],
-            ['nama' => 'Fruity', 'icon' => 'ph-cherries', 'gambar' => 'fruity.jpeg'],
+            ['nama' => 'Fruity', 'icon' => 'ph-cherries', 'gambar' => 'fruity.jpg'],
             ['nama' => 'Spicy', 'icon' => 'ph-flame', 'gambar' => 'spicy.jpg'],
             ['nama' => 'Woody', 'icon' => 'ph-tree', 'gambar' => 'woody.jpg'],
             ['nama' => 'Chypre', 'icon' => 'ph-mountains', 'gambar' => 'chypre.jpg'],
