@@ -28,9 +28,9 @@
                     <button type="button" class="flex items-center text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300"
                         data-dropdown-toggle="dropdown-user" aria-expanded="false">
                         <span class="sr-only">Open user menu</span>
-                        <img class="w-8 h-8 rounded-full" 
-                             src="{{ Auth::user()->foto_profil ? asset('storage/' . Auth::user()->foto_profil) : asset('/images/profile.png') }}" 
-                             alt="user photo">
+                        <img class="w-8 h-8 rounded-full"
+                            src="{{ Auth::user()->foto_profil ? asset('storage/' . Auth::user()->foto_profil) : asset('/images/profile.png') }}"
+                            alt="user photo">
                     </button>
 
                     <!-- Dropdown -->
@@ -44,7 +44,12 @@
                                 <a href="{{ route('profil-penjual') }}" class="block px-4 py-2 rounded hover:bg-[#d6c6b8] hover:text-[#414833] transition-colors">Profile</a>
                             </li>
                             <li>
-                                <a href="{{ route('logout') }}" class="block px-4 py-2 rounded hover:bg-[#d6c6b8] hover:text-[#414833] transition-colors">Sign out</a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="w-full text-left block px-4 py-2 rounded hover:bg-[#d6c6b8] hover:text-[#414833] transition-colors">
+                                        Sign out
+                                    </button>
+                                </form>
                             </li>
                         </ul>
                     </div>

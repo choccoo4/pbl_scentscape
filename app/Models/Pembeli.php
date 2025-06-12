@@ -14,7 +14,7 @@ class Pembeli extends Model
     protected $primaryKey = 'id_pengguna';
     public $timestamps = false;
 
-    protected $fillable = ['id_pengguna', 'alamat', 'no_telp', 'nama_pembeli'];
+    protected $fillable = ['id_pengguna', 'alamat', 'no_telp'];
 
     public function pengguna()
     {

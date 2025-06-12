@@ -22,13 +22,13 @@ class CartController extends Controller
         $items = collect();
         if ($keranjang) {
             $items = KeranjangItem::where('id_keranjang', $keranjang->id_keranjang)
-                ->with(['produk' => function($query) {
+                ->with(['produk' => function ($query) {
                     $query->select('no_produk', 'nama_produk', 'harga', 'gambar', 'stok');
                 }])
                 ->get();
         }
 
-        $cartItems = $items->map(function($item) {
+        $cartItems = $items->map(function ($item) {
             $gambar = $item->produk->gambar;
             if (is_array($gambar)) {
                 $gambarUtama = $gambar[0] ?? 'default.jpg';
@@ -42,7 +42,7 @@ class CartController extends Controller
                 'price' => $item->produk->harga,
                 'quantity' => $item->jumlah_produk,
                 // Perbaikan: buat URL lengkap gambar sesuai folder public/images/products
-                'img' => asset('images/products/' . $gambarUtama),
+                'img' => asset('produk/' . $gambarUtama),
                 'stock' => $item->produk->stok,
                 'total' => $item->produk->harga * $item->jumlah_produk,
             ];
@@ -66,11 +66,15 @@ class CartController extends Controller
         $quantity = $request->input('quantity', 1);
 
         if ($produk->stok <= 0) {
-            return redirect()->back()->with('error', 'Produk tidak tersedia!');
+            return $request->wantsJson()
+                ? response()->json(['message' => 'Produk tidak tersedia!'], 400)
+                : redirect()->back()->with('error', 'Produk tidak tersedia!');
         }
 
         if ($quantity > $produk->stok) {
-            return redirect()->back()->with('error', 'Jumlah produk melebihi stok yang tersedia!');
+            return $request->wantsJson()
+                ? response()->json(['message' => 'Jumlah produk melebihi stok yang tersedia!'], 400)
+                : redirect()->back()->with('error', 'Jumlah produk melebihi stok!');
         }
 
         DB::beginTransaction();
@@ -90,7 +94,9 @@ class CartController extends Controller
                 $totalQuantity = $item->jumlah_produk + $quantity;
                 if ($totalQuantity > $produk->stok) {
                     DB::rollBack();
-                    return redirect()->back()->with('error', 'Total jumlah produk melebihi stok yang tersedia!');
+                    return $request->wantsJson()
+                        ? response()->json(['message' => 'Total jumlah melebihi stok!'], 400)
+                        : redirect()->back()->with('error', 'Total jumlah melebihi stok!');
                 }
                 $item->jumlah_produk = $totalQuantity;
                 $item->save();
@@ -104,15 +110,19 @@ class CartController extends Controller
 
             DB::commit();
 
-            $message = $quantity > 1 
-                ? "Berhasil menambahkan {$quantity} produk ke keranjang!" 
+            $message = $quantity > 1
+                ? "Berhasil menambahkan {$quantity} produk ke keranjang!"
                 : 'Produk berhasil ditambahkan ke keranjang!';
 
-            return redirect()->route('cart')->with('success', $message);
+            return $request->wantsJson()
+                ? response()->json(['message' => $message], 200)
+                : redirect()->route('cart')->with('success', $message);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error adding to cart: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Gagal menambahkan produk ke keranjang!');
+            return $request->wantsJson()
+                ? response()->json(['message' => 'Gagal menambahkan produk ke keranjang!'], 500)
+                : redirect()->back()->with('error', 'Gagal menambahkan produk ke keranjang!');
         }
     }
 

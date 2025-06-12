@@ -3,15 +3,19 @@
 @section('title', 'My Profile')
 
 @section('content')
-<div class="bg-[#FDF6EF] min-h-screen py-12">
+<div
+    class="bg-[#FDF6EF] min-h-screen py-12"
+    data-success="{{ session('success') }}"
+    data-error="{{ session('error') }}"
+    data-errors="{!! $errors->any() ? implode('<br>', $errors->all()) : '' !!}">
     <div class="flex max-w-6xl mx-auto gap-6">
 
         <!-- Sidebar -->
         <aside class="w-[180px] shrink-0 bg-[#FDF6EF] p-6">
             <div class="flex items-center gap-4 mb-6 px-2">
-                <img src="{{ $pembeli->pengguna && $pembeli->pengguna->foto_profil ? asset('storage/' . $pembeli->pengguna->foto_profil) : asset('/images/profile.png') }}" 
-                     class="w-10 h-10 rounded-full" alt="Profile Icon">
-                <p class="font-semibold text-lg">{{ $pembeli->nama_pembeli ?? Auth::user()->nama ?? 'User' }}</p>
+                <img src="{{ $pembeli->pengguna && $pembeli->pengguna->foto_profil ? asset('storage/' . $pembeli->pengguna->foto_profil) : asset('/images/profile.png') }}"
+                    class="w-10 h-10 rounded-full" alt="Profile Icon">
+                <p class="font-semibold text-lg">{{ $pembeli->pengguna->nama ?? Auth::user()->nama ?? 'User' }}</p>
             </div>
 
             <ul class="space-y-2 text-left font-medium ml-4 group">
@@ -34,11 +38,11 @@
 
         <!-- Main Profile Content -->
         <section class="w-full md:flex-1 bg-white p-6 md:p-10 rounded-lg shadow-md mx-0 md:mx-6 mt-6 md:mt-0">
-            
+
             <!-- Greeting -->
             <div class="mb-6">
-                <h2 class="text-2xl font-semibold text-[#3E3A39]">Welcome back, 
-                    <span class="text-[#9BAF9A]">{{ old('nama_pembeli', $pembeli->nama_pembeli ?? Auth::user()->nama ?? 'User') }}</span>!
+                <h2 class="text-2xl font-semibold text-[#3E3A39]">Welcome back,
+                    <span class="text-[#9BAF9A]">{{ old('nama_pembeli', $pembeli->pengguna->nama ?? Auth::user()->nama ?? 'User') }}</span>!
                 </h2>
                 <p class="text-sm text-gray-500">Update your profile to keep everything up-to-date ✨</p>
             </div>
@@ -49,10 +53,10 @@
 
                 <!-- Profile Picture -->
                 <div class="text-center mb-8">
-                    <img id="profilePicPreview" 
-                         src="{{ $pembeli->pengguna && $pembeli->pengguna->foto_profil ? asset('storage/' . $pembeli->pengguna->foto_profil) : asset('/images/profile.png') }}"
-                         class="w-24 h-24 rounded-full border-4 border-[#D6C6B8] mx-auto mb-2 shadow-md"
-                         alt="Profil Pembeli">
+                    <img id="profilePicPreview"
+                        src="{{ $pembeli->pengguna && $pembeli->pengguna->foto_profil ? asset('storage/' . $pembeli->pengguna->foto_profil) : asset('/images/profile.png') }}"
+                        class="w-24 h-24 rounded-full border-4 border-[#D6C6B8] mx-auto mb-2 shadow-md"
+                        alt="Profil Pembeli">
                     <label for="profilePicInput" class="text-sm text-[#9BAF9A] hover:underline cursor-pointer block">
                         ✎ Change profile picture
                     </label>
@@ -64,8 +68,8 @@
                     <label class="block text-gray-700 mb-1 flex items-center gap-2">
                         <i class="fas fa-user text-[#BFA6A0]"></i> Name
                     </label>
-                    <input type="text" name="nama_pembeli" class="w-full border px-4 py-2 rounded" required
-                           value="{{ old('nama_pembeli', $pembeli->nama_pembeli ?? '') }}">
+                    <input type="text" name="nama" class="w-full border px-4 py-2 rounded" required
+                        value="{{ old('nama', $pembeli->pengguna->nama ?? '') }}">
                 </div>
 
                 <!-- Phone Number -->
@@ -74,7 +78,7 @@
                         <i class="fas fa-phone text-[#BFA6A0]"></i> Phone Number
                     </label>
                     <input type="text" name="no_telp" class="w-full border px-4 py-2 rounded"
-                           value="{{ old('no_telp', $pembeli->no_telp ?? '') }}">
+                        value="{{ old('no_telp', $pembeli->no_telp ?? '') }}">
                 </div>
 
                 <!-- Address -->
@@ -95,7 +99,7 @@
 
             <!-- Extra Info Section -->
             <div class="text-sm text-gray-500 italic">
-                <p>📅 Last updated: 
+                <p>📅 Last updated:
                     <span class="text-[#BFA6A0]">
                         {{ $pembeli->pengguna && $pembeli->pengguna->waktu_perubahan 
                             ? $pembeli->pengguna->waktu_perubahan->setTimezone('Asia/Jakarta')->format('d F Y H:i:s') 
@@ -107,54 +111,4 @@
         </section>
     </div>
 </div>
-
-<!-- SweetAlert2 CDN -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<!-- SweetAlert2 Notifications -->
-@if(session('success'))
-<script>
-    Swal.fire({
-        icon: 'success',
-        title: 'Sukses',
-        text: '{{ session('success') }}',
-        timer: 3000,
-        timerProgressBar: true,
-        showConfirmButton: false
-    });
-</script>
-@endif
-
-@if(session('error'))
-<script>
-    Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: '{{ session('error') }}',
-        timer: 3000,
-        timerProgressBar: true,
-        showConfirmButton: false
-    });
-</script>
-@endif
-
-@if ($errors->any())
-<script>
-    Swal.fire({
-        icon: 'error',
-        title: 'Terjadi Kesalahan',
-        html: `{!! implode('<br>', $errors->all()) !!}`,
-    });
-</script>
-@endif
-
-<!-- Script untuk preview foto -->
-<script>
-document.getElementById('profilePicInput').addEventListener('change', function(event) {
-    const [file] = event.target.files;
-    if (file) {
-        document.getElementById('profilePicPreview').src = URL.createObjectURL(file);
-    }
-});
-</script>
 @endsection

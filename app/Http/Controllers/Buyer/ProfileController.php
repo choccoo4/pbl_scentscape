@@ -23,7 +23,6 @@ class ProfileController extends Controller
             $pembeli->id_pengguna = $user->id_pengguna;
             $pembeli->alamat = '';
             $pembeli->no_telp = '';
-            $pembeli->nama_pembeli = '';
             $pembeli->setRelation('pengguna', $user);
         }
 
@@ -36,17 +35,18 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'nama_pembeli' => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
             'alamat' => 'nullable|string|max:500',
             'no_telp' => 'nullable|string|max:20',
             'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $pembeli = Pembeli::firstOrNew(['id_pengguna' => $user->id_pengguna]);
-        $pembeli->nama_pembeli = $request->input('nama_pembeli');
         $pembeli->alamat = $request->input('alamat');
         $pembeli->no_telp = $request->input('no_telp');
         $pembeli->save();
+
+        $user->nama = $request->input('nama');
 
         if ($request->hasFile('foto_profil')) {
             if ($user->foto_profil && Storage::disk('public')->exists($user->foto_profil)) {
@@ -60,7 +60,6 @@ class ProfileController extends Controller
             $user->foto_profil = $path;
         }
 
-        // Update waktu_perubahan dengan waktu sekarang sesuai timezone app
         $user->waktu_perubahan = Carbon::now('Asia/Jakarta');
         $user->save();
 

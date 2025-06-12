@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\seller;
+namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -43,7 +43,9 @@ class UbahpwController extends Controller
         ]);
 
         // Refresh user data dari database untuk memastikan data terbaru
-        $user = Auth::user()->fresh();
+        /** @var \App\Models\Pengguna $user */
+        $user = Auth::user();
+        $user = $user->fresh();
 
         // Cek apakah password lama benar
         if (!Hash::check($request->current_password, $user->password)) {
@@ -89,7 +91,6 @@ class UbahpwController extends Controller
 
             // Redirect ke halaman login dengan pesan sukses
             return redirect()->route('login')->with('success', 'Password berhasil diubah! Silakan login kembali.');
-
         } catch (\Exception $e) {
             return back()->withErrors([
                 'error' => 'Terjadi kesalahan saat mengubah password. Silakan coba lagi.'

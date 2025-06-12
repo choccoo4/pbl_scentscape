@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password as PasswordRule;
 use App\Models\Pengguna;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -44,6 +45,21 @@ class AuthController extends Controller
         return redirect('/login');
     }
 
+    public function showLoginForm()
+    {
+        if (Auth::check()) {
+            $role = Auth::user()->role;
+
+            if ($role === 'pembeli') {
+                return redirect('/home');
+            } elseif ($role === 'penjual') {
+                return redirect('/dashboard');
+            }
+        }
+
+        return view('auth.login');
+    }
+
     public function register(Request $request)
     {
         $pengguna = new Pengguna();
@@ -54,7 +70,15 @@ class AuthController extends Controller
                 'email' => 'required|email|unique:pengguna,Email',
                 'name' => 'required|string',
                 'username' => 'required|string|unique:pengguna,Username',
-                'password' => 'required|string|min:8',
+                'password' => [
+                    'required',
+                    'string',
+                    PasswordRule::min(8)
+                        ->mixedCase()
+                        ->letters()
+                        ->numbers()
+                        ->symbols()
+                ],
             ]);
 
             if ($validator->fails()) {
@@ -68,6 +92,13 @@ class AuthController extends Controller
                     return response()->json([
                         'message' => 'Username sudah digunakan. Coba yang lain.'
                     ], 409);
+                }
+
+                if ($validator->errors()->has('password')) {
+                    return response()->json([
+                        'message' => 'Password terlalu lemah. Gunakan huruf besar, kecil, angka, dan simbol.',
+                        'field' => 'password'
+                    ], 422);
                 }
 
                 return response()->json([

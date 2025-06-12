@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\seller;
+namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -30,11 +30,12 @@ class ProfilController extends Controller
 
     public function update(Request $request)
     {
+        /** @var \App\Models\Pengguna $user */
         $user = Auth::user();
         $penjual = $user->penjual;
 
         // Tentukan aturan validasi foto profil, wajib jika belum ada
-        $fotoRule = $user->foto_profil ? 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048' : 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
+        $fotoRule = 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
 
         // Validasi input
         $validatedData = $request->validate([

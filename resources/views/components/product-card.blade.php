@@ -1,15 +1,15 @@
 @props([
-    'id',
-    'name',
-    'price',
-    'image',
-    'gender',
-    'volume',
-    'type',
-    'type_full',
-    'aroma',
-    'slug',
-    'extraClass' => '',
+'id',
+'name',
+'price',
+'image',
+'gender',
+'volume',
+'type',
+'type_full',
+'aroma',
+'slug',
+'extraClass' => '',
 ])
 
 <div class="rounded-xl overflow-hidden shadow-md border border-[#D6C6B8] bg-[#F6F1EB] transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg {{ $extraClass }} w-full max-w-[250px] mx-auto group">
@@ -33,17 +33,20 @@
             </a>
 
             <!-- Tambah ke Keranjang (Link ke Halaman Detail) -->
-            <a href="{{ route('produk.show', $id) }}"
-                class="bg-[#9BAF9A] text-white p-2 rounded-full shadow hover:bg-[#819d80] transition"
+
+            <button type="button"
+                class="bg-[#9BAF9A] text-white p-2 rounded-full shadow hover:bg-[#819d80] transition relative add-to-cart"
+                data-id="{{ $id }}"
                 data-tooltip-target="tooltip-cart-{{ Str::slug($name) }}">
                 <i class="ph ph-shopping-cart-simple text-lg"></i>
-                <div id="tooltip-cart-{{ Str::slug($name) }}"
-                    role="tooltip"
-                    class="absolute z-10 invisible px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded-md shadow tooltip dark:bg-gray-700">
-                    Tambah ke Keranjang
-                    <div class="tooltip-arrow" data-popper-arrow></div>
-                </div>
-            </a>
+            </button>
+            <div id="tooltip-cart-{{ Str::slug($name) }}"
+                role="tooltip"
+                class="absolute z-10 invisible px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded-md shadow tooltip dark:bg-gray-700">
+                Tambah ke Keranjang
+                <div class="tooltip-arrow" data-popper-arrow></div>
+            </div>
+
         </div>
     </div>
 

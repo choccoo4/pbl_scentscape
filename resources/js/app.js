@@ -3,15 +3,19 @@ import 'flowbite';
 
 
 import Alpine from 'alpinejs';
-import { registerForm } from './regist.js';
-import { loginForm } from './login.js';
-import { confirmLogout } from './logout';
-import { cartRoot, cartItem } from './cart.js';
-import { previewImages } from './produk-preview.js';
-import { editProduk } from './edit-produk.js';
-import './seller-dashboard-chart';
-import './aroma.js';
-import './produk.js';
+import { registerForm } from './auth/regist.js';
+import { loginForm } from './auth/login.js';
+import { confirmLogout } from './auth/logout';
+import { cartRoot, cartItem } from './buyer/cart.js';
+import { previewImages } from './seller/produk-preview.js';
+import { editProduk } from './seller/edit-produk.js';
+import './seller/seller-dashboard-chart';
+import './seller/aroma.js';
+import './seller/produk.js';
+import './buyer/profile.js';
+import './buyer/product-card.js';
+import './seller/profile-penjual.js';
+
 
 window.Alpine = Alpine;
 window.confirmLogout = confirmLogout;

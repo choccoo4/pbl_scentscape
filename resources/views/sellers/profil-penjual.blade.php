@@ -4,8 +4,9 @@
 
 @section('content')
 
-
-<div class="bg-[#FDF6EF] min-h-screen py-12">
+<div class="bg-[#FDF6EF] min-h-screen py-12"
+    data-has-profile-pic="{{ asset('storage/' . $penjual->pengguna->foto_profil) !== asset('storage/') ? '1' : '' }}"
+    data-success-message="{{ session('success') }}">
     <div class="flex max-w-6xl mx-auto gap-6">
         <aside class="w-[180px] shrink-0 bg-[#FDF6EF] p-6">
             <div class="flex items-center gap-4 mb-6 px-2">
@@ -32,7 +33,7 @@
             <!-- Greeting -->
             <div class="mb-6">
                 <h2 class="text-2xl font-semibold text-[#3E3A39]">Selamat Datang Kembali, <span class="text-[#9BAF9A]">
-                    {{ $penjual->pengguna->nama ?? 'Admin' }}</span>!
+                        {{ $penjual->pengguna->nama ?? 'Admin' }}</span>!
                 </h2>
                 <p class="text-sm text-gray-500">Perbarui profil Anda untuk menjaga semuanya tetap terkini✨</p>
             </div>
@@ -83,6 +84,15 @@
 
                 <!-- Tombol Simpan -->
                 <div class="text-right">
+                    @if ($errors->any())
+                    <div class="mb-4 text-red-500 bg-red-100 border border-red-300 rounded p-3">
+                        <ul class="list-disc ml-5 text-sm">
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                     <button type="submit" class="bg-[#9BAF9A] text-white px-6 py-2 rounded-lg hover:bg-[#889d87] transition-all">
                         Simpan Perubahan
                     </button>
@@ -95,44 +105,12 @@
             <!-- Extra Info Section -->
             <div class="text-sm text-gray-500 italic">
                 <p>📅 Last updated: <span class="text-[#BFA6A0]">
-                    {{ $penjual->pengguna->waktu_perubahan ? $penjual->pengguna->waktu_perubahan->format('d F Y H:i:s') : '-' }}
-                </span></p>
+                        {{ $penjual->pengguna->waktu_perubahan ? $penjual->pengguna->waktu_perubahan->format('d F Y H:i:s') : '-' }}
+                    </span></p>
                 <p class="mt-1">💡 Tip: Keeping your info up-to-date helps with smooth checkout and delivery!</p>
             </div>
         </section>
     </div>
 </div>
-<!-- JavaScript untuk preview gambar sebelum upload & validasi foto profil wajib jika belum ada -->
-<script>
-    document.getElementById('profilePicInput').addEventListener('change', function(event) {
-        const [file] = event.target.files;
-        if (file) {
-            document.getElementById('profilePicPreview').src = URL.createObjectURL(file);
-        }
-    });
 
-    document.getElementById('profilForm').addEventListener('submit', function(e) {
-        var profilePicInput = document.getElementById('profilePicInput');
-        var hasProfilePic = "{{ $penjual->pengguna->foto_profil ? '1' : '' }}";
-        if (!hasProfilePic && !profilePicInput.value) {
-            alert('Foto profil wajib diisi.');
-            profilePicInput.click();
-            e.preventDefault();
-        }
-    });
-</script>
-
-<!-- Tambahkan ini untuk SweetAlert -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-@if(session('success'))
-<script>
-    Swal.fire({
-        icon: 'success',
-        title: 'Berhasil!',
-        text: @json(session('success')),
-        confirmButtonColor: '#9BAF9A'
-    });
-</script>
-@endif
 @endsection
