@@ -41,8 +41,7 @@ class CartController extends Controller
                 'name' => $item->produk->nama_produk,
                 'price' => $item->produk->harga,
                 'quantity' => $item->jumlah_produk,
-                // Perbaikan: buat URL lengkap gambar sesuai folder public/images/products
-                'img' => asset('produk/' . $gambarUtama),
+                'img' => asset('storage/' . $gambarUtama),
                 'stock' => $item->produk->stok,
                 'total' => $item->produk->harga * $item->jumlah_produk,
             ];
