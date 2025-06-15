@@ -23,7 +23,7 @@ class BestSellersController extends Controller
         if ($bestsellerProduk->count() > 0) {
             // Ambil data produk dari ID bestseller
             $products = Produk::with('aroma.aromaKategori')
-                ->whereIn('id', $bestsellerProduk)
+                ->whereIn('no_produk', $bestsellerProduk)
                 ->get()
                 ->map(fn($product) => ProductCardFormatter::from($product));
         } else {
