@@ -44,14 +44,29 @@
                         </tr>
                     </thead>
                     <tbody class="text-gray-700">
+                        @forelse ($pesanan as $item)
                         <tr class="text-center">
-                            <td class="px-4 py-3 border">143999</td>
-                            <td class="px-4 py-3 border">12/08/2025</td>
-                            <td class="px-4 py-3 border">Rp 774.000</td>
-                            <td class="px-4 py-3 border text-green-600 font-semibold">Terkirim</td>
-                            <td class="px-4 py-3 border text-blue-600 underline"><a href="#">Detail</a></td>
+                            <td class="px-4 py-3 border">{{ $item->nomor_pesanan }}</td>
+                            <td class="px-4 py-3 border">{{ \Carbon\Carbon::parse($item->waktu_pemesanan)->format('d/m/Y') }}</td>
+                            <td class="px-4 py-3 border">Rp {{ number_format($item->total + $item->ongkir, 0, ',', '.') }}</td>
+                            <td class="px-4 py-3 border font-semibold text-{{ 
+            $item->status === 'Terkirim' || $item->status === 'Selesai' ? 'green-600' :
+            ($item->status === 'Dibatalkan' || $item->status === 'Ditolak' ? 'red-600' : 'yellow-600') }}">
+                                {{ $item->status }}
+                            </td>
+                            <td class="px-4 py-3 border text-blue-600 underline">
+                                @if ($item->status === 'Menunggu Pembayaran')
+                                <a href="{{ route('transaksi.detail', $item->id_pesanan) }}" class="text-yellow-600 hover:underline" target="_blank">Bayar Sekarang</a>
+                                @elseif(in_array($item->status, ['Menunggu Verifikasi', 'Dibatalkan', 'Selesai', 'Dikirim', 'Dikemas']))
+                                <a href="{{ route('invoice.generate', $item->id_pesanan) }}" class="text-blue-600 hover:underline" target="_blank">Lihat Invoice</a>
+                                @endif
+                            </td>
                         </tr>
-                        {{-- Tambahkan baris lainnya di sini --}}
+                        @empty
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-gray-500">Belum ada pesanan.</td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

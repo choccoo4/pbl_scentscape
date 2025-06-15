@@ -15,6 +15,11 @@ class Pesanan extends Model
 
     public $timestamps = false;
 
+    protected $casts = [
+        'waktu_pemesanan' => 'datetime',
+        'batas_waktu_pembayaran' => 'datetime',
+    ];
+
     protected $fillable = [
         'id_pengguna',
         'nomor_pesanan',
@@ -47,5 +52,10 @@ class Pesanan extends Model
     public function invoice()
     {
         return $this->hasOne(Invoice::class, 'id_pesanan');
+    }
+
+    public function pembeli()
+    {
+        return $this->belongsTo(Pembeli::class, 'id_pengguna');
     }
 }

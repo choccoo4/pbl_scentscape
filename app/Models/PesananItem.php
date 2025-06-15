@@ -20,10 +20,11 @@ class PesananItem extends Model
         'id_pesanan',
         'no_produk',
         'jumlah',
+        'nama_produk',
+        'gambar_produk',
         'harga_satuan',
         'subtotal',
     ];
-
     // Relasi ke pesanan
     public function pesanan()
     {

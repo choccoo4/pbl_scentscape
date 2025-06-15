@@ -14,6 +14,7 @@ use App\Http\Controllers\Buyer\ProfileController;
 use App\Http\Controllers\Buyer\ShopController;
 use App\Http\Controllers\Buyer\TransaksiController;
 use App\Http\Controllers\Buyer\CartController;
+use App\Http\Controllers\Buyer\InvoiceController;
 use App\Http\Controllers\seller\ProdukController;
 use App\Http\Controllers\seller\ProfilController;
 use App\Http\Controllers\seller\RekapitulasiController;
@@ -49,12 +50,23 @@ Route::middleware(['auth', 'role:pembeli'])->group(function () {
     Route::post('/change-pw', [ChangePwController::class, 'updatePassword'])->name('change-pw.update');
 
     // Transaksi dan checkout
-    Route::get('/transaksi', [TransaksiController::class, 'transaksi'])->name('transaksi');
-    Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+    // dari halaman cart
+    Route::post('/checkout', [CheckoutController::class, 'handleCheckout'])->name('checkout');
+
+    // render halaman checkout form
+    Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout.page');
+
+    // ini untk alamat & redirect ke transaksi
+    Route::post('/checkout/process', [CheckoutController::class, 'processCheckout'])->name('checkout.process');
+
+    // halaman transaksi pembayaran
+    Route::get('/transaksi/{id}', [TransaksiController::class, 'show'])->name('transaksi.detail');
+    Route::post('/upload-bukti', [TransaksiController::class, 'uploadBukti'])->name('upload.bukti');
 
     // Halaman informasi
     Route::get('/about', [AboutController::class, 'about'])->name('about');
     Route::get('/order-history', [OrderHistoryController::class, 'orderHistory'])->name('order.history');
+    Route::get('/invoice/{id}', [InvoiceController::class, 'generate'])->name('invoice.generate');
 });
 
 // Routes untuk penjual dengan prefix seller dan middleware role:penjual
