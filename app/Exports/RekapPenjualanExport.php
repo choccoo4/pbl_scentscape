@@ -2,37 +2,37 @@
 
 namespace App\Exports;
 
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 use App\Models\PesananItem;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Carbon\Carbon;
 
-class RekapPenjualanExport implements FromCollection
+class RekapPenjualanExport implements FromView
 {
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function collection()
+    protected $request;
+
+    public function __construct($request)
     {
-        return PesananItem::with(['produk', 'pesanan'])
-            ->get()
-            ->map(function ($item) {
-                return [
-                    'Tanggal Pesanan' => $item->pesanan->tanggal_pesanan->format('Y-m-d'),
-                    'Nama Produk' => $item->produk->nama_produk,
-                    'Jumlah' => $item->jumlah,
-                    'Harga Satuan' => $item->harga_satuan,
-                    'Total' => $item->jumlah * $item->harga_satuan,
-                ];
-            });
+        $this->request = $request;
     }
 
-    public function headings(): array
+    public function view(): View
     {
-        return [
-            'Tanggal Pesanan',
-            'Nama Produk',
-            'Jumlah',
-            'Harga Satuan',
-            'Total',
-        ];
+        $tanggalAwal = $this->request->input('tanggal_awal');
+        $tanggalAkhir = $this->request->input('tanggal_akhir');
+
+        $penjualan = PesananItem::with(['produk', 'pesanan'])
+            ->whereHas('pesanan', function ($q) use ($tanggalAwal, $tanggalAkhir) {
+                if ($tanggalAwal && $tanggalAkhir) {
+                    $q->whereBetween('waktu_pemesanan', [
+                        Carbon::parse($tanggalAwal)->startOfDay(),
+                        Carbon::parse($tanggalAkhir)->endOfDay()
+                    ]);
+                }
+            })->get();
+
+        $grandTotal = $penjualan->sum(fn($item) => $item->harga_satuan * $item->jumlah);
+
+        return view('sellers.rekap_excel', compact('penjualan', 'grandTotal'));
     }
 }

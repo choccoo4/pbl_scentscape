@@ -43,7 +43,7 @@ class RekapitulasiController extends Controller
         $penjualan = $this->getFilteredData($request);
         $grandTotal = $penjualan->sum(fn($item) => $item->harga_satuan * $item->jumlah);
 
-        $pdf = Pdf::loadView('exports.rekap_pdf', compact('penjualan', 'grandTotal'));
+        $pdf = Pdf::loadView('sellers.rekap_pdf', compact('penjualan', 'grandTotal'));
         return $pdf->download('rekapitulasi-penjualan.pdf');
     }
 

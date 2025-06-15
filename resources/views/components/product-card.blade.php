@@ -32,20 +32,20 @@
                 </div>
             </a>
 
-            <!-- Tambah ke Keranjang (Link ke Halaman Detail) -->
+            <!-- Tambah ke Keranjang (Hanya tampil di md ke atas) -->
+<button type="button"
+    class="hidden md:inline-flex bg-[#9BAF9A] text-white p-2 rounded-full shadow hover:bg-[#819d80] transition relative add-to-cart"
+    data-id="{{ $id }}"
+    data-tooltip-target="tooltip-cart-{{ Str::slug($name) }}">
+    <i class="ph ph-shopping-cart-simple text-lg"></i>
+</button>
+<div id="tooltip-cart-{{ Str::slug($name) }}"
+    role="tooltip"
+    class="absolute z-10 invisible px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded-md shadow tooltip dark:bg-gray-700">
+    Tambah ke Keranjang
+    <div class="tooltip-arrow" data-popper-arrow></div>
+</div>
 
-            <button type="button"
-                class="bg-[#9BAF9A] text-white p-2 rounded-full shadow hover:bg-[#819d80] transition relative add-to-cart"
-                data-id="{{ $id }}"
-                data-tooltip-target="tooltip-cart-{{ Str::slug($name) }}">
-                <i class="ph ph-shopping-cart-simple text-lg"></i>
-            </button>
-            <div id="tooltip-cart-{{ Str::slug($name) }}"
-                role="tooltip"
-                class="absolute z-10 invisible px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded-md shadow tooltip dark:bg-gray-700">
-                Tambah ke Keranjang
-                <div class="tooltip-arrow" data-popper-arrow></div>
-            </div>
 
         </div>
     </div>
@@ -104,5 +104,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>
 </div>
