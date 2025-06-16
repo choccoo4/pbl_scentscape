@@ -203,4 +203,5 @@ function productDetail(basePrice, maxStock) {
     }
 }
 </script>
+
 @endsection

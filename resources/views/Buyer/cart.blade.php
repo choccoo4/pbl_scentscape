@@ -64,7 +64,15 @@
                     </p>
                     <p class="text-sm text-[#3E3A39]">Shipping & taxes calculated at checkout</p>
                 </div>
-                <a href="/checkout" class="bg-[#414833] text-white px-8 py-3 text-lg font-medium hover:bg-[#00695C] transition-colors rounded-lg">Proceed to Checkout</a>
+                <form method="POST" action="{{ route('checkout.page') }}" x-data>
+                    @csrf
+                    <input type="hidden"
+                        name="selected_items"
+                        :value="JSON.stringify(cartItems.filter(i => i.selected).map(i => ({ id: i.idProduk, qty: i.quantity })))">
+                    <button type="submit" class="bg-[#414833] text-white px-8 py-3 text-lg font-medium hover:bg-[#00695C] transition-colors rounded-lg">
+                        Proceed to Checkout
+                    </button>
+                </form>
             </div>
 
             <!-- Tagline -->
