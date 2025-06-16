@@ -62,7 +62,6 @@ export function cartItem(price, qty, idProduk, stok, selectedAwal) {
         init() {
             this.total = this.price * this.quantity;
 
-            // Langsung daftar ke rootRef
             this.$nextTick(() => {
                 if (window.cartRootRef && typeof window.cartRootRef.registerItem === 'function') {
                     window.cartRootRef.registerItem(this);
@@ -75,12 +74,10 @@ export function cartItem(price, qty, idProduk, stok, selectedAwal) {
 
         toggleSelected(val) {
             this.selected = val;
-
             if (!this.rootRef || this.index === null) {
                 console.warn("toggleSelected() gagal sync", this.rootRef, this.index);
                 return;
             }
-
             this.rootRef.cartItems[this.index].selected = val;
             this.rootRef.updateSelectedTotal();
             console.log(`Item ${this.idProduk} toggleSelected():`, val);
@@ -98,23 +95,15 @@ export function cartItem(price, qty, idProduk, stok, selectedAwal) {
 
         saveQuantity() {
             this.total = this.price * this.quantity;
-
-            // update di frontend
             if (this.rootRef && this.index !== null) {
-                // Update item di root juga
                 this.rootRef.cartItems[this.index].quantity = this.quantity;
                 this.rootRef.cartItems[this.index].total = this.total;
-
-                // Update total & selectedTotal
                 this.rootRef.updateTotal();
-
-                // Kalau item ini dicentang, update selectedTotal juga
                 if (this.selected) {
                     this.rootRef.updateSelectedTotal();
                 }
             }
 
-            // update ke backend
             fetch(`/cart/update/${this.idProduk}`, {
                 method: 'PATCH',
                 headers: {
@@ -123,40 +112,75 @@ export function cartItem(price, qty, idProduk, stok, selectedAwal) {
                 },
                 body: JSON.stringify({ jumlah_produk: this.quantity })
             })
-                .then(res => res.json())
-                .then(data => {
-                    console.log('Berhasil update:', data);
-                })
-                .catch(err => {
-                    alert('Gagal update jumlah produk!');
-                    console.error(err);
+            .then(res => res.json())
+            .then(data => {
+                console.log('Berhasil update:', data);
+            })
+            .catch(err => {
+                Swal.fire({
+                    title: 'Gagal',
+                    text: 'Gagal update jumlah produk!',
+                    icon: 'error',
+                    timer: 2000,
+                    showConfirmButton: false
                 });
+                console.error(err);
+            });
         },
 
         removeItem() {
-            if (!confirm('Yakin ingin menghapus item ini dari keranjang?')) return;
-
-            fetch(`/cart/remove/${this.idProduk}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content')
-                }
-            })
-                .then(res => {
-                    if (res.ok) {
-                        // Remove from DOM
-                        this.$el.remove();
-                        // Update cartItems di root
-                        if (typeof this.rootRef?.updateTotal === 'function') {
-                            this.rootRef.cartItems.splice(this.index, 1);
-                            this.rootRef.updateTotal();
-                            this.rootRef.updateSelectedTotal();
+            Swal.fire({
+                title: 'Hapus Item?',
+                text: 'Yakin ingin menghapus item ini dari keranjang?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/cart/remove/${this.idProduk}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content')
                         }
-                    } else {
-                        alert('Gagal menghapus item dari keranjang!');
-                    }
-                })
-                .catch(err => console.error('Remove error:', err));
+                    })
+                    .then(res => {
+                        if (res.ok) {
+                            this.$el.remove();
+                            if (typeof this.rootRef?.updateTotal === 'function') {
+                                this.rootRef.cartItems.splice(this.index, 1);
+                                this.rootRef.updateTotal();
+                                this.rootRef.updateSelectedTotal();
+                            }
+                            Swal.fire({
+                                title: 'Berhasil',
+                                text: 'Item berhasil dihapus dari keranjang.',
+                                icon: 'success',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Gagal',
+                                text: 'Gagal menghapus item dari keranjang!',
+                                icon: 'error',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        }
+                    })
+                    .catch(err => {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Terjadi kesalahan saat menghapus.',
+                            icon: 'error',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        console.error('Remove error:', err);
+                    });
+                }
+            });
         },
 
         updateSelection() {
@@ -164,10 +188,8 @@ export function cartItem(price, qty, idProduk, stok, selectedAwal) {
                 console.warn("cartItem: belum siap update selection", this.rootRef, this.index);
                 return;
             }
-
             this.rootRef.cartItems[this.index].selected = this.selected;
             this.rootRef.updateSelectedTotal();
-
             console.log(`Item ${this.idProduk} selected:`, this.selected);
         }
     };

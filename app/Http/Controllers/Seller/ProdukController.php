@@ -14,11 +14,19 @@ use App\Models\AromaKategori;
 
 class ProdukController extends Controller
 {
-    public function index()
-    {
-        $produk = Produk::latest('waktu_dibuat')->paginate(10);
-        return view('sellers.daftarproduk', compact('produk'));
+    public function index(Request $request)
+{
+    $query = Produk::query();
+
+    if ($request->has('keyword') && $request->keyword != '') {
+        $query->where('nama_produk', 'like', '%' . $request->keyword . '%');
     }
+
+    $produk = $query->latest('waktu_dibuat')->paginate(10)->withQueryString();
+
+    return view('sellers.daftarproduk', compact('produk'));
+}
+
 
     public function create()
     {

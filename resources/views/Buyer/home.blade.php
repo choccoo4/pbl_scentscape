@@ -84,26 +84,28 @@
 <section class="bg-[#d6c6b8] py-16 px-6">
   <div class="max-w-6xl mx-auto text-center">
     <h2 class="text-3xl font-serif font-semibold text-gray-900 mb-10">Best Sellers</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-      <div class="flex flex-col md:flex-row items-center bg-white rounded-lg overflow-hidden shadow-md">
-        <img src="{{ asset('images/products/image2-1.jpg') }}" alt="Ethereal" class="w-full md:w-1/2 h-60 object-cover" />
-        <div class="p-6 text-left">
-          <h3 class="text-lg font-serif font-semibold text-gray-900">Ethereal</h3>
-          <p class="text-gray-700 text-sm mt-2 mb-4">Soft yet striking, this fragrance whispers elegance for everyday moments.</p>
-          <a href="#" class="text-[#3e3a39] font-medium underline">Shop Now</a>
+
+    @if ($bestSellerProducts->isNotEmpty())
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        @foreach ($bestSellerProducts as $product)
+        <div class="flex flex-col md:flex-row items-center bg-white rounded-lg overflow-hidden shadow-md">
+          <img src="{{ asset('storage/' . $product['img']) }}" alt="{{ $product['name'] }}" class="w-full md:w-1/2 h-60 object-cover" />
+          <div class="p-6 text-left">
+            <h3 class="text-lg font-serif font-semibold text-gray-900">{{ $product['name'] }}</h3>
+            <p class="text-gray-700 text-sm mt-2 mb-4">
+              {{ \Illuminate\Support\Str::limit(strip_tags($product['description']), 100) }}
+            </p>
+            <a href="{{ route('product-detail', $product['slug']) }}" class="text-[#3e3a39] font-medium underline">Shop Now</a>
+          </div>
         </div>
+        @endforeach
       </div>
-      <div class="flex flex-col md:flex-row items-center bg-white rounded-lg overflow-hidden shadow-md">
-        <img src="{{ asset('images/products/image10 (3).jpg') }}" alt="Victoria's Secret" class="w-full md:w-1/2 h-60 object-cover" />
-        <div class="p-6 text-left">
-          <h3 class="text-lg font-serif font-semibold text-gray-900">Victoria's Secret</h3>
-          <p class="text-gray-700 text-sm mt-2 mb-4">An artistic blend of rosewood and vanilla, this scent is bold and poetic.</p>
-          <a href="#" class="text-[#3e3a39] font-medium underline">Shop Now</a>
-        </div>
-      </div>
-    </div>
+    @else
+      <p class="text-gray-700">Belum ada produk best seller saat ini.</p>
+    @endif
   </div>
 </section>
+
 
 <section class="bg-[#f6f1eb] py-16 px-6">
   <div class="max-w-5xl mx-auto text-center">

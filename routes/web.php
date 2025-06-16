@@ -98,3 +98,9 @@ Route::middleware('guest.redirect')->group(function () {
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/register', [AuthController::class, 'register']);
+
+
+
+Route::get('/detailpesanan', function () {
+    return view('sellers.detailpesanan');
+});

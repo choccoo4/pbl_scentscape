@@ -15,95 +15,132 @@ document.addEventListener("alpine:init", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-        const btnSimpan = document.getElementById('simpanAroma');
+    const btnSimpan = document.getElementById('simpanAroma');
 
-        btnSimpan?.addEventListener('click', async (e) => {
-            const input = document.getElementById('inputAromaBaru');
-            const nama = input?.value.trim();
-            if (!nama) {
-                alert('Aroma tidak boleh kosong.');
-                return;
-            }
+    btnSimpan?.addEventListener('click', async (e) => {
+        const input = document.getElementById('inputAromaBaru');
+        const nama = input?.value.trim();
 
-            const alpineRoot = Alpine.closestDataStack(e.target)?.[0];
-            if (!alpineRoot) {
-                alert("Gagal mengambil data modal.");
-                return;
-            }
+        if (!nama) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Peringatan',
+                text: 'Aroma tidak boleh kosong.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+            return;
+        }
 
-            const kategoriId = alpineRoot.selectedKategori;
-            if (!kategoriId) {
-                alert("Pilih aroma induk terlebih dahulu.");
-                return;
-            }
+        const alpineRoot = Alpine.closestDataStack(e.target)?.[0];
+        if (!alpineRoot) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Kesalahan',
+                text: 'Gagal mengambil data modal.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+            return;
+        }
 
-            try {
-                const res = await fetch('/seller/aroma/store', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({ nama, kategori_id: kategoriId })
+        const kategoriId = alpineRoot.selectedKategori;
+        if (!kategoriId) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Oops!',
+                text: 'Pilih aroma induk terlebih dahulu.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+            return;
+        }
+
+        try {
+            const res = await fetch('/seller/aroma/store', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ nama, kategori_id: kategoriId })
+            });
+
+            const contentType = res.headers.get('content-type') || '';
+            if (!contentType.includes('application/json')) {
+                const text = await res.text();
+                console.error("Response bukan JSON:", text);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: 'Gagal menyimpan aroma (response bukan JSON).',
+                    timer: 2000,
+                    showConfirmButton: false
                 });
-
-                const contentType = res.headers.get('content-type') || '';
-
-                if (!contentType.includes('application/json')) {
-                    const text = await res.text();
-                    console.error("Response bukan JSON:", text);
-                    alert("Gagal menyimpan aroma (response bukan JSON).");
-                    return;
-                }
-
-                const data = await res.json();
-
-                if (!res.ok) {
-                    // Hanya tampilkan alert error kalau ada kesalahan dari server
-                    const msg = data?.message || 'Gagal menyimpan aroma.';
-                    alert(msg);
-                    console.error("Server error:", data);
-                    return;
-                }
-
-                // Sukses -> tambahkan ke UI dan tampilkan swal
-                if (data.success) {
-                    const aromaBaru = data.aroma;
-                    const { categories, selected } = alpineRoot;
-
-                    if (!categories.includes(aromaBaru)) {
-                        alpineRoot.categories.push(aromaBaru);
-                    }
-                    if (!selected.includes(aromaBaru)) {
-                        alpineRoot.selected.push(aromaBaru);
-                    }
-
-                    // Force update
-                    alpineRoot.categories = [...alpineRoot.categories];
-                    alpineRoot.selected = [...alpineRoot.selected];
-
-                    window.closeAromaForm();
-
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: `Aroma "${aromaBaru}" berhasil ditambahkan.`,
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
-                } else {
-                    alert('Gagal menyimpan aroma.');
-                }
-            } catch (error) {
-                alert('Terjadi kesalahan saat menyimpan aroma.');
-                console.error(error);
+                return;
             }
 
-        });
+            const data = await res.json();
 
-        // Tombol Batal
-        document.getElementById('BatalSimpanAroma')?.addEventListener('click', () => {
-            window.closeAromaForm();
-        });
+            if (!res.ok) {
+                const msg = data?.message || 'Gagal menyimpan aroma.';
+                console.error("Server error:", data);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: msg,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                return;
+            }
+
+            if (data.success) {
+                const aromaBaru = data.aroma;
+                const { categories, selected } = alpineRoot;
+
+                if (!categories.includes(aromaBaru)) {
+                    alpineRoot.categories.push(aromaBaru);
+                }
+                if (!selected.includes(aromaBaru)) {
+                    alpineRoot.selected.push(aromaBaru);
+                }
+
+                alpineRoot.categories = [...alpineRoot.categories];
+                alpineRoot.selected = [...alpineRoot.selected];
+
+                window.closeAromaForm();
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: `Aroma "${aromaBaru}" berhasil ditambahkan.`,
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: 'Gagal menyimpan aroma.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Kesalahan',
+                text: 'Terjadi kesalahan saat menyimpan aroma.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        }
     });
+
+    document.getElementById('BatalSimpanAroma')?.addEventListener('click', () => {
+        window.closeAromaForm();
+    });
+});

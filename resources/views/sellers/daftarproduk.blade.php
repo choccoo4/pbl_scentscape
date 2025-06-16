@@ -15,8 +15,14 @@
             class="bg-[#9BAF9A] hover:bg-[#819b83] text-white px-4 py-2 rounded-md text-sm transition shadow-sm flex items-center gap-2">
             <i class="fa-solid fa-plus"></i> Tambah Produk
         </a>
-        <input type="text" placeholder="Cari produk..."
-            class="rounded-md px-3 py-2 bg-[#F6F1EB] border border-[#D6C6B8] text-sm text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#BFA6A0] w-full max-w-xs transition">
+        <form action="{{ route('produk.index') }}" method="GET" class="flex items-center gap-2">
+    <input type="text" name="keyword" value="{{ request('keyword') }}" placeholder="Cari produk..."
+        class="rounded-md px-3 py-2 bg-[#F6F1EB] border border-[#D6C6B8] text-sm text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#BFA6A0] w-full max-w-xs transition">
+    <button type="submit" class="bg-[#9BAF9A] hover:bg-[#819b83] text-white px-4 py-2 rounded-md text-sm transition shadow-sm">
+        <i class="fa-solid fa-search"></i>
+    </button>
+</form>
+
     </div>
 
     <!-- Table -->
