@@ -19,7 +19,7 @@ class ShopController extends Controller
         $type = $request->input('type');
         $volume = $request->input('volume');
         $harga = $request->input('harga');
-        $multiAroma = $request->input('categories', []);    
+        $multiAroma = $request->input('categories', []);
 
         // ✅ Mapping type (URL parameter) → label di database
         $typeMap = [
@@ -36,7 +36,6 @@ class ShopController extends Controller
                                        ->orWhere('deskripsi', 'like', "%$query%"))
             ->when($gender, fn($q) => $q->where('label_kategori', $gender))
 
-            // ✅ Terapkan mapping untuk tipe parfum
             ->when($type, function ($q) use ($type, $typeMap) {
                 return isset($typeMap[$type])
                     ? $q->where('tipe_parfum', $typeMap[$type])
@@ -55,8 +54,16 @@ class ShopController extends Controller
                 if ($harga === 'high') return $q->where('harga', '>', 300000);
             })
 
+            // ✅ Filter multi aroma (checkbox)
             ->when(!empty($multiAroma), fn($q) =>
                 $q->whereHas('aroma', fn($aq) => $aq->whereIn('nama', $multiAroma)))
+
+            // ✅ Filter aroma tunggal (dropdown)
+            ->when($aromaFilter, function ($q) use ($aromaFilter) {
+                return $q->whereHas('aroma', function ($aq) use ($aromaFilter) {
+                    $aq->where('nama', $aromaFilter);
+                });
+            })
 
             ->when($sort === 'price_asc', fn($q) => $q->orderBy('harga', 'asc'))
             ->when($sort === 'price_desc', fn($q) => $q->orderBy('harga', 'desc'))

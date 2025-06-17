@@ -69,10 +69,7 @@
                 <div class="flex flex-wrap gap-3 items-center">
                     @foreach ($product->aroma as $index => $aroma)
                     <div class="relative">
-                        <button
-                            type="button"
-                            data-tooltip-target="tooltip-aroma-detail-{{ $index }}"
-                            data-tooltip-placement="top"
+                        <button type="button"
                             class="flex items-center gap-2 px-3 py-2 bg-white rounded-lg shadow-sm border border-gray-200 text-[#3E3A39] hover:text-[#9BAF9A] transition text-sm">
                             <i class="ph {{ $aroma->aromaKategori?->icon ?? 'ph-flower' }} text-xl text-[#9BAF9A]"></i>
                             <span>{{ $aroma->nama }}</span>
@@ -86,18 +83,15 @@
             {{-- Add to Cart Form --}}
             <div class="mt-10" x-data="productDetail({{ $product->harga }}, {{ $product->stok }})">
                 <div class="space-y-4">
-                    <!-- Total Harga -->
                     <div class="text-lg font-semibold text-[#3E3A39]">
                         Total: Rp <span x-text="totalFormatted"></span>
                     </div>
 
-                    <!-- Form -->
-                    <form method="POST" action="{{ route('cart.add', $product->no_produk) }}" @submit="handleSubmit">
+                    <form id="add-to-cart-form" method="POST" action="{{ route('cart.add', $product->no_produk) }}">
                         @csrf
                         <input type="hidden" name="quantity" :value="qty">
 
                         <div class="flex flex-col sm:flex-row gap-4 items-center">
-                            <!-- Quantity Selector -->
                             <div class="flex items-center border rounded px-2 py-1 bg-white shadow-sm">
                                 <button type="button" @click="decreaseQty()"
                                     class="px-3 text-lg font-bold text-gray-600 hover:text-[#9BAF9A] transition"
@@ -110,10 +104,9 @@
                                     :disabled="qty >= stock">+</button>
                             </div>
 
-                            <!-- Add to Cart Button -->
                             <button type="submit"
                                 class="bg-[#9BAF9A] hover:bg-[#88a488] text-white font-semibold px-8 py-3 rounded shadow transition w-full sm:w-auto"
-                                :disabled="qty > stock || stock <= 0">
+                                :disabled="qty > stock || stock <= 0" id="add-to-cart-button">
                                 <span x-show="qty === 1">Tambah ke Keranjang</span>
                                 <span x-show="qty > 1" x-text="'Tambah ' + qty + ' ke Keranjang'"></span>
                             </button>
@@ -135,23 +128,12 @@
             </div>
         </div>
     </div>
-
-    {{-- Success/Error Messages --}}
-    @if(session('success'))
-        <div class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50" 
-             x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50"
-             x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
-            {{ session('error') }}
-        </div>
-    @endif
 </section>
 
+{{-- SweetAlert --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{{-- Alpine.js logika --}}
 <script>
 function productDetail(basePrice, maxStock) {
     return {
@@ -164,44 +146,68 @@ function productDetail(basePrice, maxStock) {
         },
 
         increaseQty() {
-            if (this.qty < this.stock) {
-                this.qty++;
-            }
+            if (this.qty < this.stock) this.qty++;
         },
 
         decreaseQty() {
-            if (this.qty > 1) {
-                this.qty--;
-            }
+            if (this.qty > 1) this.qty--;
         },
 
         validateQty() {
-            if (this.qty < 1) {
-                this.qty = 1;
-            } else if (this.qty > this.stock) {
-                this.qty = this.stock;
-            }
-        },
-
-        handleSubmit(event) {
-            if (this.stock <= 0) {
-                event.preventDefault();
-                alert('Produk tidak tersedia!');
-                return false;
-            }
-
-            if (this.qty > this.stock) {
-                event.preventDefault();
-                alert('Jumlah melebihi stok yang tersedia!');
-                return false;
-            }
-
-            // Loading State
-            event.target.querySelector('button[type="submit"]').innerHTML = 'Menambahkan...';
-            event.target.querySelector('button[type="submit"]').disabled = true;
+            if (this.qty < 1) this.qty = 1;
+            else if (this.qty > this.stock) this.qty = this.stock;
         }
     }
 }
+</script>
+
+{{-- AJAX Submit --}}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('add-to-cart-form');
+    const submitButton = document.getElementById('add-to-cart-button');
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        submitButton.disabled = true;
+        submitButton.innerText = 'Menambahkan...';
+
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            },
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Gagal menambahkan.');
+            return response.json();
+        })
+        .then(data => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: 'Produk berhasil dimasukkan ke keranjang.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        })
+        .catch(error => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: error.message
+            });
+        })
+        .finally(() => {
+            submitButton.disabled = false;
+            submitButton.innerText = 'Tambah ke Keranjang';
+        });
+    });
+});
 </script>
 
 @endsection

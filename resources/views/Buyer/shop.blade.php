@@ -3,99 +3,160 @@
 @section('title', 'Shop - Scentscape')
 
 @section('content')
-<section class="bg-[#f2ede4] min-h-screen px-4 md:px-10 py-10">
-    {{-- Judul --}}
-    <h2 class="text-center font-playfair font-semibold text-lg text-gray-800 mb-4">Products</h2>
+<section class="bg-[#f2ede4] min-h-screen px-4 md:px-10 py-10" x-data>
+    <h2 class="text-center font-playfair font-semibold text-lg text-gray-800 mb-6">Products</h2>
 
-    {{-- Filter Section (5 Kolom Sejajar) --}}
-    <div class="grid grid-cols-5 gap-0 border-t border-b border-gray-500/30 text-sm text-gray-700 py-3 text-center">
-        
-        {{-- Filter Aroma --}}
-        <div x-data="{ open: false }" class="relative border-l border-gray-300 first:border-l-0">
-            <div @click="open = !open" class="cursor-pointer font-semibold">Aroma</div>
-            <div x-show="open" x-cloak @click.away="open = false"
-                 class="absolute inset-x-0 md:left-1/2 md:-translate-x-1/2 mt-2 w-44 mx-auto bg-white border shadow rounded-md z-50 text-left p-2 space-y-1">
-                @foreach ($aromas as $aroma)
-                    <a href="{{ route('shop', ['categories[]' => $aroma->nama]) }}"
-                       class="block px-2 py-1 hover:bg-gray-100 rounded">{{ $aroma->nama }}</a>
-                @endforeach
+    {{-- Filter Header --}}
+    <form method="GET" action="{{ route('shop') }}" class="mb-4">
+        @php
+            $filterClass = 'border border-[#D6C6B8] bg-white/30 backdrop-blur-md rounded-full px-6 py-1 text-sm shadow-sm hover:shadow-md transition-all';
+        @endphp
+
+        <div class="flex flex-wrap items-center justify-between text-[15px] text-[#5E4530] font-[500] gap-4">
+            {{-- Kiri: Filter --}}
+            <div class="flex flex-wrap items-center gap-4">
+                <span class="tracking-wider">Filter:</span>
+
+                {{-- Filter Aroma --}}
+                <div x-data="{ open: false }" class="relative">
+                    <button type="button" @click="open = !open" class="{{ $filterClass }} flex items-center gap-1">
+                        Aroma <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div x-show="open" @click.outside="open = false" class="absolute left-0 mt-2 bg-white border rounded shadow w-40 z-10">
+                        <ul class="text-sm">
+                            <li><a href="{{ route('shop', array_merge(request()->except('aroma'), ['aroma' => ''])) }}" class="block px-3 py-2 hover:bg-gray-100">Semua</a></li>
+                            @foreach ($aromas as $aroma)
+                                <li>
+                                    <a href="{{ route('shop', array_merge(request()->except('aroma'), ['aroma' => $aroma->nama])) }}"
+                                       class="block px-3 py-2 hover:bg-gray-100 {{ request('aroma') == $aroma->nama ? 'font-semibold' : '' }}">
+                                        {{ $aroma->nama }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+
+                {{-- Filter Gender --}}
+                <div x-data="{ open: false }" class="relative">
+                    <button type="button" @click="open = !open" class="{{ $filterClass }} flex items-center gap-1">
+                        Gender <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div x-show="open" @click.outside="open = false" class="absolute left-0 mt-2 bg-white border rounded shadow w-40 z-10">
+                        <ul class="text-sm">
+                            <li><a href="{{ route('shop', array_merge(request()->except('gender'), ['gender' => ''])) }}" class="block px-3 py-2 hover:bg-gray-100">Semua</a></li>
+                            @foreach (['unisex', 'for him', 'for her', 'gifts'] as $gender)
+                                <li>
+                                    <a href="{{ route('shop', array_merge(request()->except('gender'), ['gender' => $gender])) }}"
+                                       class="block px-3 py-2 hover:bg-gray-100 {{ request('gender') == $gender ? 'font-semibold' : '' }}">
+                                        {{ ucfirst($gender) }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+
+                {{-- Filter Tipe --}}
+                <div x-data="{ open: false }" class="relative">
+                    <button type="button" @click="open = !open" class="{{ $filterClass }} flex items-center gap-1">
+                        Tipe <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div x-show="open" @click.outside="open = false" class="absolute left-0 mt-2 bg-white border rounded shadow w-48 z-10">
+                        <ul class="text-sm">
+                            <li><a href="{{ route('shop', array_merge(request()->except('type'), ['type' => ''])) }}" class="block px-3 py-2 hover:bg-gray-100">Semua</a></li>
+                            @foreach ([
+                                'EDP' => 'Eau De Parfum',
+                                'EDT' => 'Eau De Toilette',
+                                'BodyMist' => 'Body Mist',
+                                'Cologne' => 'Cologne',
+                                'ParfumOil' => 'Parfum Oil',
+                                'SolidParfum' => 'Solid Parfum'
+                            ] as $type => $label)
+                                <li>
+                                    <a href="{{ route('shop', array_merge(request()->except('type'), ['type' => $type])) }}"
+                                       class="block px-3 py-2 hover:bg-gray-100 {{ request('type') == $type ? 'font-semibold' : '' }}">
+                                        {{ $label }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+
+                {{-- Filter Volume --}}
+                <div x-data="{ open: false }" class="relative">
+                    <button type="button" @click="open = !open" class="{{ $filterClass }} flex items-center gap-1">
+                        Volume <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+                    <div x-show="open" @click.outside="open = false" class="absolute left-0 mt-2 bg-white border rounded shadow w-48 z-10">
+                        <ul class="text-sm">
+                            <li><a href="{{ route('shop', array_merge(request()->except('volume'), ['volume' => ''])) }}" class="block px-3 py-2 hover:bg-gray-100">Semua</a></li>
+                            <li><a href="{{ route('shop', array_merge(request()->except('volume'), ['volume' => 'small'])) }}" class="block px-3 py-2 hover:bg-gray-100 {{ request('volume') == 'small' ? 'font-semibold' : '' }}">Kecil (&lt;30ml)</a></li>
+                            <li><a href="{{ route('shop', array_merge(request()->except('volume'), ['volume' => 'medium'])) }}" class="block px-3 py-2 hover:bg-gray-100 {{ request('volume') == 'medium' ? 'font-semibold' : '' }}">Sedang (30–60ml)</a></li>
+                            <li><a href="{{ route('shop', array_merge(request()->except('volume'), ['volume' => 'large'])) }}" class="block px-3 py-2 hover:bg-gray-100 {{ request('volume') == 'large' ? 'font-semibold' : '' }}">Besar (&gt;60ml)</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Kanan: Sort --}}
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <span class="tracking-wider">Sort by:</span>
+                    <div x-data="{ open: false }" class="relative">
+                        <button type="button" @click="open = !open" class="{{ $filterClass }} flex items-center gap-1">
+                            {{ match(request('sort')) {
+                                'price_asc' => 'Harga Termurah',
+                                'price_desc' => 'Harga Termahal',
+                                'name_asc' => 'Nama A-Z',
+                                default => 'Terbaru'
+                            } }}
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div x-show="open" @click.outside="open = false" class="absolute right-0 mt-2 bg-white border rounded shadow w-48 z-10">
+                            <ul class="text-sm">
+                                <li><a href="{{ route('shop', array_merge(request()->except('sort'), ['sort' => ''])) }}" class="block px-3 py-2 hover:bg-gray-100">Terbaru</a></li>
+                                <li><a href="{{ route('shop', array_merge(request()->except('sort'), ['sort' => 'price_asc'])) }}" class="block px-3 py-2 hover:bg-gray-100">Harga Termurah</a></li>
+                                <li><a href="{{ route('shop', array_merge(request()->except('sort'), ['sort' => 'price_desc'])) }}" class="block px-3 py-2 hover:bg-gray-100">Harga Termahal</a></li>
+                                <li><a href="{{ route('shop', array_merge(request()->except('sort'), ['sort' => 'name_asc'])) }}" class="block px-3 py-2 hover:bg-gray-100">Nama A-Z</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-sm tracking-wide">
+                    {{ $products->count() }} products
+                </div>
             </div>
         </div>
+    </form>
 
-        {{-- Filter Gender --}}
-        <div x-data="{ open: false }" class="relative border-l border-gray-300">
-            <div @click="open = !open" class="cursor-pointer font-semibold">Gender</div>
-            <div x-show="open" x-cloak @click.away="open = false"
-                 class="absolute inset-x-0 md:left-1/2 md:-translate-x-1/2 mt-2 w-44 mx-auto bg-white border shadow rounded-md z-50 text-left p-2">
-                <a href="{{ route('shop', ['gender' => 'unisex']) }}"
-                   class="block px-2 py-1 hover:bg-gray-100 rounded">Unisex</a>
-                <a href="{{ route('shop', ['gender' => 'for him']) }}"
-                   class="block px-2 py-1 hover:bg-gray-100 rounded">For Him</a>
-                <a href="{{ route('shop', ['gender' => 'for her']) }}"
-                   class="block px-2 py-1 hover:bg-gray-100 rounded">For Her</a>
-                <a href="{{ route('shop', ['gender' => 'gifts']) }}"
-                   class="block px-2 py-1 hover:bg-gray-100 rounded">Gifts</a>
-            </div>
+    {{-- Reset --}}
+    @if(request()->hasAny(['aroma', 'gender', 'type', 'volume', 'sort']))
+        <div class="mb-6 text-sm text-[#5E4530] flex flex-wrap items-center gap-2">
+            @if(request('aroma'))
+                <a href="{{ route('shop', request()->except('aroma')) }}" class="bg-[#D6C6B8] px-3 py-1 rounded-full">Aroma: {{ request('aroma') }} ✕</a>
+            @endif
+            @if(request('gender'))
+                <a href="{{ route('shop', request()->except('gender')) }}" class="bg-[#D6C6B8] px-3 py-1 rounded-full">Gender: {{ ucfirst(request('gender')) }} ✕</a>
+            @endif
+            @if(request('type'))
+                <a href="{{ route('shop', request()->except('type')) }}" class="bg-[#D6C6B8] px-3 py-1 rounded-full">Tipe: {{ request('type') }} ✕</a>
+            @endif
+            @if(request('volume'))
+                <a href="{{ route('shop', request()->except('volume')) }}" class="bg-[#D6C6B8] px-3 py-1 rounded-full">Volume: {{ request('volume') }} ✕</a>
+            @endif
+            @if(request('sort'))
+                <a href="{{ route('shop', request()->except('sort')) }}" class="bg-[#D6C6B8] px-3 py-1 rounded-full">Sort: {{ request('sort') }} ✕</a>
+            @endif
+
+            <a href="{{ route('shop') }}" class="ml-3 underline text-black text-sm">Reset</a>
         </div>
-
-        {{-- Filter Tipe --}}
-        <div x-data="{ open: false }" class="relative border-l border-gray-300">
-            <div @click="open = !open" class="cursor-pointer font-semibold">Tipe</div>
-            <div x-show="open" x-cloak @click.away="open = false"
-                 class="absolute inset-x-0 md:left-1/2 md:-translate-x-1/2 mt-2 w-44 mx-auto bg-white border shadow rounded-md z-50 text-left p-2 space-y-1">
-                <a href="{{ route('shop', ['type' => 'EDP']) }}"
-                   class="block px-2 py-1 hover:bg-gray-100 rounded">Eau De Parfum (EDP)</a>
-                <a href="{{ route('shop', ['type' => 'EDT']) }}"
-                   class="block px-2 py-1 hover:bg-gray-100 rounded">Eau De Toilette (EDT)</a>
-                <a href="{{ route('shop', ['type' => 'BodyMist']) }}"
-                   class="block px-2 py-1 hover:bg-gray-100 rounded">Body Mist</a>
-                <a href="{{ route('shop', ['type' => 'Cologne']) }}"
-                   class="block px-2 py-1 hover:bg-gray-100 rounded">Cologne</a>
-                <a href="{{ route('shop', ['type' => 'ParfumOil']) }}"
-                   class="block px-2 py-1 hover:bg-gray-100 rounded">Parfum Oil</a>
-                <a href="{{ route('shop', ['type' => 'SolidParfum']) }}"
-                   class="block px-2 py-1 hover:bg-gray-100 rounded">Solid Perfume</a>
-            </div>
-        </div>
-
-        {{-- Filter Volume --}}
-        <div x-data="{ open: false }" class="relative border-l border-gray-300">
-            <div @click="open = !open" class="cursor-pointer font-semibold">Volume</div>
-            <div x-show="open" x-cloak @click.away="open = false"
-                 class="absolute inset-x-0 md:left-1/2 md:-translate-x-1/2 mt-2 w-44 mx-auto bg-white border shadow rounded-md z-50 text-left p-2 space-y-1">
-                <a href="{{ route('shop', ['volume' => 'small']) }}"
-                   class="block px-2 py-1 hover:bg-gray-100 rounded">Small (&lt;30ml)</a>
-                <a href="{{ route('shop', ['volume' => 'medium']) }}"
-                   class="block px-2 py-1 hover:bg-gray-100 rounded">Medium (30–60ml)</a>
-                <a href="{{ route('shop', ['volume' => 'large']) }}"
-                   class="block px-2 py-1 hover:bg-gray-100 rounded">Large (&gt;60ml)</a>
-            </div>
-        </div>
-
-        {{-- Sort --}}
-        <div x-data="{ open: false }" class="relative border-l border-gray-300">
-            <div @click="open = !open" class="cursor-pointer font-semibold">Sort</div>
-            <div x-show="open" x-cloak @click.away="open = false"
-                 class="absolute inset-x-0 md:left-1/2 md:-translate-x-1/2 mt-2 w-44 mx-auto bg-white border shadow rounded-md z-50 text-left p-2 space-y-1">
-                <a href="{{ route('shop', ['sort' => 'price_asc']) }}"
-                   class="block px-2 py-1 hover:bg-gray-100 rounded">Price: Low to High</a>
-                <a href="{{ route('shop', ['sort' => 'price_desc']) }}"
-                   class="block px-2 py-1 hover:bg-gray-100 rounded">Price: High to Low</a>
-                <a href="{{ route('shop', ['sort' => 'newest']) }}"
-                   class="block px-2 py-1 hover:bg-gray-100 rounded">Newest</a>
-            </div>
-        </div>
-    </div>
-
-    {{-- Pencarian --}}
-    @if(request('q'))
-        <p class="text-center text-sm text-gray-600 my-4">
-            Menampilkan hasil pencarian untuk: <strong>{{ request('q') }}</strong>
-        </p>
     @endif
 
     {{-- Produk --}}
-    <div class="pt-5 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-x-2 gap-y-4 px-2 xl:px-4">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-x-2 gap-y-4 px-2 xl:px-4">
         @forelse ($products as $product)
             <x-product-card
                 id="{{ $product['id'] }}"

@@ -45,17 +45,27 @@
       </div>
 
       <!-- Password Field -->
-      <div class="mb-6 relative">
+      <div class="mb-2 relative" x-data="{ show: false }">
         <input
-          type="password"
+          :type="show ? 'text' : 'password'"
           name="password"
           placeholder="Password"
           class="w-full p-3 rounded-md bg-[#F6F1EB] placeholder:text-gray-500 text-sm border border-gray-300 focus:outline-none"
           x-model="password" />
-        <i class="fa-solid fa-lock absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+        <i @click="show = !show"
+          :class="show ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
+          class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"></i>
         <p x-show="errors.password" class="text-xs text-red-500 mt-1 absolute -bottom-4 left-0" x-text="errors.password"></p>
       </div>
 
+      <!-- Forgot Password -->
+      <div class="flex justify-end mb-5">
+        <a href="#" class="text-sm text-[#414833] hover:underline">
+          Forgot Password?
+        </a>
+      </div>
+
+      <!-- Submit -->
       <button
         type="submit"
         class="w-full bg-[#414833] text-white font-semibold py-2 rounded-md hover:bg-[#8da48c] transition-all duration-200">
