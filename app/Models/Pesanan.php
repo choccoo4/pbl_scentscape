@@ -58,4 +58,9 @@ class Pesanan extends Model
     {
         return $this->belongsTo(Pembeli::class, 'id_pengguna');
     }
+
+    public function pengiriman()
+    {
+        return $this->hasOne(Pengiriman::class, 'id_pesanan', 'id_pesanan');
+    }
 }

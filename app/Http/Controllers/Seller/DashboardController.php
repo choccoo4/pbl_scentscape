@@ -15,12 +15,12 @@ class DashboardController extends Controller
     {
         // Total penjualan hari ini (dari pesanan selesai)
         $totalPenjualan = Pesanan::where('status', 'Selesai')
-            ->whereDate('waktu_pemesanan', now()->toDateString())
+            ->whereDate('waktu_selesai', now()->toDateString())
             ->sum('total');
 
         // Pesanan masuk hari ini (status awal)
         $pesananMasuk = Pesanan::whereDate('waktu_pemesanan', now()->toDateString())
-            ->whereIn('status', ['Menunggu Pembayaran', 'Menunggu Verifikasi', 'Dikemas'])
+            ->whereIn('status', ['Menunggu Verifikasi', 'Dikemas', 'Dikirim', 'Terkirim'])
             ->count();
 
         // Produk terjual (jumlah item dari pesanan selesai)
@@ -37,9 +37,10 @@ class DashboardController extends Controller
             ->count();
 
         // Pesanan dikirim hari ini
-        $produkTerkirimHariIni = Pesanan::whereDate('waktu_pemesanan', now()->toDateString())
-            ->where('status', 'Dikirim')
-            ->count();
+        $produkTerkirimHariIni = PesananItem::join('pesanan', 'pesanan_item.id_pesanan', '=', 'pesanan.id_pesanan')
+            ->whereDate('pesanan.waktu_pemesanan', now()->toDateString())
+            ->whereIn('pesanan.status', ['Dikirim', 'Terkirim'])
+            ->sum('pesanan_item.jumlah');
 
         return view('sellers.dashboard', compact(
             'totalPenjualan',

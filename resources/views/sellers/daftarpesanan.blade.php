@@ -54,7 +54,9 @@
                     <td class="px-4 py-3">Rp{{ number_format($p->total, 0, ',', '.') }}</td>
                     <td class="px-4 py-3">{{ $p->status }}</td>
                     <td class="px-4 py-3">
-                        <a href="#" class="bg-green-700 hover:bg-green-800 text-white text-xs px-3 py-1 rounded">Detail Transaksi</a>
+                        <a href="{{ route('pesanan.detail', $p->id_pesanan) }}" class="bg-green-700 hover:bg-green-800 text-white text-xs px-3 py-1 rounded">
+                            Detail Transaksi
+                        </a>
                     </td>
                 </tr>
                 @empty

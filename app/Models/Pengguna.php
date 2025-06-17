@@ -33,7 +33,7 @@ class Pengguna extends Authenticatable
     ];
 
     protected $casts = [
-    'waktu_perubahan' => 'datetime',
+        'waktu_perubahan' => 'datetime',
     ];
 
     public function penjual()
@@ -42,8 +42,7 @@ class Pengguna extends Authenticatable
     }
 
     public function pembeli()
-{
-    return $this->hasOne(Pembeli::class, 'id_pengguna', 'id_pengguna');
-}
-
+    {
+        return $this->hasOne(Pembeli::class, 'id_pengguna', 'id_pengguna');
+    }
 }

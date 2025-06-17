@@ -16,12 +16,12 @@
             <i class="fa-solid fa-plus"></i> Tambah Produk
         </a>
         <form action="{{ route('produk.index') }}" method="GET" class="flex items-center gap-2">
-    <input type="text" name="keyword" value="{{ request('keyword') }}" placeholder="Cari produk..."
-        class="rounded-md px-3 py-2 bg-[#F6F1EB] border border-[#D6C6B8] text-sm text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#BFA6A0] w-full max-w-xs transition">
-    <button type="submit" class="bg-[#9BAF9A] hover:bg-[#819b83] text-white px-4 py-2 rounded-md text-sm transition shadow-sm">
-        <i class="fa-solid fa-search"></i>
-    </button>
-</form>
+            <input type="text" name="keyword" value="{{ request('keyword') }}" placeholder="Cari produk..."
+                class="rounded-md px-3 py-2 bg-[#F6F1EB] border border-[#D6C6B8] text-sm text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#BFA6A0] w-full max-w-xs transition">
+            <button type="submit" class="bg-[#9BAF9A] hover:bg-[#819b83] text-white px-4 py-2 rounded-md text-sm transition shadow-sm">
+                <i class="fa-solid fa-search"></i>
+            </button>
+        </form>
 
     </div>
 
@@ -46,7 +46,7 @@
                     <img src="{{ asset('storage/' . ($item->gambar[0] ?? 'default.jpg')) }}" class="w-12 h-12 object-cover rounded" alt="{{ $item->nama_produk }}">
                 </td>
                 <td class="p-3">{{ $item->nama_produk }}</td>
-                <td class="p-3">{{ $item->penjualan ?? 0 }} Unit</td>
+                <td class="p-3">{{ $item->penjualan }} Unit</td>
                 <td class="p-3">Rp{{ number_format($item->harga, 0, ',', '.') }}</td>
                 <td class="p-3">{{ $item->stok }}</td>
                 <td class="p-3">

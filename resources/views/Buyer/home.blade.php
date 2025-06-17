@@ -22,18 +22,18 @@
   <div class="px-4">
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-6">
       @foreach ($products as $product)
-        <x-product-card
-          id="{{ $product['id'] }}"
-          name="{{ $product['name'] }}"
-          price="{{ $product['price'] }}"
-          image="{{ asset('storage/' . $product['img']) }}"
-          gender="{{ $product['gender'] }}"
-          volume="{{ $product['volume'] }}"
-          type="{{ $product['type'] }}"
-          type_full="{{ $product['type_full'] }}"
-          :aroma="$product['aroma']"
-          extraClass="border border-gray-300"
-          slug="{{ $product['slug'] }}" />
+      <x-product-card
+        id="{{ $product['id'] }}"
+        name="{{ $product['name'] }}"
+        price="{{ $product['price'] }}"
+        image="{{ asset('storage/' . $product['img']) }}"
+        gender="{{ $product['gender'] }}"
+        volume="{{ $product['volume'] }}"
+        type="{{ $product['type'] }}"
+        type_full="{{ $product['type_full'] }}"
+        :aroma="$product['aroma']"
+        extraClass="border border-gray-300"
+        slug="{{ $product['slug'] }}" />
       @endforeach
     </div>
   </div>
@@ -84,28 +84,20 @@
 <section class="bg-[#d6c6b8] py-16 px-6">
   <div class="max-w-6xl mx-auto text-center">
     <h2 class="text-3xl font-serif font-semibold text-gray-900 mb-10">Best Sellers</h2>
-
-    @if ($bestSellerProducts->isNotEmpty())
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-        @foreach ($bestSellerProducts as $product)
-        <div class="flex flex-col md:flex-row items-center bg-white rounded-lg overflow-hidden shadow-md">
-          <img src="{{ asset('storage/' . $product['img']) }}" alt="{{ $product['name'] }}" class="w-full md:w-1/2 h-60 object-cover" />
-          <div class="p-6 text-left">
-            <h3 class="text-lg font-serif font-semibold text-gray-900">{{ $product['name'] }}</h3>
-            <p class="text-gray-700 text-sm mt-2 mb-4">
-              {{ \Illuminate\Support\Str::limit(strip_tags($product['description']), 100) }}
-            </p>
-            <a href="{{ route('product-detail', $product['slug']) }}" class="text-[#3e3a39] font-medium underline">Shop Now</a>
-          </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+      @foreach ($bestSellers as $product)
+      <div class="flex flex-col md:flex-row items-center bg-white rounded-lg overflow-hidden shadow-md">
+        <img src="{{ asset('storage/' . $product['img']) }}" alt="{{ $product['name'] }}" class="w-full md:w-1/2 h-60 object-cover" />
+        <div class="p-6 text-left">
+          <h3 class="text-lg font-serif font-semibold text-gray-900">{{ $product['name'] }}</h3>
+          <p class="text-gray-700 text-sm mt-2 mb-4">{{ $product['deskripsi'] }}</p>
+          <a href="{{ route('produk.show', $product['id']) }}" class="text-[#3e3a39] font-medium underline">Shop Now</a>
         </div>
-        @endforeach
       </div>
-    @else
-      <p class="text-gray-700">Belum ada produk best seller saat ini.</p>
-    @endif
+      @endforeach
+    </div>
   </div>
 </section>
-
 
 <section class="bg-[#f6f1eb] py-16 px-6">
   <div class="max-w-5xl mx-auto text-center">

@@ -23,6 +23,7 @@ use App\Http\Controllers\seller\AromaController;
 use App\Http\Controllers\seller\UbahpwController;
 use App\Http\Controllers\seller\DashboardController;
 use App\Http\Controllers\seller\DaftarpesananController;
+use App\Http\Controllers\Seller\DetailPesananController;
 
 // Routes untuk pembeli dengan middleware role:pembeli
 Route::middleware(['auth', 'role:pembeli'])->group(function () {
@@ -90,6 +91,13 @@ Route::middleware(['auth', 'role:penjual'])->prefix('seller')->group(function ()
     Route::delete('/produk/{no_produk}', [ProdukController::class, 'destroy'])->name('produk.destroy');
     Route::get('{no_produk}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
     Route::put('{no_produk}', [ProdukController::class, 'update'])->name('produk.update');
+
+    Route::get('/detailpesanan/{id}', [DetailPesananController::class, 'show'])->name('pesanan.detail');
+    Route::post('/pesanan/{id}/tolak', [DetailPesananController::class, 'tolak'])->name('pesanan.tolak');
+    Route::post('/pesanan/{id}/konfirmasi', [DetailPesananController::class, 'konfirmasi'])->name('pesanan.konfirmasi');
+    Route::post('/pesanan/{id}/kirim', [DetailPesananController::class, 'kirim'])->name('pesanan.kirim');
+    Route::post('/pesanan/{id}/terkirim', [DetailPesananController::class, 'terkirim'])->name('pesanan.terkirim');
+    Route::post('/pesanan/{id}/selesai', [DetailPesananController::class, 'selesai'])->name('pesanan.selesai');
 
     // Export rekapitulasi
     Route::get('/rekapitulasi/pdf', [RekapitulasiController::class, 'exportPdf'])->name('rekap.pdf');

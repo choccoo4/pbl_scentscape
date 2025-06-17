@@ -9,7 +9,7 @@ class ProductCardFormatter
     public static function from($product)
     {
         return [
-            'id' => $product->no_produk, 
+            'id' => $product->no_produk,
             'name' => $product->nama_produk,
             'price' => 'Rp ' . number_format($product->harga, 0, ',', '.'),
             'img' => is_array($product->gambar) && count($product->gambar) > 0
@@ -20,6 +20,7 @@ class ProductCardFormatter
             'type' => self::shortType($product->tipe_parfum)['short'],
             'type_full' => self::shortType($product->tipe_parfum)['full'],
             'slug' => Str::slug($product->nama_produk),
+            'deskripsi' => self::excerpt($product->deskripsi, 15),
             'aroma' => $product->aroma->map(function ($aroma) {
                 return [
                     'icon' => $aroma->aromaKategori?->icon ?? 'flower',
@@ -27,6 +28,13 @@ class ProductCardFormatter
                 ];
             }),
         ];
+    }
+
+    private static function excerpt($text, $wordLimit = 15)
+    {
+        $words = str_word_count(strip_tags($text), 1); // ambil kata aja
+        $excerpt = implode(' ', array_slice($words, 0, $wordLimit));
+        return count($words) > $wordLimit ? $excerpt . '...' : $excerpt;
     }
 
     private static function shortType($tipe)

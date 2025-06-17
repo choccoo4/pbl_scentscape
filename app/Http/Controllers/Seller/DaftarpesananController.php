@@ -32,7 +32,10 @@ class DaftarpesananController extends Controller
 
         // Filter status kalau ada dan bukan semua
         if ($statusFilter && strtolower($statusFilter) !== 'semua') {
-            if (isset($statusMap[strtolower($statusFilter)])) {
+            if (strtolower($statusFilter) === 'dikirim') {
+                // Khusus tab Dikirim, tampilkan 'Dikirim' dan 'Terkirim'
+                $query->whereIn('status', ['Dikirim', 'Terkirim']);
+            } elseif (isset($statusMap[strtolower($statusFilter)])) {
                 $query->where('status', $statusMap[strtolower($statusFilter)]);
             }
         }

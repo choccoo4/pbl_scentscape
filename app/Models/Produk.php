@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Aroma;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class Produk extends Model
 {
@@ -43,5 +44,19 @@ class Produk extends Model
     public function getSlugAttribute()
     {
         return Str::slug($this->nama_produk);
+    }
+
+    public function pesananItems()
+    {
+        return $this->hasMany(\App\Models\PesananItem::class, 'id_produk', 'no_produk');
+    }
+
+    public function totalPenjualan()
+    {
+        return DB::table('pesanan_item')
+            ->join('pesanan', 'pesanan_item.id_pesanan', '=', 'pesanan.id_pesanan')
+            ->where('pesanan_item.no_produk', $this->no_produk)
+            ->where('pesanan.status', 'Selesai')
+            ->sum('pesanan_item.jumlah');
     }
 }

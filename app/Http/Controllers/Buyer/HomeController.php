@@ -29,22 +29,26 @@ class HomeController extends Controller
             ];
         });
 
-        // Best Seller
-        $bestsellerIds = PesananItem::select('no_produk', DB::raw('SUM(jumlah) as total_terjual'))
+        // Best Sellers (atau fallback produk terbaru)
+        $bestsellerProduk = PesananItem::select('no_produk', DB::raw('SUM(jumlah) as total_terjual'))
             ->groupBy('no_produk')
             ->orderByDesc('total_terjual')
             ->take(2)
             ->pluck('no_produk');
 
-        if ($bestsellerIds->count() > 0) {
-            $bestSellerProducts = Produk::with('aroma.aromaKategori')
-                ->whereIn('id', $bestsellerIds)
+        if ($bestsellerProduk->count() > 0) {
+            $bestSellers = Produk::with('aroma.aromaKategori')
+                ->whereIn('no_produk', $bestsellerProduk)
                 ->get()
                 ->map(fn($product) => ProductCardFormatter::from($product));
         } else {
-            $bestSellerProducts = collect(); // kosong
+            $bestSellers = Produk::with('aroma.aromaKategori')
+                ->latest('waktu_dibuat')
+                ->take(2)
+                ->get()
+                ->map(fn($product) => ProductCardFormatter::from($product));
         }
 
-        return view('buyer.home', compact('products', 'ingredients', 'bestSellerProducts'));
+        return view('buyer.home', compact('products', 'ingredients', 'bestSellers'));
     }
 }

@@ -21,6 +21,14 @@ class CheckoutController extends Controller
     // Ini untuk handle POST dari halaman cart
     public function handleCheckout(Request $request)
     {
+        $authId = Auth::id();
+        $pembeli = Pembeli::with('pengguna')->where('id_pengguna', $authId)->first();
+
+        // CEK PROFIL DI SINI
+        if (!$pembeli || empty($pembeli->alamat) || empty($pembeli->no_telp)) {
+            return redirect()->route('profile')->with('error', 'Lengkapi profilmu terlebih dahulu sebelum melanjutkan checkout!');
+        }
+
         $items = json_decode($request->input('selected_items'), true);
 
         // Tambahkan ini untuk cek isi
@@ -39,6 +47,10 @@ class CheckoutController extends Controller
     {
         $authId = Auth::id();
         $pembeli = Pembeli::with('pengguna')->where('id_pengguna', $authId)->first();
+
+        if (!$pembeli || empty($pembeli->alamat) || empty($pembeli->no_telp)) {
+            return redirect()->route('profil')->with('error', 'Lengkapi profilmu terlebih dahulu sebelum melanjutkan checkout!');
+        }
 
         $checkoutItems = session('checkout_items', []);
 
@@ -165,6 +177,6 @@ class CheckoutController extends Controller
             }
         }
         session()->forget('checkout_items');
-        return redirect()->route('transaksi');
+        return redirect()->route('transaksi.detail', ['id' => $pesanan->id_pesanan]);
     }
 }
