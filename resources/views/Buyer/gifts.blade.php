@@ -33,6 +33,13 @@
                         slug="{{ $product['slug'] }}" />
                 @endforeach
             </div>
+
+            {{-- Pagination --}}
+            @if ($products->hasPages())
+                <div class="mt-6 flex justify-center">
+                    {{ $products->links('pagination::tailwind-custom') }}
+                </div>
+            @endif
         @endif
     </div>
 </section>

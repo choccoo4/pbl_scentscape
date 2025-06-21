@@ -15,6 +15,13 @@ import './seller/produk.js';
 import './buyer/profile.js';
 import './buyer/product-card.js';
 import './seller/profile-penjual.js';
+import { forgotAlert } from './auth/forgot.js';
+window.forgotAlert = forgotAlert;
+import { resetAlert } from './auth/reset.js';
+window.resetAlert = resetAlert;
+import { confirmLogoutSeller } from './seller/logout.js';
+window.confirmLogoutSeller = confirmLogoutSeller;
+
 
 
 window.Alpine = Alpine;

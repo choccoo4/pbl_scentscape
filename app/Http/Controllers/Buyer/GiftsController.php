@@ -9,13 +9,14 @@ use App\Helpers\ProductCardFormatter;
 
 class GiftsController extends Controller
 {
-    public function gifts()
+    public function gifts(Request $request)
     {
         $products = Produk::with('aroma.aromaKategori')
             ->where('label_kategori', 'Gifts')
             ->latest('waktu_dibuat')
-            ->get()
-            ->map(fn($product) => ProductCardFormatter::from($product));
+            ->paginate(10)
+            ->withQueryString()
+            ->through(fn($product) => ProductCardFormatter::from($product));
 
         return view('buyer.gifts', compact('products'));
     }
