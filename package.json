@@ -20,6 +20,7 @@
     "dependencies": {
         "alpinejs": "^3.14.9",
         "chart.js": "^4.4.9",
-        "phosphor-icons": "^1.4.2"
+        "phosphor-icons": "^1.4.2",
+        "sweetalert2": "^11.22.0"
     }
 }

@@ -56,11 +56,11 @@
 
       <!-- Password -->
       <div class="mb-6 relative" x-data="{ show: false }">
-        <input :type="show ? 'text' : 'password'" name="password" placeholder="Password"
+        <input :type="show ? 'text' : 'password'" name="password" placeholder="Password" autocomplete="new-password"
           class="w-full pl-10 pr-10 py-2 rounded-md bg-gray-100 placeholder:text-gray-500 text-sm border border-gray-300 focus:outline-none"
           x-model="password" />
         <i class="fa-solid fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-        <i @click="show = !show" :class="show ? 'fa-eye-slash' : 'fa-eye'" class="fa-solid absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"></i>
+        <i @click="show = !show" :class="show ? 'fa-eye' : 'fa-eye-slash'" class="fa-solid absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"></i>
         <p x-show="errors.password" class="text-xs text-red-500 mt-1 absolute -bottom-4 left-0" x-text="errors.password"></p>
       </div>
 
