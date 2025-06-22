@@ -19,7 +19,7 @@ class InvoiceController extends Controller
         if (
             !$pesanan ||
             $pesanan->id_pengguna !== Auth::id() ||
-            !in_array($pesanan->status, ['Menunggu Verifikasi', 'Dibatalkan', 'Selesai', 'Dikirim', 'Dikemas'])
+            !in_array($pesanan->status, ['Menunggu Verifikasi', 'Ditolak', 'Dikemas', 'Dikirim', 'Terkirim', 'Selesai', 'Dibatalkan'])
         ) {
             return redirect()->route('transaksi.detail', ['id' => $id])
                 ->with('error', 'Invoice belum tersedia atau kamu tidak memiliki akses.');
