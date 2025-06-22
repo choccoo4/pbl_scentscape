@@ -17,6 +17,6 @@ class OrderHistoryController extends Controller
             ->orderBy('waktu_pemesanan', 'desc')
             ->get();
 
-        return view('buyer.order-history', compact('pesanan'));
+        return view('buyer.order_history', compact('pesanan'));
     }
 }

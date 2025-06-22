@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+  <meta name="reset-status" content="{{ session('status') }}">
   <meta charset="UTF-8">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Login - Scentscape</title>
@@ -50,17 +51,18 @@
           :type="show ? 'text' : 'password'"
           name="password"
           placeholder="Password"
+          autocomplete="new-password"
           class="w-full p-3 rounded-md bg-[#F6F1EB] placeholder:text-gray-500 text-sm border border-gray-300 focus:outline-none"
           x-model="password" />
         <i @click="show = !show"
-          :class="show ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
+          :class="show ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"
           class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"></i>
         <p x-show="errors.password" class="text-xs text-red-500 mt-1 absolute -bottom-4 left-0" x-text="errors.password"></p>
       </div>
 
       <!-- Forgot Password -->
       <div class="flex justify-end mb-5">
-        <a href="#" class="text-sm text-[#414833] hover:underline">
+        <a href="{{ route('password.request') }}" class="text-sm text-[#414833] hover:underline">
           Forgot Password?
         </a>
       </div>

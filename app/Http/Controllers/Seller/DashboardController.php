@@ -15,8 +15,8 @@ class DashboardController extends Controller
     public function index()
     {
         // Total penjualan hari ini (dari pesanan selesai)
-        $totalPenjualan = Pesanan::where('status', 'Selesai')
-            ->whereDate('waktu_selesai', now()->toDateString())
+        $totalPenjualan = Pesanan::where('status', 'Terkirim')
+            ->whereDate('pesanan.waktu_pemesanan', now()->toDateString())
             ->sum('total');
 
         // Pesanan masuk hari ini (status awal)
@@ -24,9 +24,9 @@ class DashboardController extends Controller
             ->whereIn('status', ['Menunggu Verifikasi', 'Dikemas', 'Dikirim', 'Terkirim'])
             ->count();
 
-        // Produk terjual (jumlah item dari pesanan selesai)
         $produkTerjual = PesananItem::join('pesanan', 'pesanan_item.id_pesanan', '=', 'pesanan.id_pesanan')
-            ->where('pesanan.status', 'Selesai')
+            ->where('pesanan.status', 'Terkirim')
+            ->whereDate('pesanan.waktu_pemesanan', now()->toDateString())
             ->sum('pesanan_item.jumlah');
 
         // Total stok semua produk

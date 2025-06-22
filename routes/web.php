@@ -25,6 +25,23 @@ use App\Http\Controllers\seller\DashboardController;
 use App\Http\Controllers\seller\DaftarpesananController;
 use App\Http\Controllers\Seller\DetailPesananController;
 
+// ================= AUTH ROUTES (Guest)
+Route::middleware('guest.redirect')->group(function () {
+    Route::view('/login', 'auth.login')->name('login');
+    Route::view('/register', 'auth.register')->name('register');
+
+    // Forgot Password
+    Route::get('/forgot-password', function () {
+        return view('auth.forgot_password');
+    })->name('password.request');
+
+    Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
+
+    // Reset Password
+    Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/reset-password/{token}', [AuthController::class, 'resetPassword'])->name('password.update');
+});
+
 // Routes untuk pembeli dengan middleware role:pembeli
 Route::middleware(['auth', 'role:pembeli'])->group(function () {
     // Keranjang
@@ -119,11 +136,6 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/register', [AuthController::class, 'register']);
 
-
-
-Route::get('/detailpesanan', function () {
-    return view('sellers.detailpesanan');
-});
 
 // Tambahkan route ini ke routes/web.php dalam group seller
 Route::get('/seller/dashboard/weekly-sales', [App\Http\Controllers\Seller\DashboardController::class, 'getWeeklySales'])->name('seller.dashboard.weekly-sales');

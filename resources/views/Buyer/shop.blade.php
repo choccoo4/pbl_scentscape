@@ -13,7 +13,6 @@
         @endphp
 
         <div class="flex flex-wrap items-center justify-between text-[15px] text-[#5E4530] font-[500] gap-4">
-            {{-- Kiri: Filter --}}
             <div class="flex flex-wrap items-center gap-4">
                 <span class="tracking-wider">Filter:</span>
 
@@ -100,7 +99,7 @@
                 </div>
             </div>
 
-            {{-- Kanan: Sort --}}
+            {{-- Sort --}}
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2">
                     <span class="tracking-wider">Sort by:</span>
@@ -117,40 +116,32 @@
                         <div x-show="open" @click.outside="open = false" class="absolute right-0 mt-2 bg-white border rounded shadow w-48 z-10">
                             <ul class="text-sm">
                                 <li><a href="{{ route('shop', array_merge(request()->except('sort'), ['sort' => ''])) }}" class="block px-3 py-2 hover:bg-gray-100">Terbaru</a></li>
-                                <li><a href="{{ route('shop', array_merge(request()->except('sort'), ['sort' => 'price_asc'])) }}" class="block px-3 py-2 hover:bg-gray-100">Harga Termurah</a></li>
-                                <li><a href="{{ route('shop', array_merge(request()->except('sort'), ['sort' => 'price_desc'])) }}" class="block px-3 py-2 hover:bg-gray-100">Harga Termahal</a></li>
-                                <li><a href="{{ route('shop', array_merge(request()->except('sort'), ['sort' => 'name_asc'])) }}" class="block px-3 py-2 hover:bg-gray-100">Nama A-Z</a></li>
+                                <li><a href="{{ route('shop', array_merge(request()->except('sort'), ['sort' => 'Harga Terendah'])) }}" class="block px-3 py-2 hover:bg-gray-100">Harga Termurah</a></li>
+                                <li><a href="{{ route('shop', array_merge(request()->except('sort'), ['sort' => 'Harga Tertinggi'])) }}" class="block px-3 py-2 hover:bg-gray-100">Harga Termahal</a></li>
+                                <li><a href="{{ route('shop', array_merge(request()->except('sort'), ['sort' => 'Nama'])) }}" class="block px-3 py-2 hover:bg-gray-100">Nama A-Z</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
                 <div class="text-sm tracking-wide">
-                    {{ $products->count() }} products
+                    {{ $products->total() }} produk
                 </div>
             </div>
         </div>
     </form>
 
-    {{-- Reset --}}
+    {{-- Reset Filter --}}
     @if(request()->hasAny(['aroma', 'gender', 'type', 'volume', 'sort']))
         <div class="mb-6 text-sm text-[#5E4530] flex flex-wrap items-center gap-2">
-            @if(request('aroma'))
-                <a href="{{ route('shop', request()->except('aroma')) }}" class="bg-[#D6C6B8] px-3 py-1 rounded-full">Aroma: {{ request('aroma') }} ✕</a>
-            @endif
-            @if(request('gender'))
-                <a href="{{ route('shop', request()->except('gender')) }}" class="bg-[#D6C6B8] px-3 py-1 rounded-full">Gender: {{ ucfirst(request('gender')) }} ✕</a>
-            @endif
-            @if(request('type'))
-                <a href="{{ route('shop', request()->except('type')) }}" class="bg-[#D6C6B8] px-3 py-1 rounded-full">Tipe: {{ request('type') }} ✕</a>
-            @endif
-            @if(request('volume'))
-                <a href="{{ route('shop', request()->except('volume')) }}" class="bg-[#D6C6B8] px-3 py-1 rounded-full">Volume: {{ request('volume') }} ✕</a>
-            @endif
-            @if(request('sort'))
-                <a href="{{ route('shop', request()->except('sort')) }}" class="bg-[#D6C6B8] px-3 py-1 rounded-full">Sort: {{ request('sort') }} ✕</a>
-            @endif
-
+            @foreach(['aroma', 'gender', 'type', 'volume', 'sort'] as $filter)
+                @if(request($filter))
+                    <a href="{{ route('shop', request()->except($filter)) }}"
+                       class="bg-[#D6C6B8] px-3 py-1 rounded-full">
+                        {{ ucfirst($filter) }}: {{ request($filter) }} ✕
+                    </a>
+                @endif
+            @endforeach
             <a href="{{ route('shop') }}" class="ml-3 underline text-black text-sm">Reset</a>
         </div>
     @endif
@@ -158,7 +149,7 @@
     {{-- Produk --}}
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-x-2 gap-y-4 px-2 xl:px-4">
         @forelse ($products as $product)
-            <x-product-card
+            <x-product_card
                 id="{{ $product['id'] }}"
                 name="{{ $product['name'] }}"
                 price="{{ $product['price'] }}"
@@ -174,5 +165,13 @@
             <p class="text-center col-span-full text-gray-500">Tidak ada produk ditemukan.</p>
         @endforelse
     </div>
+
+    {{-- Pagination --}}
+    @if ($products->hasPages())
+        <div class="mt-6 flex justify-center">
+            {{ $products->links('pagination::tailwind-custom') }}
+        </div>
+    @endif
+
 </section>
 @endsection

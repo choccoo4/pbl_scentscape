@@ -11,17 +11,23 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite/dist/flowbite.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite([
+        'resources/css/app.css', 
+        'resources/js/app.js', 
+        'resources/js/seller.js', 
+        'resources/js/seller/produk.js'
+    ])
     @stack('scripts')
-
-
 </head>
 
-<body class="bg-[#f7f6f3] min-h-screen">
+<body 
+    class="bg-[#f7f6f3] min-h-screen"
+    @if(session('success')) data-success="{{ session('success') }}" @endif
+    @if(session('error')) data-error="{{ session('error') }}" @endif
+>
     @include('components.navbar')
 
     <div class="flex pt-16">
-        <!-- Konten utama -->
         <main class="flex-1 p-4 sm:ml-50 transition-all duration-300">
             @yield('content')
         </main>

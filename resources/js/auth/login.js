@@ -1,20 +1,27 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const status = document.querySelector('meta[name="reset-status"]')?.content;
+
+  if (status) {
+    Swal.fire({
+      icon: 'success',
+      title: 'Berhasil!',
+      text: status,
+      confirmButtonColor: '#4CAF50',
+    });
+  }
+});
+
+// Fungsi loginForm tetap seperti sebelumnya
 export function loginForm() {
   return {
     email: '',
     password: '',
     errors: {},
-
+    
     validate() {
       this.errors = {};
-
-      if (!this.email) {
-        this.errors.email = 'Email wajib diisi.';
-      }
-
-      if (!this.password) {
-        this.errors.password = 'Password wajib diisi.';
-      }
-
+      if (!this.email) this.errors.email = 'Email wajib diisi.';
+      if (!this.password) this.errors.password = 'Password wajib diisi.';
       return Object.keys(this.errors).length === 0;
     },
 
@@ -75,4 +82,3 @@ export function loginForm() {
     }
   };
 }
-

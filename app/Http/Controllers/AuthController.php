@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password as PasswordRule;
+use Illuminate\Support\Facades\Password;
 use App\Models\Pengguna;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Pembeli;
-
 
 class AuthController extends Controller
 {
@@ -30,9 +29,9 @@ class AuthController extends Controller
             return response()->json(['message' => 'Password salah. Coba lagi.'], 401);
         }
 
-        // Simpan ke session atau token
         Auth::login($pengguna);
         session(['role' => $pengguna->role]);
+
         return response()->json(['message' => 'Login berhasil', 'role' => $pengguna->role]);
     }
 
@@ -62,22 +61,15 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $pengguna = new Pengguna();
-        $pengguna->password = Hash::make($request->password);
         try {
-            // Validasi input secara manual agar bisa kasih respon lebih detail
             $validator = Validator::make($request->all(), [
-                'email' => 'required|email|unique:pengguna,Email',
+                'email' => 'required|email|unique:pengguna,email',
                 'name' => 'required|string',
-                'username' => 'required|string|unique:pengguna,Username',
+                'username' => 'required|string|unique:pengguna,username',
                 'password' => [
                     'required',
                     'string',
-                    PasswordRule::min(8)
-                        ->mixedCase()
-                        ->letters()
-                        ->numbers()
-                        ->symbols()
+                    PasswordRule::min(8)->mixedCase()->letters()->numbers()->symbols(),
                 ],
             ]);
 
@@ -85,7 +77,7 @@ class AuthController extends Controller
                 if ($validator->errors()->has('email')) {
                     return response()->json([
                         'message' => 'Email sudah terdaftar. Silakan login.'
-                    ], 409); // 409 Conflict
+                    ], 409);
                 }
 
                 if ($validator->errors()->has('username')) {
@@ -107,7 +99,6 @@ class AuthController extends Controller
                 ], 422);
             }
 
-            // Jika validasi lolos, buat pengguna
             Pengguna::create([
                 'email' => $request->email,
                 'nama' => $request->name,
@@ -126,5 +117,64 @@ class AuthController extends Controller
                 'message' => 'Terjadi kesalahan pada server. Silakan coba lagi.'
             ], 500);
         }
+    }
+
+    public function sendResetLink(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:pengguna,email',
+        ]);
+
+        $status = Password::broker('pengguna')->sendResetLink(
+            $request->only('email')
+        );
+
+        if ($status === Password::RESET_LINK_SENT) {
+            return back()->with(['status' => __($status)]);
+        } else {
+            return back()->withErrors(['email' => __($status)]);
+        }
+    }
+
+    public function showResetForm($token, Request $request)
+    {
+        $email = $request->query('email');
+        return view('auth.reset_password', [
+            'token' => $token,
+            'email' => $email
+        ]);
+    }
+
+    public function resetPassword(Request $request, $token)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => [
+                'required',
+                'confirmed',
+                PasswordRule::min(8)->mixedCase()->numbers()->symbols(),
+            ],
+        ]);
+
+        $status = Password::broker('pengguna')->reset(
+            [
+                'email' => $request->email,
+                'password' => $request->password,
+                'password_confirmation' => $request->password_confirmation,
+                'token' => $token,
+            ],
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                ])->save();
+            }
+        );
+
+        if ($status == Password::PASSWORD_RESET) {
+            // Kembali ke halaman reset dengan pesan sukses agar bisa ditangkap di SweetAlert
+            return redirect()->back()->with('reset_success', 'Password berhasil direset!');
+        }
+
+        return back()->withErrors(['email' => __($status)]);
     }
 }

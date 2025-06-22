@@ -5,28 +5,7 @@
 <div class="bg-[#FDF6EF] min-h-screen py-10 px-4">
     <div class="flex flex-col md:flex-row max-w-6xl mx-auto gap-6">
         <!-- Sidebar -->
-        <aside class="w-1/4 md:w-1/5 bg-[#FDF6EF] p-4 md:p-6">
-            <div class="flex items-center gap-4 mb-6 px-2">
-                <img src="/images/profile.png" class="w-10 h-10 rounded-full" alt="Profile Icon">
-                <p class="font-semibold text-lg">username</p>
-            </div>
-            <ul class="space-y-2 text-left font-medium ml-4 group">
-                <li class="relative">
-                    <div class="flex items-center space-x-2 hover:text-[#9BAF9A] transition-all cursor-pointer group-hover:text-[#9BAF9A]">
-                        <i class="fas fa-user"></i>
-                        <span>My Account</span>
-                    </div>
-                    <ul class="pl-6 mt-2 space-y-1 text-sm transition-all duration-300 group-hover:max-h-32 max-h-0 overflow-hidden">
-                        <li><a href="{{ route('profile') }}" class="hover:text-[#BFA6A0]">Profile</a></li>
-                        <li><a href="{{ route('change-pw') }}" class="hover:text-[#BFA6A0]">Change Password</a></li>
-                    </ul>
-                </li>
-                <li class="flex items-center space-x-2 font-medium text-black hover:text-[#9BAF9A]">
-                    <i class="fas fa-box"></i>
-                    <a href="{{ route('order.history') }}">Order History</a>
-                </li>
-            </ul>
-        </aside>
+        @include('components.sidebar-profile')
 
         <!-- Main Content -->
         <main class="flex-1 bg-white p-6 rounded-xl shadow">
@@ -57,7 +36,7 @@
                             <td class="px-4 py-3 border text-blue-600 underline">
                                 @if ($item->status === 'Menunggu Pembayaran')
                                 <a href="{{ route('transaksi.detail', $item->id_pesanan) }}" class="text-yellow-600 hover:underline" target="_blank">Bayar Sekarang</a>
-                                @elseif(in_array($item->status, ['Menunggu Verifikasi', 'Dibatalkan', 'Selesai', 'Dikirim', 'Dikemas']))
+                                @elseif(in_array($item->status, ['Menunggu Verifikasi', 'Dibatalkan', 'Selesai', 'Dikirim', 'Dikemas', 'Terkirim', 'Ditolak']))
                                 <a href="{{ route('invoice.generate', $item->id_pesanan) }}" class="text-blue-600 hover:underline" target="_blank">Lihat Invoice</a>
                                 @endif
                             </td>

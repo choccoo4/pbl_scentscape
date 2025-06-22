@@ -35,6 +35,6 @@ class BestSellersController extends Controller
                 ->map(fn($product) => ProductCardFormatter::from($product));
         }
 
-        return view('buyer.best-sellers', compact('products'));
+        return view('buyer.best_sellers', compact('products'));
     }
 }

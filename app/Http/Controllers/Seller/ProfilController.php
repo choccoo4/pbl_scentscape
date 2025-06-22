@@ -25,7 +25,7 @@ class ProfilController extends Controller
             $penjual->setRelation('pengguna', Auth::user());
         }
 
-        return view('sellers.profil-penjual', compact('penjual'));
+        return view('sellers.profil_penjual', compact('penjual'));
     }
 
     public function update(Request $request)

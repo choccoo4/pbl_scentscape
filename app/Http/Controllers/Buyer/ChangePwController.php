@@ -14,7 +14,7 @@ class ChangePwController extends Controller
 {
     public function changePw()
     {
-        return view('buyer.change-pw');
+        return view('buyer.change_pw');
     }
 
     public function updatePassword(Request $request)
@@ -41,6 +41,7 @@ class ChangePwController extends Controller
             'new_password.symbols' => 'Password baru harus mengandung simbol.',
         ]);
 
+        /** @var \App\Models\Pengguna $user */
         $user = Auth::user();
 
         if (!Hash::check($request->current_password, $user->password)) {
@@ -65,7 +66,6 @@ class ChangePwController extends Controller
             Auth::logout();
 
             return redirect()->route('login')->with('success', 'Password berhasil diubah! Silakan login kembali.');
-
         } catch (\Exception $e) {
             Log::error('Error updating password: ' . $e->getMessage());
             return back()->withErrors([

@@ -16,7 +16,7 @@
             <i class="fa-solid fa-hand-holding-dollar text-lg"></i>
         </div>
         <div>
-            <p class="text-sm text-[#BFA6A0]">Total Penjualan</p>
+            <p class="text-sm text-[#BFA6A0]">Total Penjualan Harian</p>
             <p class="text-lg font-semibold text-[#3E3A39]">Rp {{ number_format($totalPenjualan, 0, ',', '.') }}</p>
         </div>
     </div>
@@ -34,7 +34,7 @@
             <i class="fa-solid fa-truck-fast text-lg"></i>
         </div>
         <div>
-            <p class="text-sm text-[#BFA6A0]">Produk Terjual</p>
+            <p class="text-sm text-[#BFA6A0]">Produk Terjual Harian</p>
             <p class="text-lg font-semibold text-[#3E3A39]">{{ $produkTerjual }} Produk</p>
         </div>
     </div>
