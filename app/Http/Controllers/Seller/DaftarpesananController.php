@@ -50,6 +50,6 @@ class DaftarpesananController extends Controller
 
         $pesanan = $query->paginate(10)->withQueryString();
 
-        return view('sellers.daftarpesanan', compact('pesanan'));
+        return view('sellers.daftar_pesanan', compact('pesanan'));
     }
 }

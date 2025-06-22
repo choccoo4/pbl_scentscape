@@ -13,22 +13,22 @@ class SellerController extends Controller
 
     public function daftarProduk()
     {
-        return view('sellers.daftarproduk');
+        return view('sellers.daftar_produk');
     }
 
     public function tambahProduk()
     {
-        return view('sellers.tambahproduk');
+        return view('sellers.tambah_produk');
     }
 
     public function updateProduk()
     {
-        return view('sellers.updateproduk');
+        return view('sellers.update_produk');
     }
 
     public function daftarPesanan()
     {
-        return view('sellers.daftarpesanan');
+        return view('sellers.daftar_pesanan');
     }
 
     public function rekapitulasi()
@@ -43,7 +43,7 @@ class SellerController extends Controller
 
     public function profilPenjual()
     {
-        return view('sellers.profil-penjual');
+        return view('sellers.profil_penjual');
     }
 
     public function ubahPasswordPenjual()

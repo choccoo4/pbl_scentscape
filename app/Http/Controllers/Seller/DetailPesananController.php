@@ -18,7 +18,7 @@ class DetailPesananController extends Controller
         // Ambil data pesanan
         $pesanan = Pesanan::with(['pengguna', 'items', 'pembayaran'])->findOrFail($id);
 
-        return view('sellers.detailpesanan', compact('pesanan'));
+        return view('sellers.detail_pesanan', compact('pesanan'));
     }
 
     public function tolak($id)

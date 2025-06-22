@@ -1,6 +1,3 @@
-// Di atas
-import Swal from 'sweetalert2';
-
 document.addEventListener('DOMContentLoaded', () => {
   const status = document.querySelector('meta[name="reset-status"]')?.content;
 

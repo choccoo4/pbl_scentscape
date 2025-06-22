@@ -19,7 +19,7 @@
         @else
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-x-2 gap-y-4">
                 @foreach ($products as $product)
-                    <x-product-card
+                    <x-product_card
                         id="{{ $product['id'] }}"
                         name="{{ $product['name'] }}"
                         price="{{ $product['price'] }}"

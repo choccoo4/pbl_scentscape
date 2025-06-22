@@ -1,5 +1,3 @@
-import Swal from 'sweetalert2';
-
 export function confirmLogoutSeller() {
     Swal.fire({
         title: 'Logout dari akun penjual?',

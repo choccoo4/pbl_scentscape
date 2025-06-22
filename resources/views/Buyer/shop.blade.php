@@ -116,9 +116,9 @@
                         <div x-show="open" @click.outside="open = false" class="absolute right-0 mt-2 bg-white border rounded shadow w-48 z-10">
                             <ul class="text-sm">
                                 <li><a href="{{ route('shop', array_merge(request()->except('sort'), ['sort' => ''])) }}" class="block px-3 py-2 hover:bg-gray-100">Terbaru</a></li>
-                                <li><a href="{{ route('shop', array_merge(request()->except('sort'), ['sort' => 'price_asc'])) }}" class="block px-3 py-2 hover:bg-gray-100">Harga Termurah</a></li>
-                                <li><a href="{{ route('shop', array_merge(request()->except('sort'), ['sort' => 'price_desc'])) }}" class="block px-3 py-2 hover:bg-gray-100">Harga Termahal</a></li>
-                                <li><a href="{{ route('shop', array_merge(request()->except('sort'), ['sort' => 'name_asc'])) }}" class="block px-3 py-2 hover:bg-gray-100">Nama A-Z</a></li>
+                                <li><a href="{{ route('shop', array_merge(request()->except('sort'), ['sort' => 'Harga Terendah'])) }}" class="block px-3 py-2 hover:bg-gray-100">Harga Termurah</a></li>
+                                <li><a href="{{ route('shop', array_merge(request()->except('sort'), ['sort' => 'Harga Tertinggi'])) }}" class="block px-3 py-2 hover:bg-gray-100">Harga Termahal</a></li>
+                                <li><a href="{{ route('shop', array_merge(request()->except('sort'), ['sort' => 'Nama'])) }}" class="block px-3 py-2 hover:bg-gray-100">Nama A-Z</a></li>
                             </ul>
                         </div>
                     </div>
@@ -149,7 +149,7 @@
     {{-- Produk --}}
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-x-2 gap-y-4 px-2 xl:px-4">
         @forelse ($products as $product)
-            <x-product-card
+            <x-product_card
                 id="{{ $product['id'] }}"
                 name="{{ $product['name'] }}"
                 price="{{ $product['price'] }}"

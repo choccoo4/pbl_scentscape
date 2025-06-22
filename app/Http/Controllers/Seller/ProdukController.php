@@ -29,7 +29,7 @@ class ProdukController extends Controller
             $item->penjualan = $item->totalPenjualan(); // dari model
         }
 
-        return view('sellers.daftarproduk', compact('produk'));
+        return view('sellers.daftar_produk', compact('produk'));
     }
 
     public function create()
@@ -40,7 +40,7 @@ class ProdukController extends Controller
         $labelKategoriList = ['Unisex', 'For Him', 'For Her', 'Gifts'];
 
         $kategoriList = AromaKategori::all(['id', 'nama']);
-        return view('sellers.tambahproduk', compact('categories', 'tipeList', 'volumeList', 'labelKategoriList', 'kategoriList'));
+        return view('sellers.tambah_produk', compact('categories', 'tipeList', 'volumeList', 'labelKategoriList', 'kategoriList'));
     }
 
     public function store(Request $request)
@@ -132,13 +132,6 @@ class ProdukController extends Controller
     {
         $produk = Produk::where('no_produk', $no_produk)->firstOrFail();
 
-        // Hapus file gambar jika perlu
-        if ($produk->gambar && is_array($produk->gambar)) {
-            foreach ($produk->gambar as $file) {
-                Storage::disk('public')->delete($file);
-            }
-        }
-
         $produk->delete();
 
         return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus');
@@ -155,7 +148,7 @@ class ProdukController extends Controller
         $categories = Aroma::all()->pluck('nama'); // semua aroma
         $kategoriList = AromaKategori::all(['id', 'nama']);
 
-        return view('sellers.updateproduk', compact(
+        return view('sellers.update_produk', compact(
             'produk',
             'produkCategories',
             'categories',

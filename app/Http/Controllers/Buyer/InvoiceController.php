@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Pesanan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Invoice;
+use Illuminate\Support\Facades\Storage;
 
 class InvoiceController extends Controller
 {
@@ -23,7 +25,20 @@ class InvoiceController extends Controller
                 ->with('error', 'Invoice belum tersedia atau kamu tidak memiliki akses.');
         }
 
+        $filename = 'invoice-' . $pesanan->nomor_pesanan . '.pdf';
+        $path = 'invoice/' . $filename;
+
+        // Generate PDF
         $pdf = Pdf::loadView('buyer.pdf', compact('pesanan'));
-        return $pdf->stream('invoice-' . $pesanan->nomor_pesanan . '.pdf');
+        Storage::disk('public')->put($path, $pdf->output());
+
+        // Simpan ke tabel invoice (cek kalau belum ada)
+        Invoice::firstOrCreate(
+            ['id_pesanan' => $pesanan->id_pesanan],
+            ['path_invoice' => $path]
+        );
+
+        // Tampilkan langsung ke user
+        return $pdf->stream($filename);
     }
 }
