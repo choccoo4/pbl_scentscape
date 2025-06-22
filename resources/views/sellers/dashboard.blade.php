@@ -56,9 +56,220 @@
     </p>
 </div>
 
-<!-- Placeholder Chart Section -->
+<!-- Chart Penjualan Mingguan -->
 <div class="bg-white rounded-xl shadow p-6 mt-6 max-w-4xl mx-auto">
-    <p class="mb-4 font-semibold text-[#3E3A39] text-left">Statistik Penjualan Mingguan</p>
+    <div class="flex justify-between items-center mb-4">
+        <p class="font-semibold text-[#3E3A39]">Statistik Penjualan Mingguan</p>
+        <div class="text-sm text-gray-500" id="chart-period">
+            Loading...
+        </div>
+    </div>
+    
+    <!-- Canvas untuk Chart -->
     <canvas id="salesChart" height="100"></canvas>
+    
+    <!-- Loading indicator -->
+    <div id="chart-loading" class="text-center py-8 text-gray-500">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        <p class="mt-2">Memuat data penjualan...</p>
+    </div>
+    
+    <!-- Summary mingguan -->
+    <div id="weekly-summary" class="mt-4 p-3 bg-gray-50 rounded-lg hidden">
+        <div class="grid grid-cols-2 gap-4 text-sm">
+            <div>
+                <span class="text-gray-600">Total Penjualan Minggu Ini:</span>
+                <p class="font-semibold text-[#414833]" id="total-sales">Rp 0</p>
+            </div>
+            <div>
+                <span class="text-gray-600">Total Pesanan Minggu Ini:</span>
+                <p class="font-semibold text-[#414833]" id="total-orders">0 pesanan</p>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- JavaScript untuk Chart -->
+<script>
+// Pastikan hanya ada satu instance chart
+let salesChartInstance = null;
+let isChartInitialized = false;
+
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('salesChart');
+    const loadingElement = document.getElementById('chart-loading');
+    const summaryElement = document.getElementById('weekly-summary');
+    const periodElement = document.getElementById('chart-period');
+    
+    if (!ctx) return;
+
+    // Cegah inisialisasi berulang
+    if (isChartInitialized) {
+        return;
+    }
+
+    // Destroy chart lama jika ada
+    if (salesChartInstance) {
+        salesChartInstance.destroy();
+        salesChartInstance = null;
+    }
+
+    // Inisialisasi chart HANYA SEKALI dengan data loading state
+    salesChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+            datasets: [{
+                label: 'Penjualan (Rp)',
+                data: [0, 0, 0, 0, 0, 0, 0],
+                borderColor: '#9BAF9A',
+                backgroundColor: 'rgba(155, 175, 154, 0.2)',
+                tension: 0.4,
+                pointBackgroundColor: '#9BAF9A',
+                pointBorderColor: '#9BAF9A',
+                pointRadius: 5,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+                duration: 0 // Matikan animasi untuk menghindari bergetar
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return 'Penjualan: Rp ' + new Intl.NumberFormat('id-ID').format(context.parsed.y);
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Mark sebagai sudah diinisialisasi
+    isChartInitialized = true;
+
+    // Fungsi untuk load data dari API (HANYA SEKALI)
+    async function loadWeeklySales() {
+        // Cegah multiple API calls
+        if (loadWeeklySales.isLoading) {
+            return;
+        }
+        loadWeeklySales.isLoading = true;
+
+        try {
+            const response = await fetch('{{ route("seller.dashboard.weekly-sales") }}', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            
+            if (result.success && salesChartInstance) {
+                // Update data chart TANPA re-render
+                salesChartInstance.data.labels = result.data.labels;
+                salesChartInstance.data.datasets[0].data = result.data.sales;
+                
+                // Update chart dengan mode 'none' untuk menghindari animasi bergetar
+                salesChartInstance.update('none');
+
+                // Update summary
+                if (document.getElementById('total-sales')) {
+                    document.getElementById('total-sales').textContent = 
+                        'Rp ' + new Intl.NumberFormat('id-ID').format(result.data.total_sales);
+                }
+                
+                if (document.getElementById('total-orders')) {
+                    document.getElementById('total-orders').textContent = 
+                        result.data.total_orders + ' pesanan';
+                }
+                
+                // Update periode
+                if (periodElement) {
+                    periodElement.textContent = result.data.periode.mulai + ' - ' + result.data.periode.selesai;
+                }
+                
+                // Hide loading, show summary
+                if (loadingElement) {
+                    loadingElement.style.display = 'none';
+                }
+                if (summaryElement) {
+                    summaryElement.classList.remove('hidden');
+                }
+                
+            } else {
+                throw new Error(result.message || 'Gagal memuat data');
+            }
+
+        } catch (error) {
+            console.error('Error loading weekly sales:', error);
+            
+            // Show error state
+            if (loadingElement) {
+                loadingElement.innerHTML = '<i class="fa-solid fa-exclamation-triangle text-red-500"></i><p class="mt-2 text-red-500">Gagal memuat data. Silakan refresh halaman.</p>';
+            }
+        } finally {
+            loadWeeklySales.isLoading = false;
+        }
+    }
+
+    // Load data hanya sekali setelah DOM ready
+    loadWeeklySales();
+});
+
+// Cleanup yang proper saat page unload
+window.addEventListener('beforeunload', function() {
+    if (salesChartInstance) {
+        salesChartInstance.destroy();
+        salesChartInstance = null;
+        isChartInitialized = false;
+    }
+});
+
+// Prevent multiple event listener registration
+if (window.chartEventListenerAdded) {
+    // Sudah ada event listener, skip
+} else {
+    window.chartEventListenerAdded = true;
+    
+    // Handle visibility change untuk mencegah re-render saat tab switch
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            // Tab disembunyikan, pause animations jika ada
+            if (salesChartInstance) {
+                Chart.defaults.animation = false;
+            }
+        } else {
+            // Tab ditampilkan kembali
+            if (salesChartInstance) {
+                Chart.defaults.animation = false; // Tetap matikan animasi
+            }
+        }
+    });
+}
+</script>
 @endsection

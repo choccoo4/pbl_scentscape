@@ -12,7 +12,8 @@ class InvoiceController extends Controller
 {
     public function generate($id)
     {
-        $pesanan = Pesanan::with(['items', 'pembeli.pengguna'])->find($id);
+        // Include pengiriman relation untuk mendapatkan data resi dan waktu kirim
+        $pesanan = Pesanan::with(['items', 'pembeli.pengguna', 'pengiriman'])->find($id);
 
         if (
             !$pesanan ||

@@ -1,31 +1,61 @@
 <table>
     <thead>
         <tr>
-            <th colspan="5" style="font-size: 16px; text-align: center; font-weight: bold; padding: 10px;">
-                Rekapitulasi Penjualan
+            <th colspan="5" style="font-size: 16px; text-align: center; font-weight: bold; padding: 10px; background-color: #9baf9a; color: white;">
+                REKAPITULASI PENJUALAN
             </th>
         </tr>
+        @if(isset($tanggalAwal) && isset($tanggalAkhir))
         <tr>
-            <th>Tanggal</th>
-            <th>Nama Produk</th>
-            <th>Harga Satuan</th>
-            <th>Jumlah</th>
-            <th>Total</th>
+            <th colspan="5" style="text-align: center; font-size: 12px; padding: 5px;">
+                Periode: {{ \Carbon\Carbon::parse($tanggalAwal)->format('d-m-Y') }} s/d {{ \Carbon\Carbon::parse($tanggalAkhir)->format('d-m-Y') }}
+            </th>
+        </tr>
+        @endif
+        <tr style="background-color: #9baf9a; color: white; font-weight: bold;">
+            <th style="text-align: center; padding: 8px; border: 1px solid #ddd;">Tanggal</th>
+            <th style="text-align: center; padding: 8px; border: 1px solid #ddd;">Nama Produk</th>
+            <th style="text-align: center; padding: 8px; border: 1px solid #ddd;">Harga Satuan</th>
+            <th style="text-align: center; padding: 8px; border: 1px solid #ddd;">Jumlah</th>
+            <th style="text-align: center; padding: 8px; border: 1px solid #ddd;">Total</th>
         </tr>
     </thead>
     <tbody>
-        @foreach ($penjualan as $item)
+        @forelse ($penjualan as $item)
             <tr>
-                <td>{{ $item->pesanan->waktu_pemesanan->format('d-m-Y') }}</td>
-                <td>{{ $item->produk->nama_produk }}</td>
-                <td>{{ $item->harga_satuan }}</td>
-                <td>{{ $item->jumlah }}</td>
-                <td>{{ $item->harga_satuan * $item->jumlah }}</td>
+                <td style="text-align: center; padding: 5px; border: 1px solid #ddd;">
+                    {{ $item->pesanan ? $item->pesanan->waktu_pemesanan->format('d-m-Y') : '-' }}
+                </td>
+                <td style="padding: 5px; border: 1px solid #ddd;">
+                    {{ $item->produk ? $item->produk->nama_produk : ($item->nama_produk ?? 'Produk Tidak Ditemukan') }}
+                </td>
+                <td style="text-align: right; padding: 5px; border: 1px solid #ddd;">
+                    {{ number_format($item->harga_satuan, 0, ',', '.') }}
+                </td>
+                <td style="text-align: center; padding: 5px; border: 1px solid #ddd;">
+                    {{ $item->jumlah }}
+                </td>
+                <td style="text-align: right; padding: 5px; border: 1px solid #ddd;">
+                    {{ number_format($item->harga_satuan * $item->jumlah, 0, ',', '.') }}
+                </td>
             </tr>
-        @endforeach
-        <tr>
-            <td colspan="4"><strong>Grand Total</strong></td>
-            <td><strong>{{ $grandTotal }}</strong></td>
+        @empty
+            <tr>
+                <td colspan="5" style="text-align: center; padding: 10px; border: 1px solid #ddd;">
+                    Tidak ada data penjualan pada periode yang dipilih
+                </td>
+            </tr>
+        @endforelse
+        
+        @if($penjualan->count() > 0)
+        <tr style="background-color: #f0f0f0; font-weight: bold;">
+            <td colspan="4" style="text-align: right; padding: 8px; border: 1px solid #ddd;">
+                <strong>GRAND TOTAL:</strong>
+            </td>
+            <td style="text-align: right; padding: 8px; border: 1px solid #ddd;">
+                <strong>{{ number_format($grandTotal, 0, ',', '.') }}</strong>
+            </td>
         </tr>
+        @endif
     </tbody>
 </table>
