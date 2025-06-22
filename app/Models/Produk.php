@@ -56,7 +56,7 @@ class Produk extends Model
         return DB::table('pesanan_item')
             ->join('pesanan', 'pesanan_item.id_pesanan', '=', 'pesanan.id_pesanan')
             ->where('pesanan_item.no_produk', $this->no_produk)
-            ->where('pesanan.status', 'Selesai')
+            ->where('pesanan.status', 'Terkirim')
             ->sum('pesanan_item.jumlah');
     }
 }

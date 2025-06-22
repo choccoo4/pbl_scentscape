@@ -102,7 +102,7 @@
     <table class="summary">
         <tr>
             <td class="label">Subtotal</td>
-            <td class="text-right">Rp{{ number_format($pesanan->total, 0, ',', '.') }}</td>
+            <td class="text-right">Rp{{ number_format($item->subtotal, 0, ',', '.') }}</td>
         </tr>
         <tr>
             <td class="label">Ongkos Kirim</td>
@@ -110,7 +110,7 @@
         </tr>
         <tr>
             <td class="label total-final">Total Akhir</td>
-            <td class="text-right total-final">Rp{{ number_format($pesanan->total + $pesanan->ongkir, 0, ',', '.') }}</td>
+            <td class="text-right total-final">Rp{{ number_format($pesanan->total, 0, ',', '.') }}</td>
         </tr>
     </table>
 
