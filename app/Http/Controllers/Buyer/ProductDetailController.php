@@ -12,6 +12,6 @@ class ProductDetailController extends Controller
     {
         $product = Produk::with('aroma')->findOrFail($id);
 
-        return view('buyer.product-detail', compact('product'));
+        return view('buyer.product_detail', compact('product'));
     }
 }

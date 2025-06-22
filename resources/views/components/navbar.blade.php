@@ -45,12 +45,11 @@
                             </li>
                             <li>
                                 <a href="#" onclick="confirmLogoutSeller()" class="block px-4 py-2 rounded hover:bg-[#d6c6b8] hover:text-[#414833] transition-colors">
-    Sign out
-</a>
-<form id="logout-form-seller" action="{{ route('logout') }}" method="POST" class="hidden">
-    @csrf
-</form>
-
+                                    Sign out
+                                </a>
+                                <form id="logout-form-seller" action="{{ route('logout') }}" method="POST" class="hidden">
+                                    @csrf
+                                </form>
                             </li>
                         </ul>
                     </div>

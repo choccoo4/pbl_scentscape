@@ -8,13 +8,16 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Password;
+use App\Models\Penjual;
 use Carbon\Carbon;
 
 class UbahpwController extends Controller
 {
     public function ubahpw()
     {
-        return view('sellers.changePassword');
+        $penjual = Penjual::where('id_pengguna', Auth::id())->with('pengguna')->first();
+
+        return view('sellers.change_password', compact('penjual'));
     }
 
     public function updatePassword(Request $request)

@@ -14,7 +14,7 @@
     <div class="max-w-screen-xl mx-auto">
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-x-2 gap-y-4 px-2 xl:px-4">
             @foreach ($products as $product)
-            <x-product-card
+            <x-product_card
                 id="{{ $product['id'] }}"
                 name="{{ $product['name'] }}"
                 price="{{ $product['price'] }}"

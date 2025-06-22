@@ -8,16 +8,15 @@
   {{-- Meta --}}
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="reset-success" content="{{ session('reset_success') }}">
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   {{-- Vite --}}
   @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/auth/reset.js'])
-
   {{-- Font Awesome --}}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 @php
-  $bg = asset('images/background3.jpeg');
+$bg = asset('images/background3.jpeg');
 @endphp
 
 <body class="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center relative"
@@ -59,8 +58,8 @@
           placeholder="Password Baru"
           class="w-full p-3 rounded-md bg-[#F6F1EB] text-sm border border-gray-300 focus:outline-none" />
         <i @click="show = !show"
-           :class="show ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"
-           class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"></i>
+          :class="show ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"
+          class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"></i>
       </div>
 
       {{-- Konfirmasi Password --}}
@@ -72,8 +71,8 @@
           placeholder="Konfirmasi Password"
           class="w-full p-3 rounded-md bg-[#F6F1EB] text-sm border border-gray-300 focus:outline-none" />
         <i @click="showConfirm = !showConfirm"
-           :class="showConfirm ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"
-           class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"></i>
+          :class="showConfirm ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"
+          class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"></i>
       </div>
 
       {{-- Submit --}}

@@ -17,7 +17,6 @@ class AppServiceProvider extends ServiceProvider
             $notifCount = 0;
             if ($user) {
                 // Hitung jumlah pesanan yang butuh perhatian
-                // Contoh: status 'Menunggu Verifikasi' dan 'Dikemas'
                 $notifCount = Pesanan::whereIn('status', ['Menunggu Verifikasi', 'Dikemas', 'Dikirim', 'Terkirim'])->count();
             }
 

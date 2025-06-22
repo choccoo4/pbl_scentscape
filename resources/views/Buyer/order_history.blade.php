@@ -57,7 +57,7 @@
                             <td class="px-4 py-3 border text-blue-600 underline">
                                 @if ($item->status === 'Menunggu Pembayaran')
                                 <a href="{{ route('transaksi.detail', $item->id_pesanan) }}" class="text-yellow-600 hover:underline" target="_blank">Bayar Sekarang</a>
-                                @elseif(in_array($item->status, ['Menunggu Verifikasi', 'Dibatalkan', 'Selesai', 'Dikirim', 'Dikemas']))
+                                @elseif(in_array($item->status, ['Menunggu Verifikasi', 'Dibatalkan', 'Selesai', 'Dikirim', 'Dikemas', 'Terkirim', 'Ditolak']))
                                 <a href="{{ route('invoice.generate', $item->id_pesanan) }}" class="text-blue-600 hover:underline" target="_blank">Lihat Invoice</a>
                                 @endif
                             </td>
