@@ -135,3 +135,14 @@ Route::middleware('guest.redirect')->group(function () {
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/register', [AuthController::class, 'register']);
+
+
+// Tambahkan route ini ke routes/web.php dalam group seller
+Route::get('/seller/dashboard/weekly-sales', [App\Http\Controllers\Seller\DashboardController::class, 'getWeeklySales'])->name('seller.dashboard.weekly-sales');
+
+
+// Routes untuk Rekapitulasi (Seller)
+Route::get('/rekapitulasi', [RekapitulasiController::class, 'index'])->name('rekap.index');
+Route::get('/rekapitulasi/pdf', [RekapitulasiController::class, 'exportPdf'])->name('rekap.pdf');
+Route::get('/rekapitulasi/excel', [RekapitulasiController::class, 'exportExcel'])->name('rekap.excel');
+

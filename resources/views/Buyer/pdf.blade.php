@@ -56,6 +56,18 @@
             font-weight: bold;
             font-size: 16px;
         }
+
+        .shipping-info {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-left: 4px solid #007bff;
+            margin: 20px 0;
+        }
+
+        .shipping-info h4 {
+            color: #007bff;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 
@@ -74,6 +86,25 @@
         <p><strong>No. HP:</strong> {{ $pesanan->pembeli->no_telp ?? '-' }}</p>
         <p><strong>Alamat Pengiriman:</strong> {{ $pesanan->pembeli->alamat ?? '-' }}</p>
     </div>
+
+    <!-- Informasi Pengiriman (hanya tampil jika ada data pengiriman) -->
+    @if($pesanan->pengiriman && ($pesanan->status == 'Dikirim' || $pesanan->status == 'Selesai'))
+    <div class="shipping-info">
+        <h4>Informasi Pengiriman</h4>
+        <p><strong>Nomor Resi:</strong> {{ $pesanan->pengiriman->nomor_resi ?? '-' }}</p>
+        
+        <!-- Coba berbagai kemungkinan nama field untuk tanggal kirim -->
+        @if($pesanan->pengiriman->waktu_dikirim)
+        <p><strong>Tanggal Dikirim:</strong> {{ \Carbon\Carbon::parse($pesanan->pengiriman->waktu_dikirim)->format('d M Y') }}</p>
+        @elseif($pesanan->pengiriman->tanggal_kirim)
+        <p><strong>Tanggal Dikirim:</strong> {{ \Carbon\Carbon::parse($pesanan->pengiriman->tanggal_kirim)->format('d M Y') }}</p>
+        @elseif($pesanan->pengiriman->created_at)
+        <p><strong>Tanggal Dikirim:</strong> {{ \Carbon\Carbon::parse($pesanan->pengiriman->created_at)->format('d M Y') }}</p>
+        @elseif($pesanan->pengiriman->waktu_pengiriman)
+        <p><strong>Tanggal Dikirim:</strong> {{ \Carbon\Carbon::parse($pesanan->pengiriman->waktu_pengiriman)->format('d M Y') }}</p>
+        @endif
+    </div>
+    @endif
 
     <div class="section">
         <h4>Daftar Produk</h4>
