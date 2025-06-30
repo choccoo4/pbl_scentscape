@@ -22,10 +22,13 @@ class HomeController extends Controller
             ->map(fn($product) => ProductCardFormatter::from($product));
 
         // Ingredients (aroma kategori)
-        $ingredients = AromaKategori::take(12)->get()->map(function ($item) {
+        $ingredients = AromaKategori::all()->map(function ($item) {
             return [
+                'id' => $item->id,
                 'name' => $item->nama,
                 'img' => $item->gambar ?? 'default.jpg',
+                'desc' => $item->deskripsi ?? '',
+                'icon' => $item->icon ?? 'ph-leaf',
             ];
         });
 

@@ -35,14 +35,14 @@ class UbahpwController extends Controller
                     ->symbols()
             ],
         ], [
-            'current_password.required' => 'Password lama harus diisi.',
-            'new_password.required' => 'Password baru harus diisi.',
-            'new_password.confirmed' => 'Konfirmasi password tidak cocok.',
-            'new_password.min' => 'Password baru minimal 8 karakter.',
-            'new_password.letters' => 'Password baru harus mengandung huruf.',
-            'new_password.mixed_case' => 'Password baru harus mengandung huruf besar dan kecil.',
-            'new_password.numbers' => 'Password baru harus mengandung angka.',
-            'new_password.symbols' => 'Password baru harus mengandung simbol.',
+            'current_password.required' => 'Current password is required.',
+            'new_password.required' => 'New password is required.',
+            'new_password.confirmed' => 'Password confirmation does not match.',
+            'new_password.min' => 'New password must be at least 8 characters.',
+            'new_password.letters' => 'New password must contain letters.',
+            'new_password.mixed_case' => 'New password must contain both uppercase and lowercase letters.',
+            'new_password.numbers' => 'New password must include numbers.',
+            'new_password.symbols' => 'New password must contain at least one symbol.',
         ]);
 
         // Refresh user data dari database untuk memastikan data terbaru
@@ -53,14 +53,14 @@ class UbahpwController extends Controller
         // Cek apakah password lama benar
         if (!Hash::check($request->current_password, $user->password)) {
             return back()->withErrors([
-                'current_password' => 'Password lama tidak sesuai.'
+                'current_password' => 'The current password is incorrect.'
             ])->withInput();
         }
 
         // Cek apakah password baru sama dengan password lama
         if (Hash::check($request->new_password, $user->password)) {
             return back()->withErrors([
-                'new_password' => 'Password baru tidak boleh sama dengan password lama.'
+                'new_password' => 'The new password must be different from the current password.'
             ])->withInput();
         }
 
@@ -79,7 +79,7 @@ class UbahpwController extends Controller
                 $user->refresh();
             });
 
-            // Verifikasi password baru berhasil tersimpan
+            // Verifikasi password baru tersimpan
             $updatedUser = $user->fresh();
             if (!Hash::check($request->new_password, $updatedUser->password)) {
                 throw new \Exception('Password verification failed after update');
@@ -93,10 +93,10 @@ class UbahpwController extends Controller
             Auth::logout();
 
             // Redirect ke halaman login dengan pesan sukses
-            return redirect()->route('login')->with('success', 'Password berhasil diubah! Silakan login kembali.');
+            return redirect()->route('login')->with('success', 'Password changed successfully. Please log in again.');
         } catch (\Exception $e) {
             return back()->withErrors([
-                'error' => 'Terjadi kesalahan saat mengubah password. Silakan coba lagi.'
+                'error' => 'An error occurred while updating your password. Please try again.'
             ])->withInput();
         }
     }

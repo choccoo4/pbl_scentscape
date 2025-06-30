@@ -88,11 +88,11 @@
     </div>
 
     <!-- Informasi Pengiriman (hanya tampil jika ada data pengiriman) -->
-    @if($pesanan->pengiriman && ($pesanan->status == 'Dikirim' || $pesanan->status == 'Selesai'))
+    @if($pesanan->pengiriman && in_array($pesanan->status, ['Terkirim', 'Selesai']))
     <div class="shipping-info">
         <h4>Informasi Pengiriman</h4>
         <p><strong>Nomor Resi:</strong> {{ $pesanan->pengiriman->nomor_resi ?? '-' }}</p>
-        
+
         <!-- Coba berbagai kemungkinan nama field untuk tanggal kirim -->
         @if($pesanan->pengiriman->waktu_dikirim)
         <p><strong>Tanggal Dikirim:</strong> {{ \Carbon\Carbon::parse($pesanan->pengiriman->waktu_dikirim)->format('d M Y') }}</p>

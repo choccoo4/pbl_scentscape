@@ -27,6 +27,7 @@ class ProductCardFormatter
                     'label' => $aroma->nama,
                 ];
             }),
+            'stok' => $product->stok,
         ];
     }
 

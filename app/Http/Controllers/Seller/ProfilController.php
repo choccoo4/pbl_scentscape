@@ -89,6 +89,6 @@ class ProfilController extends Controller
             }
         }
 
-        return redirect()->route('profil-penjual')->with('success', 'Profil berhasil diperbarui');
+        return redirect()->route('profil-penjual')->with('success', 'Your profile has been updated.');
     }
 }

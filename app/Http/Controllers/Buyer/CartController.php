@@ -66,14 +66,14 @@ class CartController extends Controller
 
         if ($produk->stok <= 0) {
             return $request->wantsJson()
-                ? response()->json(['message' => 'Produk tidak tersedia!'], 400)
-                : redirect()->back()->with('error', 'Produk tidak tersedia!');
+                ? response()->json(['message' => 'Product is not available!'], 400)
+                : redirect()->back()->with('error', 'Product is not available!');
         }
 
         if ($quantity > $produk->stok) {
             return $request->wantsJson()
-                ? response()->json(['message' => 'Jumlah produk melebihi stok yang tersedia!'], 400)
-                : redirect()->back()->with('error', 'Jumlah produk melebihi stok!');
+                ? response()->json(['message' => 'Quantity exceeds available stock!'], 400)
+                : redirect()->back()->with('error', 'Quantity exceeds available stock!');
         }
 
         DB::beginTransaction();
@@ -110,8 +110,8 @@ class CartController extends Controller
             DB::commit();
 
             $message = $quantity > 1
-                ? "Berhasil menambahkan {$quantity} produk ke keranjang!"
-                : 'Produk berhasil ditambahkan ke keranjang!';
+                ? "Successfully added {$quantity} items to cart!"
+                : 'Product has been added to your cart!';
 
             return $request->wantsJson()
                 ? response()->json(['message' => $message], 200)
@@ -120,8 +120,8 @@ class CartController extends Controller
             DB::rollBack();
             Log::error('Error adding to cart: ' . $e->getMessage());
             return $request->wantsJson()
-                ? response()->json(['message' => 'Gagal menambahkan produk ke keranjang!'], 500)
-                : redirect()->back()->with('error', 'Gagal menambahkan produk ke keranjang!');
+                ? response()->json(['message' => 'Failed to add product to cart!'], 500)
+                : redirect()->back()->with('error', 'Failed to add product to cart!');
         }
     }
 
@@ -136,7 +136,7 @@ class CartController extends Controller
         $keranjang = Keranjang::where('id_pengguna', $user->id_pengguna)->first();
 
         if (!$keranjang) {
-            return response()->json(['message' => 'Keranjang tidak ditemukan!'], 404);
+            return response()->json(['message' => 'Cart not found!'], 404);
         }
 
         $item = KeranjangItem::where('id_keranjang', $keranjang->id_keranjang)
@@ -145,18 +145,18 @@ class CartController extends Controller
             ->first();
 
         if (!$item) {
-            return response()->json(['message' => 'Produk tidak ditemukan di keranjang!'], 404);
+            return response()->json(['message' => 'Product not found in cart!'], 404);
         }
 
         $jumlahBaru = $request->input('jumlah_produk');
 
         if ($jumlahBaru > $item->produk->stok) {
-            return response()->json(['message' => 'Jumlah melebihi stok yang tersedia!'], 400);
+            return response()->json(['message' => 'Quantity exceeds available stock!'], 400);
         }
 
         $item->update(['jumlah_produk' => $jumlahBaru]);
 
-        return response()->json(['message' => 'Jumlah produk berhasil diperbarui!'], 200);
+        return response()->json(['message' => 'Product quantity updated successfully!'], 200);
     }
 
     // Hapus produk dari keranjang
@@ -166,7 +166,7 @@ class CartController extends Controller
         $keranjang = Keranjang::where('id_pengguna', $user->id_pengguna)->first();
 
         if (!$keranjang) {
-            return redirect()->route('cart')->with('error', 'Keranjang tidak ditemukan!');
+            return redirect()->route('cart')->with('error', 'Cart not found!');
         }
 
         $item = KeranjangItem::where('id_keranjang', $keranjang->id_keranjang)
@@ -175,9 +175,9 @@ class CartController extends Controller
 
         if ($item) {
             $item->delete();
-            return redirect()->route('cart')->with('success', 'Produk berhasil dihapus dari keranjang!');
+            return redirect()->route('cart')->with('success', 'Product has been removed from cart!');
         }
 
-        return redirect()->route('cart')->with('error', 'Produk tidak ditemukan di keranjang!');
+        return redirect()->route('cart')->with('error', 'Product not found in cart!');
     }
 }

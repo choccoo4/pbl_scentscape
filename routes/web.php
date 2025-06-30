@@ -8,6 +8,7 @@ use App\Http\Controllers\Buyer\ChangePwController;
 use App\Http\Controllers\Buyer\CheckoutController;
 use App\Http\Controllers\Buyer\GiftsController;
 use App\Http\Controllers\Buyer\HomeController;
+use App\Http\Controllers\Buyer\AromaKategoriController;
 use App\Http\Controllers\Buyer\OrderHistoryController;
 use App\Http\Controllers\Buyer\ProductDetailController;
 use App\Http\Controllers\Buyer\ProfileController;
@@ -54,6 +55,7 @@ Route::middleware(['auth', 'role:pembeli'])->group(function () {
 
     // Halaman utama dan toko
     Route::get('/home', [HomeController::class, 'home'])->name('home');
+    Route::get('/aroma-children/{id}', [AromaKategoriController::class, 'getChildren']);
     Route::get('/shop', [ShopController::class, 'shop'])->name('shop');
     Route::get('/best-sellers', [BestSellersController::class, 'bestSellers'])->name('best-sellers');
     Route::get('/gifts', [GiftsController::class, 'gifts'])->name('gifts');

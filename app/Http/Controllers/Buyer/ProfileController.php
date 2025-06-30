@@ -63,6 +63,6 @@ class ProfileController extends Controller
         $user->waktu_perubahan = Carbon::now('Asia/Jakarta');
         $user->save();
 
-        return redirect()->route('profile')->with('success', 'Profil berhasil diperbarui');
+        return redirect()->route('profile')->with('success', 'Your profile has been updated.');
     }
 }

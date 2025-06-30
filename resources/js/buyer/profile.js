@@ -18,7 +18,7 @@ const errorList = document.body.dataset.errors;
 if (successMsg) {
     Swal.fire({
         icon: 'success',
-        title: 'Sukses',
+        title: 'Success',
         text: successMsg,
         timer: 3000,
         timerProgressBar: true,
@@ -40,7 +40,7 @@ if (errorMsg) {
 if (errorList) {
     Swal.fire({
         icon: 'error',
-        title: 'Terjadi Kesalahan',
+        title: 'Something went wrong',
         html: errorList,
     });
 }

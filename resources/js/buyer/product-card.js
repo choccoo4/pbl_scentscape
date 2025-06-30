@@ -20,27 +20,27 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (response.ok) {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Berhasil!',
-                        text: result.message || 'Produk berhasil ditambahkan ke keranjang',
+                        title: 'Success!',
+                        text: result.message || 'Product has been added to your cart.',
                         timer: 1500,
                         showConfirmButton: false,
                     });
 
-                    // Optional: Update keranjang di navbar
+                    // Optional: Update cart badge in navbar
                     // refreshCartCount();
                 } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops!',
-                        text: result.message || 'Gagal menambahkan ke keranjang',
+                        text: result.message || 'Failed to add product to cart.',
                     });
                 }
             } catch (error) {
                 console.error(error);
                 Swal.fire({
                     icon: 'error',
-                    title: 'Terjadi Kesalahan',
-                    text: 'Coba lagi nanti.',
+                    title: 'Something went wrong',
+                    text: 'Please try again later.',
                 });
             }
         });

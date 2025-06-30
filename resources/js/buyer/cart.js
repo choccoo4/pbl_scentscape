@@ -6,7 +6,7 @@ export function cartRoot() {
 
         init() {
             window.cartRootRef = this;
-            console.log('[cartRoot:init] Siap menerima item dari cartItem');
+            console.log('[cartRoot:init] Ready to receive items from cartItem');
         },
 
         registerItem(component) {
@@ -65,9 +65,9 @@ export function cartItem(price, qty, idProduk, stok, selectedAwal) {
             this.$nextTick(() => {
                 if (window.cartRootRef && typeof window.cartRootRef.registerItem === 'function') {
                     window.cartRootRef.registerItem(this);
-                    console.log(`[cartItem:init] ${this.idProduk} terdaftar ke cartRoot`);
+                    console.log(`[cartItem:init] ${this.idProduk} registered to cartRoot`);
                 } else {
-                    console.warn(`[cartItem:init] Gagal daftar ke cartRoot untuk ${this.idProduk}`);
+                    console.warn(`[cartItem:init] Failed to register to cartRoot for ${this.idProduk}`);
                 }
             });
         },
@@ -75,7 +75,7 @@ export function cartItem(price, qty, idProduk, stok, selectedAwal) {
         toggleSelected(val) {
             this.selected = val;
             if (!this.rootRef || this.index === null) {
-                console.warn("toggleSelected() gagal sync", this.rootRef, this.index);
+                console.warn("toggleSelected() failed to sync", this.rootRef, this.index);
                 return;
             }
             this.rootRef.cartItems[this.index].selected = val;
@@ -114,12 +114,12 @@ export function cartItem(price, qty, idProduk, stok, selectedAwal) {
             })
             .then(res => res.json())
             .then(data => {
-                console.log('Berhasil update:', data);
+                console.log('Quantity updated successfully:', data);
             })
             .catch(err => {
                 Swal.fire({
-                    title: 'Gagal',
-                    text: 'Gagal update jumlah produk!',
+                    title: 'Failed',
+                    text: 'Failed to update product quantity!',
                     icon: 'error',
                     timer: 2000,
                     showConfirmButton: false
@@ -130,12 +130,12 @@ export function cartItem(price, qty, idProduk, stok, selectedAwal) {
 
         removeItem() {
             Swal.fire({
-                title: 'Hapus Item?',
-                text: 'Yakin ingin menghapus item ini dari keranjang?',
+                title: 'Remove Item?',
+                text: 'Are you sure you want to remove this item from the cart?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Ya, hapus',
-                cancelButtonText: 'Batal'
+                confirmButtonText: 'Yes, remove it',
+                cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
                     fetch(`/cart/remove/${this.idProduk}`, {
@@ -153,16 +153,16 @@ export function cartItem(price, qty, idProduk, stok, selectedAwal) {
                                 this.rootRef.updateSelectedTotal();
                             }
                             Swal.fire({
-                                title: 'Berhasil',
-                                text: 'Item berhasil dihapus dari keranjang.',
+                                title: 'Success',
+                                text: 'Item has been removed from the cart.',
                                 icon: 'success',
                                 timer: 2000,
                                 showConfirmButton: false
                             });
                         } else {
                             Swal.fire({
-                                title: 'Gagal',
-                                text: 'Gagal menghapus item dari keranjang!',
+                                title: 'Failed',
+                                text: 'Failed to remove the item from the cart!',
                                 icon: 'error',
                                 timer: 2000,
                                 showConfirmButton: false
@@ -172,7 +172,7 @@ export function cartItem(price, qty, idProduk, stok, selectedAwal) {
                     .catch(err => {
                         Swal.fire({
                             title: 'Error',
-                            text: 'Terjadi kesalahan saat menghapus.',
+                            text: 'An error occurred while removing the item.',
                             icon: 'error',
                             timer: 2000,
                             showConfirmButton: false
@@ -185,7 +185,7 @@ export function cartItem(price, qty, idProduk, stok, selectedAwal) {
 
         updateSelection() {
             if (!this.ready || !this.rootRef || this.index === null) {
-                console.warn("cartItem: belum siap update selection", this.rootRef, this.index);
+                console.warn("cartItem: not ready to update selection", this.rootRef, this.index);
                 return;
             }
             this.rootRef.cartItems[this.index].selected = this.selected;

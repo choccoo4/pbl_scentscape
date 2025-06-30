@@ -48,7 +48,7 @@
 
     <p class="text-xs mt-6 text-[#3E3A39]">
       Sudah ingat?
-      <a href="{{ route('login') }}" class="underline hover:text-[#9BAF9A] transition">Kembali ke Login</a>
+      <a href="{{ route('login') }}" class="underline hover:text-[#9BAF9A] transition">Back To Login</a>
     </p>
   </div>
 

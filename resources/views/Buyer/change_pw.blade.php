@@ -13,21 +13,21 @@
 
             <!-- Success Message -->
             @if(session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-                    <i class="fas fa-check-circle mr-2"></i>
-                    {{ session('success') }}
-                </div>
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+                <i class="fas fa-check-circle mr-2"></i>
+                {{ session('success') }}
+            </div>
             @endif
 
             <!-- Error Messages -->
             @if($errors->any())
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-                    <ul class="list-disc list-inside">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+                <ul class="list-disc list-inside">
+                    @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
             @endif
 
             <form method="POST" action="{{ route('change-pw.update') }}" class="space-y-6" x-data="{ showCurrent: false, showNew: false, showConfirm: false }">
@@ -46,7 +46,7 @@
                         </button>
                     </div>
                     @error('current_password')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -63,10 +63,10 @@
                         </button>
                     </div>
                     <p class="text-sm text-gray-600 mt-1">
-                        Password harus minimal 8 karakter, mengandung huruf besar, huruf kecil, angka, dan simbol.
+                        Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a symbol
                     </p>
                     @error('new_password')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -83,7 +83,7 @@
                         </button>
                     </div>
                     @error('new_password_confirmation')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 

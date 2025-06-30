@@ -13,7 +13,7 @@ const successMsg = document.querySelector('[data-success]')?.dataset.success;
 if (successMsg && window.Swal) {
     Swal.fire({
         icon: 'success',
-        title: 'Berhasil!',
+        title: 'Success',
         text: successMsg,
         confirmButtonColor: '#9BAF9A'
     });

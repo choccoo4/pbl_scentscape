@@ -24,6 +24,7 @@
                 type="{{ $product['type'] }}"
                 type_full="{{ $product['type_full'] }}"
                 :aroma="$product['aroma']"
+                stok="{{ $product['stok'] }}"
                 extraClass="border border-gray-300"
                 slug="{{ $product['slug'] }}" />
             @endforeach

@@ -10,23 +10,23 @@ export function registerForm() {
       this.errors = {}; // reset errors
 
       if (!this.name) {
-        this.errors.name = 'Nama wajib diisi.';
+        this.errors.name = 'Name is required.';
       }
 
       if (!this.email) {
-        this.errors.email = 'Email wajib diisi.';
+        this.errors.email = 'Email is required.';
       } else if (!this.email.includes('@')) {
-        this.errors.email = 'Email tidak valid.';
+        this.errors.email = 'Invalid email address.';
       }
 
       if (!this.username) {
-        this.errors.username = 'Username wajib diisi.';
+        this.errors.username = 'Username is required.';
       }
 
       if (!this.password) {
-        this.errors.password = 'Password wajib diisi.';
+        this.errors.password = 'Password is required.';
       } else if (this.password.length < 8) {
-        this.errors.password = 'Password minimal 8 karakter.';
+        this.errors.password = 'Password must be at least 8 characters.';
       }
 
       return Object.keys(this.errors).length === 0;
@@ -55,17 +55,17 @@ export function registerForm() {
 
             if (!response.ok) {
               Swal.fire({
-                title: 'Registrasi Gagal',
-                text: data.message || 'Terjadi kesalahan.',
+                title: 'Registration Failed',
+                text: data.message || 'Something went wrong. Please try again.',
                 icon: 'error'
               });
               return;
             }
 
-            // Kalau berhasil
+            // On success
             Swal.fire({
-              title: 'Registrasi Berhasil!',
-              text: 'Anda akan diarahkan ke halaman login...',
+              title: 'Registration Successful!',
+              text: 'Redirecting you to the login page...',
               icon: 'success',
               timer: 2000,
               showConfirmButton: false,
@@ -73,8 +73,7 @@ export function registerForm() {
                 window.location.href = '/login';
               }
             });
-          })
-
+          });
       }
     }
   };

@@ -85,7 +85,7 @@ $bg = asset('images/background3.jpeg');
 
     <p class="text-xs mt-6 text-[#3E3A39]">
       Ingat kembali password lama?
-      <a href="{{ route('login') }}" class="underline hover:text-[#9BAF9A] transition">Login Sekarang</a>
+      <a href="{{ route('login') }}" class="underline hover:text-[#9BAF9A] transition">Login Now</a>
     </p>
   </div>
 </body>

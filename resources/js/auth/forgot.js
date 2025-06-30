@@ -6,12 +6,12 @@ export function forgotAlert() {
   if (success) {
     Swal.fire({
       icon: 'success',
-      title: 'Berhasil',
+      title: 'Success',
       text: success,
       confirmButtonColor: '#414833'
     });
   }
 }
 
-// Jalankan otomatis
+// Auto-run when page is ready
 document.addEventListener('DOMContentLoaded', forgotAlert);

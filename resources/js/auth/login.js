@@ -1,27 +1,28 @@
+// Show success alert if password reset success (based on meta tag)
 document.addEventListener('DOMContentLoaded', () => {
   const status = document.querySelector('meta[name="reset-status"]')?.content;
 
   if (status) {
     Swal.fire({
       icon: 'success',
-      title: 'Berhasil!',
+      title: 'Success!',
       text: status,
       confirmButtonColor: '#4CAF50',
     });
   }
 });
 
-// Fungsi loginForm tetap seperti sebelumnya
+// Login Form Alpine.js logic
 export function loginForm() {
   return {
     email: '',
     password: '',
     errors: {},
-    
+
     validate() {
       this.errors = {};
-      if (!this.email) this.errors.email = 'Email wajib diisi.';
-      if (!this.password) this.errors.password = 'Password wajib diisi.';
+      if (!this.email) this.errors.email = 'Email is required.';
+      if (!this.password) this.errors.password = 'Password is required.';
       return Object.keys(this.errors).length === 0;
     },
 
@@ -43,8 +44,8 @@ export function loginForm() {
             if (!res.ok) {
               const data = await res.json();
               Swal.fire({
-                title: 'Login Gagal',
-                text: data.message || 'Email atau password salah.',
+                title: 'Login Failed',
+                text: data.message || 'Incorrect email or password.',
                 icon: 'error',
                 timer: 2500,
                 showConfirmButton: false
@@ -54,8 +55,8 @@ export function loginForm() {
 
             const data = await res.json();
             Swal.fire({
-              title: 'Login Berhasil!',
-              text: 'Anda akan diarahkan...',
+              title: 'Login Successful!',
+              text: 'Redirecting...',
               icon: 'success',
               timer: 2500,
               showConfirmButton: false,
@@ -71,7 +72,7 @@ export function loginForm() {
           .catch(err => {
             Swal.fire({
               title: 'Oops!',
-              text: 'Terjadi kesalahan. Silakan coba lagi.',
+              text: 'An error occurred. Please try again.',
               icon: 'error',
               timer: 2500,
               showConfirmButton: false

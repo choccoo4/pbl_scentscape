@@ -22,17 +22,17 @@ class AuthController extends Controller
         $pengguna = Pengguna::where('email', $request->email)->first();
 
         if (!$pengguna) {
-            return response()->json(['message' => 'Email tidak terdaftar. Silakan daftar terlebih dahulu.'], 404);
+            return response()->json(['message' => 'Email is not registered. Please sign up first.'], 404);
         }
 
         if (!Hash::check($request->password, $pengguna->password)) {
-            return response()->json(['message' => 'Password salah. Coba lagi.'], 401);
+            return response()->json(['message' => 'Incorrect password. Please try again.'], 401);
         }
 
         Auth::login($pengguna);
         session(['role' => $pengguna->role]);
 
-        return response()->json(['message' => 'Login berhasil', 'role' => $pengguna->role]);
+        return response()->json(['message' => 'Login successful', 'role' => $pengguna->role]);
     }
 
     public function logout(Request $request)
@@ -76,25 +76,25 @@ class AuthController extends Controller
             if ($validator->fails()) {
                 if ($validator->errors()->has('email')) {
                     return response()->json([
-                        'message' => 'Email sudah terdaftar. Silakan login.'
+                        'message' => 'Email is already registered. Please login.'
                     ], 409);
                 }
 
                 if ($validator->errors()->has('username')) {
                     return response()->json([
-                        'message' => 'Username sudah digunakan. Coba yang lain.'
+                        'message' => 'Username is already taken. Please try another one.'
                     ], 409);
                 }
 
                 if ($validator->errors()->has('password')) {
                     return response()->json([
-                        'message' => 'Password terlalu lemah. Gunakan huruf besar, kecil, angka, dan simbol.',
+                        'message' => 'Weak password. Use uppercase, lowercase, numbers, and symbols.',
                         'field' => 'password'
                     ], 422);
                 }
 
                 return response()->json([
-                    'message' => 'Validasi gagal.',
+                    'message' => 'Validation failed.',
                     'errors' => $validator->errors()
                 ], 422);
             }
@@ -110,11 +110,11 @@ class AuthController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Registrasi berhasil'
+                'message' => 'Registration successful'
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Terjadi kesalahan pada server. Silakan coba lagi.'
+                'message' => 'Server error. Please try again later.'
             ], 500);
         }
     }
@@ -130,9 +130,9 @@ class AuthController extends Controller
         );
 
         if ($status === Password::RESET_LINK_SENT) {
-            return back()->with(['status' => __($status)]);
+            return back()->with(['status' => 'We have emailed your password reset link!']);
         } else {
-            return back()->withErrors(['email' => __($status)]);
+            return back()->withErrors(['email' => 'Failed to send password reset email.']);
         }
     }
 
@@ -171,10 +171,9 @@ class AuthController extends Controller
         );
 
         if ($status == Password::PASSWORD_RESET) {
-            // Kembali ke halaman reset dengan pesan sukses agar bisa ditangkap di SweetAlert
-            return redirect()->back()->with('reset_success', 'Password berhasil direset!');
+            return redirect()->back()->with('reset_success', 'Your password has been successfully reset!');
         }
 
-        return back()->withErrors(['email' => __($status)]);
+        return back()->withErrors(['email' => 'Failed to reset password. Please try again.']);
     }
 }

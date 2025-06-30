@@ -9,13 +9,24 @@
 'type_full',
 'aroma',
 'slug',
+'stok',
 'extraClass' => '',
 ])
 
-<div class="rounded-xl overflow-hidden shadow-md border border-[#D6C6B8] bg-[#F6F1EB] transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg {{ $extraClass }} w-full max-w-[250px] mx-auto group">
+<div class="rounded-xl overflow-hidden shadow-md border border-[#D6C6B8] bg-[#F6F1EB] transition-transform duration-300 hover:scale-[1.02] hover:shadow-lg {{ $extraClass }} w-full max-w-[250px] mx-auto group relative">
+
     <!-- Gambar Produk + Overlay -->
     <div class="aspect-square bg-[#F6F1EB] relative group">
-        <img src="{{ $image }}" alt="{{ $name }}" class="w-full h-full object-cover transition duration-300 group-hover:brightness-105">
+        <img src="{{ $image }}" alt="{{ $name }}"
+            class="w-full h-full object-cover transition duration-300
+            {{ $stok == 0 ? 'opacity-50 grayscale' : 'group-hover:brightness-105' }}">
+
+        @if ($stok == 0)
+        <!-- Sold Out Badge -->
+        <div class="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded font-bold shadow">
+            Sold Out
+        </div>
+        @endif
 
         <!-- Overlay -->
         <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center gap-3">
@@ -24,29 +35,17 @@
                 class="bg-white text-[#3E3A39] p-2 rounded-full shadow hover:bg-[#D6C6B8] transition"
                 data-tooltip-target="tooltip-detail-{{ Str::slug($name) }}">
                 <i class="ph ph-eye text-lg"></i>
-                <div id="tooltip-detail-{{ Str::slug($name) }}"
-                    role="tooltip"
-                    class="absolute z-10 invisible px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded-md shadow tooltip dark:bg-gray-700">
-                    Lihat Detail
-                    <div class="tooltip-arrow" data-popper-arrow></div>
-                </div>
             </a>
 
-            <!-- Tambah ke Keranjang (Hanya tampil di md ke atas) -->
-<button type="button"
-    class="hidden md:inline-flex bg-[#9BAF9A] text-white p-2 rounded-full shadow hover:bg-[#819d80] transition relative add-to-cart"
-    data-id="{{ $id }}"
-    data-tooltip-target="tooltip-cart-{{ Str::slug($name) }}">
-    <i class="ph ph-shopping-cart-simple text-lg"></i>
-</button>
-<div id="tooltip-cart-{{ Str::slug($name) }}"
-    role="tooltip"
-    class="absolute z-10 invisible px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded-md shadow tooltip dark:bg-gray-700">
-    Tambah ke Keranjang
-    <div class="tooltip-arrow" data-popper-arrow></div>
-</div>
-
-
+            <!-- Tambah ke Keranjang (hanya jika stok tersedia) -->
+            @if ($stok > 0)
+            <button type="button"
+                class="hidden md:inline-flex bg-[#9BAF9A] text-white p-2 rounded-full shadow hover:bg-[#819d80] transition relative add-to-cart"
+                data-id="{{ $id }}"
+                data-tooltip-target="tooltip-cart-{{ Str::slug($name) }}">
+                <i class="ph ph-shopping-cart-simple text-lg"></i>
+            </button>
+            @endif
         </div>
     </div>
 
@@ -104,5 +103,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>
 </div>

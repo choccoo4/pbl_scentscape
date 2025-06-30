@@ -14,42 +14,46 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Total penjualan hari ini (dari pesanan selesai)
-        $totalPenjualan = Pesanan::where('status', 'Terkirim')
-            ->whereDate('pesanan.waktu_pemesanan', now()->toDateString())
+        // Status pesanan yang dianggap sukses (pembayaran sudah diverifikasi)
+        $statusTerjual = ['Dikirim', 'Terkirim', 'Selesai'];
+
+        // Total penjualan hari ini
+        $totalPenjualan = Pesanan::whereIn('status', $statusTerjual)
+            ->whereDate('waktu_pemesanan', now()->toDateString())
             ->sum('total');
 
-        // Pesanan masuk hari ini (status awal)
+        // Produk terjual hari ini
+        $produkTerjual = PesananItem::join('pesanan', 'pesanan_item.id_pesanan', '=', 'pesanan.id_pesanan')
+            ->whereIn('pesanan.status', $statusTerjual)
+            ->whereDate('pesanan.waktu_pemesanan', now()->toDateString())
+            ->sum('pesanan_item.jumlah');
+
+        // Pesanan masuk hari ini
         $pesananMasuk = Pesanan::whereDate('waktu_pemesanan', now()->toDateString())
             ->whereIn('status', ['Menunggu Verifikasi', 'Dikemas', 'Dikirim', 'Terkirim'])
             ->count();
 
-        $produkTerjual = PesananItem::join('pesanan', 'pesanan_item.id_pesanan', '=', 'pesanan.id_pesanan')
-            ->where('pesanan.status', 'Terkirim')
+        // Pesanan baru hari ini
+        $pesananBaruHariIni = Pesanan::whereDate('waktu_pemesanan', now()->toDateString())
+            ->whereIn('status', ['Menunggu Pembayaran', 'Menunggu Verifikasi'])
+            ->count();
+
+        // Produk dikirim hari ini
+        $produkTerkirimHariIni = PesananItem::join('pesanan', 'pesanan_item.id_pesanan', '=', 'pesanan.id_pesanan')
+            ->whereIn('pesanan.status', ['Dikirim', 'Terkirim'])
             ->whereDate('pesanan.waktu_pemesanan', now()->toDateString())
             ->sum('pesanan_item.jumlah');
 
         // Total stok semua produk
         $totalStokProduk = Produk::sum('stok');
 
-        // Pesanan baru hari ini (status awal)
-        $pesananBaruHariIni = Pesanan::whereDate('waktu_pemesanan', now()->toDateString())
-            ->whereIn('status', ['Menunggu Pembayaran', 'Menunggu Verifikasi'])
-            ->count();
-
-        // Pesanan dikirim hari ini
-        $produkTerkirimHariIni = PesananItem::join('pesanan', 'pesanan_item.id_pesanan', '=', 'pesanan.id_pesanan')
-            ->whereDate('pesanan.waktu_pemesanan', now()->toDateString())
-            ->whereIn('pesanan.status', ['Dikirim', 'Terkirim'])
-            ->sum('pesanan_item.jumlah');
-
         return view('sellers.dashboard', compact(
             'totalPenjualan',
-            'pesananMasuk',
             'produkTerjual',
-            'totalStokProduk',
+            'pesananMasuk',
             'pesananBaruHariIni',
-            'produkTerkirimHariIni'
+            'produkTerkirimHariIni',
+            'totalStokProduk'
         ));
     }
 
@@ -68,10 +72,10 @@ class DashboardController extends Controller
 
             // Query penjualan per hari dalam 7 hari terakhir
             $salesData = Pesanan::select(
-                    DB::raw('DATE(waktu_selesai) as tanggal'),
-                    DB::raw('COALESCE(SUM(total), 0) as total_penjualan'),
-                    DB::raw('COUNT(*) as jumlah_pesanan')
-                )
+                DB::raw('DATE(waktu_selesai) as tanggal'),
+                DB::raw('COALESCE(SUM(total), 0) as total_penjualan'),
+                DB::raw('COUNT(*) as jumlah_pesanan')
+            )
                 ->where('status', 'Selesai')
                 ->whereDate('waktu_selesai', '>=', Carbon::now()->subDays(6)->format('Y-m-d'))
                 ->whereDate('waktu_selesai', '<=', Carbon::now()->format('Y-m-d'))
@@ -114,7 +118,6 @@ class DashboardController extends Controller
                     ]
                 ]
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

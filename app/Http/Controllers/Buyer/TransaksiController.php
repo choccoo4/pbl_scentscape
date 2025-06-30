@@ -14,6 +14,23 @@ use Illuminate\Support\Facades\Session;
 
 class TransaksiController extends Controller
 {
+    public function show($id)
+    {
+        $pesanan = Pesanan::with('pengguna', 'items', 'pembayaran')->find($id);
+
+        if (!$pesanan || $pesanan->id_pengguna !== Auth::id()) {
+            return redirect()->route('home')->with('error', 'You do not have access to this transaction.');
+        }
+
+        // Automatically cancel if past the payment deadline
+        if ($pesanan->status === 'Menunggu Pembayaran' && now()->greaterThan($pesanan->batas_waktu_pembayaran)) {
+            $pesanan->status = 'Dibatalkan';
+            $pesanan->save();
+        }
+
+        return view('buyer.transaksi', compact('pesanan'));
+    }
+
     public function uploadBukti(Request $request)
     {
         $request->validate([
@@ -22,7 +39,7 @@ class TransaksiController extends Controller
 
         $idPesanan = session('pesanan_id');
         if (!$idPesanan) {
-            return redirect()->route('home')->with('error', 'Pesanan tidak ditemukan.');
+            return redirect()->route('home')->with('error', 'Transaction not found.');
         }
 
         $pesanan = Pesanan::findOrFail($idPesanan);
@@ -31,43 +48,26 @@ class TransaksiController extends Controller
             $pesanan->status = 'Dibatalkan';
             $pesanan->save();
             return redirect()->route('transaksi.show', $pesanan->id)
-                ->with('error', 'Waktu pembayaran telah habis. Transaksi dibatalkan.');
+                ->with('error', 'Payment time has expired. Transaction was automatically cancelled.');
         }
 
-        // Rename nama file
+        // Rename the uploaded file
         $nomorPesanan = $pesanan->nomor_pesanan;
         $ext = $request->file('bukti')->getClientOriginalExtension();
         $filename = $nomorPesanan . '.' . $ext;
 
-        // Simpan ke storage/public/bukti_pembayaran/
+        // Store to storage/public/bukti_pembayaran/
         $path = $request->file('bukti')->storeAs('bukti_pembayaran', $filename, 'public');
 
-        // Simpan atau update pembayaran
+        // Save or update payment
         $pembayaran = Pembayaran::firstOrNew(['id_pesanan' => $idPesanan]);
         $pembayaran->path_bukti = $path;
         $pembayaran->save();
 
-        // Ubah status pesanan ke "Menunggu Verifikasi"
+        // Update status to "Waiting for Verification"
         $pesanan->status = 'Menunggu Verifikasi';
         $pesanan->save();
 
-        return redirect()->route('order.history')->with('success', 'Bukti pembayaran berhasil diupload dan menunggu verifikasi.');
-    }
-
-    public function show($id)
-    {
-        $pesanan = Pesanan::with('pengguna', 'items', 'pembayaran')->find($id);
-
-        if (!$pesanan || $pesanan->id_pengguna !== Auth::id()) {
-            return redirect()->route('home')->with('error', 'Kamu tidak punya akses ke transaksi ini.');
-        }
-
-        // Otomatis batalkan kalau udah lewat waktu pembayaran
-        if ($pesanan->status === 'Menunggu Pembayaran' && now()->greaterThan($pesanan->batas_waktu_pembayaran)) {
-            $pesanan->status = 'Dibatalkan';
-            $pesanan->save();
-        }
-
-        return view('buyer.transaksi', compact('pesanan'));
+        return redirect()->route('order.history')->with('success', 'Payment proof uploaded successfully. Waiting for verification.');
     }
 }
