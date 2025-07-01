@@ -12,7 +12,7 @@ class GiftsController extends Controller
     public function gifts(Request $request)
     {
         $products = Produk::with('aroma.aromaKategori')
-            ->where('label_kategori', 'Gifts')
+            ->where('is_gifts', true)
             ->latest('waktu_dibuat')
             ->paginate(10)
             ->withQueryString()

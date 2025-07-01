@@ -24,6 +24,7 @@ class Produk extends Model
         'tipe_parfum',
         'waktu_dibuat',
         'waktu_diperbarui',
+        'is_gifts',
     ];
 
     protected $casts = [

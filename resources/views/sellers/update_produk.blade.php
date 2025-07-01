@@ -56,6 +56,19 @@
             @endif
         </div>
 
+        <!-- Gift Option -->
+        <div class="mb-4">
+            <label class="inline-flex items-center">
+                <input type="checkbox" name="is_gifts" value="1"
+                    class="rounded border-[#D6C6B8] text-[#9BAF9A] focus:ring-[#9BAF9A]"
+                    {{ old('is_gifts', $produk->is_gifts) ? 'checked' : '' }}>
+                <span class="ml-2 text-sm text-[#3E3A39]">Mark this product as a gift</span>
+            </label>
+            @if($errors->has('is_gifts'))
+            <p class="text-sm text-red-600 mt-1">{{ $errors->first('is_gifts') }}</p>
+            @endif
+        </div>
+
         <!-- Product Type -->
         <div class="mb-4">
             <label for="tipe_parfum" class="block text-sm font-medium text-[#3E3A39] mb-1">Product Type</label>
@@ -105,7 +118,7 @@
             categories: @js($categories),
             kategoriList: @js($kategoriList)
         }"
-        x-init="
+            x-init="
         window.selected = selected;
         window.getAromaForm = () => $el;
         window.closeAromaForm = () => {
@@ -115,7 +128,7 @@
             const input = document.getElementById('inputAromaBaru');
             if (input) input.value = '';
         };"
-        x-ref="modalAroma" class="mb-4">
+            x-ref="modalAroma" class="mb-4">
             <label class="block text-sm font-medium text-[#3E3A39] mb-2">Category</label>
             <div class="flex flex-wrap gap-2">
                 <button type="button" @click="showAromaForm = true"

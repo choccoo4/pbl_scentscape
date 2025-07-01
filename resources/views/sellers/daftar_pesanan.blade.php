@@ -9,42 +9,50 @@
     <hr class="mb-6 border-gray-400">
 
     @php
-        $statusTranslations = [
-            'Menunggu Pembayaran' => 'Waiting for Payment',
-            'Menunggu Verifikasi' => 'Waiting for Verification',
-            'Dikemas' => 'Processing',
-            'Dikirim' => 'Shipped',
-            'Terkirim' => 'Delivered',
-            'Selesai' => 'Completed',
-            'Dibatalkan' => 'Cancelled'
-        ];
+    $statusTranslations = [
+    'Menunggu Pembayaran' => 'Waiting for Payment',
+    'Menunggu Verifikasi' => 'Waiting for Verification',
+    'Ditolak' => 'Rejected',
+    'Dikemas' => 'Processing',
+    'Dikirim' => 'Shipped',
+    'Terkirim' => 'Delivered',
+    'Selesai' => 'Completed',
+    'Dibatalkan' => 'Cancelled'
+    ];
 
-        // Menggunakan total dari controller, bukan dari data pagination
-        $badgeCounts = $statusCounts ?? [];
+    // Menggunakan total dari controller, bukan dari data pagination
+    $badgeCounts = $statusCounts ?? [];
     @endphp
 
     {{-- Tab Filter --}}
     <div class="mb-4 flex flex-wrap items-end justify-between gap-4">
-        @foreach (['All', 'Menunggu Pembayaran', 'Menunggu Verifikasi', 'Dikemas', 'Dikirim', 'Selesai', 'Dibatalkan'] as $tab)
-            @php
-                $statusParam = strtolower(str_replace(' ', '_', $tab));
-                $statusParam = $tab === 'All' ? '' : $statusParam;
-                $badgeCount = $tab !== 'All' ? ($badgeCounts[$tab] ?? 0) : '';
-            @endphp
-            <a href="{{ url()->current() }}{{ $statusParam ? '?status=' . $statusParam : '' }}"
-                class="relative px-4 py-2 rounded-md font-medium text-sm
+        @foreach ([
+        'All',
+        'Menunggu Pembayaran',
+        'Menunggu Verifikasi',
+        'Dikemas',
+        'Dikirim', // gabungan Dikirim & Terkirim
+        'Selesai',
+        'Dibatalkan' // gabungan Dibatalkan & Ditolak
+        ] as $tab)
+        @php
+        $statusParam = strtolower(str_replace(' ', '_', $tab));
+        $statusParam = $tab === 'All' ? '' : $statusParam;
+        $badgeCount = $tab !== 'All' ? ($badgeCounts[$tab] ?? 0) : '';
+        @endphp
+        <a href="{{ url()->current() }}{{ $statusParam ? '?status=' . $statusParam : '' }}"
+            class="relative px-4 py-2 rounded-md font-medium text-sm
                     {{ (request('status') === $statusParam) || ($tab === 'All' && !request('status'))
                         ? 'bg-[#8B3E00] text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
-                {{ $tab === 'All' ? 'All' : ($statusTranslations[$tab] ?? $tab) }}
+            {{ $tab === 'All' ? 'All' : ($statusTranslations[$tab] ?? $tab) }}
 
-                {{-- Tampilkan badge hanya di halaman pertama --}}
-                @if ($pesanan->currentPage() === 1 && $badgeCount > 0)
-                    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                        {{ $badgeCount }}
-                    </span>
-                @endif
-            </a>
+            @if (in_array($tab, ['Menunggu Pembayaran', 'Menunggu Verifikasi', 'Dikemas']) && $badgeCount > 0)
+            <span class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                {{ $badgeCount }}
+            </span>
+            @endif
+        </a>
         @endforeach
 
         {{-- Search --}}
@@ -74,39 +82,42 @@
                 <tr class="
                     hover:bg-gray-50
                     {{ in_array($p->status, ['Menunggu Verifikasi', 'Dikemas']) ? 'bg-yellow-50' : '' }}
-                    {{ $p->status === 'Selesai' ? 'bg-gray-200 text-gray-400 opacity-60 pointer-events-none' : '' }}
-                ">
+                    {{ in_array($p->status, ['Selesai', 'Dibatalkan', 'Ditolak']) ? 'bg-gray-100 text-gray-400 opacity-70' : '' }}">
                     <td class="px-4 py-3">{{ $pesanan->firstItem() + $index }}</td>
                     <td class="px-4 py-3">{{ $p->waktu_pemesanan->format('d M Y') }}</td>
                     <td class="px-4 py-3">{{ $p->nomor_pesanan }}</td>
                     <td class="px-4 py-3">QRIS</td>
                     <td class="px-4 py-3">Rp{{ number_format($p->total, 0, ',', '.') }}</td>
                     <td class="px-4 py-3">
-                        <span class="text-xs font-semibold px-2 py-1 rounded-full
-                            {{ 
-                                $p->status === 'Menunggu Pembayaran' ? 'bg-yellow-200 text-yellow-800' :
-                                ($p->status === 'Menunggu Verifikasi' ? 'bg-orange-200 text-orange-800' :
-                                ($p->status === 'Dikemas' ? 'bg-blue-200 text-blue-800' :
-                                ($p->status === 'Dikirim' || $p->status === 'Terkirim' ? 'bg-cyan-200 text-cyan-800' :
-                                ($p->status === 'Selesai' ? 'bg-gray-300 text-gray-800' :
-                                ($p->status === 'Dibatalkan' ? 'bg-red-200 text-red-800' : 'bg-gray-200 text-gray-800')))))
-                            }}">
-                            {{ $statusTranslations[$p->status] ?? $p->status }}
-                        </span>
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-1">
+                            <span class="text-xs font-semibold px-2 py-1 rounded-full
+                                {{ 
+                                    $p->status === 'Menunggu Pembayaran' ? 'bg-yellow-200 text-yellow-800' :
+                                    ($p->status === 'Menunggu Verifikasi' ? 'bg-orange-200 text-orange-800' :
+                                    ($p->status === 'Dikemas' ? 'bg-blue-200 text-blue-800' :
+                                    ($p->status === 'Dikirim' || $p->status === 'Terkirim' ? 'bg-cyan-200 text-cyan-800' :
+                                    ($p->status === 'Selesai' ? 'bg-gray-300 text-gray-800' :
+                                    ($p->status === 'Dibatalkan' ? 'bg-red-200 text-red-800' : 'bg-gray-200 text-gray-800')))))
+                                }}">
+                                {{ $statusTranslations[$p->status] ?? $p->status }}
+                            </span>
+                        </div>
                     </td>
                     <td class="px-4 py-3">
-                        <a href="{{ route('pesanan.detail', $p->id_pesanan) }}"
-                            class="text-xs px-3 py-1 rounded font-medium 
-                                {{ 
-                                    $p->status === 'Menunggu Verifikasi' ? 'bg-orange-600 hover:bg-orange-700 text-white' :
-                                    ($p->status === 'Dikemas' ? 'bg-blue-600 hover:bg-blue-700 text-white' :
-                                    'bg-green-700 hover:bg-green-800 text-white') 
-                                }}">
-                            {{
-                                $p->status === 'Menunggu Verifikasi' ? 'Verify Now' :
-                                ($p->status === 'Dikemas' ? 'Ship Now' : 'View Details')
-                            }}
-                        </a>
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-1">
+                            <a href="{{ route('pesanan.detail', $p->id_pesanan) }}"
+                                class="text-xs px-3 py-1 rounded font-medium text-center
+                                    {{ 
+                                        $p->status === 'Menunggu Verifikasi' ? 'bg-orange-600 hover:bg-orange-700 text-white' :
+                                        ($p->status === 'Dikemas' ? 'bg-blue-600 hover:bg-blue-700 text-white' :
+                                        'bg-green-700 hover:bg-green-800 text-white') 
+                                    }}">
+                                {{
+                                    $p->status === 'Menunggu Verifikasi' ? 'Verify Now' :
+                                    ($p->status === 'Dikemas' ? 'Ship Now' : 'View Details')
+                                }}
+                            </a>
+                        </div>
                     </td>
                 </tr>
                 @empty
