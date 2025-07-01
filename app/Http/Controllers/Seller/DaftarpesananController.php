@@ -18,13 +18,12 @@ class DaftarpesananController extends Controller
 
         // Mapping status dari query string ke format database
         $statusMap = [
-            'menunggu_pembayaran' => 'Menunggu Pembayaran',
-            'menunggu_verifikasi' => 'Menunggu Verifikasi',
-            'dikemas'              => 'Dikemas',
-            'dikirim'              => 'Dikirim',
-            'terkirim'             => 'Terkirim',
-            'selesai'              => 'Selesai',
-            'dibatalkan'           => 'Dibatalkan',
+            'menunggu_pembayaran' => ['Menunggu Pembayaran'],
+            'menunggu_verifikasi' => ['Menunggu Verifikasi'],
+            'dikemas'              => ['Dikemas'],
+            'dikirim'              => ['Dikirim', 'Terkirim'],
+            'dibatalkan'           => ['Dibatalkan', 'Ditolak'],
+            'selesai'              => ['Selesai'],
         ];
 
         // Query utama untuk pagination
@@ -35,10 +34,9 @@ class DaftarpesananController extends Controller
 
         // Filter berdasarkan status (jika ada)
         if ($statusFilter && strtolower($statusFilter) !== 'semua') {
-            if (strtolower($statusFilter) === 'dikirim') {
-                $query->whereIn('status', ['Dikirim', 'Terkirim']);
-            } elseif (isset($statusMap[strtolower($statusFilter)])) {
-                $query->where('status', $statusMap[strtolower($statusFilter)]);
+            $key = strtolower($statusFilter);
+            if (isset($statusMap[$key])) {
+                $query->whereIn('status', $statusMap[$key]);
             }
         }
 
@@ -55,12 +53,12 @@ class DaftarpesananController extends Controller
 
         // Hitung jumlah semua pesanan berdasarkan status (tidak terkena filter/pagination)
         $statusCounts = [
-            'Menunggu Pembayaran'  => $countQuery->clone()->where('status', 'Menunggu Pembayaran')->count(),
-            'Menunggu Verifikasi'  => $countQuery->clone()->where('status', 'Menunggu Verifikasi')->count(),
-            'Dikemas'              => $countQuery->clone()->where('status', 'Dikemas')->count(),
-            'Dikirim'              => $countQuery->clone()->whereIn('status', ['Dikirim', 'Terkirim'])->count(),
-            'Selesai'              => $countQuery->clone()->where('status', 'Selesai')->count(),
-            'Dibatalkan'           => $countQuery->clone()->where('status', 'Dibatalkan')->count(),
+            'Menunggu Pembayaran' => $countQuery->clone()->where('status', 'Menunggu Pembayaran')->count(),
+            'Menunggu Verifikasi' => $countQuery->clone()->where('status', 'Menunggu Verifikasi')->count(),
+            'Dikemas'             => $countQuery->clone()->where('status', 'Dikemas')->count(),
+            'Dikirim'             => $countQuery->clone()->whereIn('status', ['Dikirim', 'Terkirim'])->count(),
+            'Selesai'             => $countQuery->clone()->where('status', 'Selesai')->count(),
+            'Dibatalkan'          => $countQuery->clone()->whereIn('status', ['Dibatalkan', 'Ditolak'])->count(),
         ];
 
         return view('sellers.daftar_pesanan', compact('pesanan', 'statusCounts'));

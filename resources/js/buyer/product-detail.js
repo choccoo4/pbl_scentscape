@@ -1,5 +1,3 @@
-import Swal from 'sweetalert2';
-
 export function showOutOfStockAlert() {
     Swal.fire({
         icon: 'info',

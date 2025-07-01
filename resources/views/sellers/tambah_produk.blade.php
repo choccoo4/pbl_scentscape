@@ -43,6 +43,18 @@
             @endif
         </div>
 
+        <!-- Gifts -->
+        <div class="mb-4">
+            <label class="inline-flex items-center text-sm font-medium text-[#3E3A39]">
+                <input type="checkbox" name="is_gifts" value="1"
+                    class="form-checkbox text-[#9BAF9A] focus:ring-[#9BAF9A] rounded" />
+                <span class="ml-2">Is this a gift item?</span>
+            </label>
+            @if($errors->has('is_gifts'))
+            <p class="text-sm text-red-600 mt-1">{{ $errors->first('is_gifts') }}</p>
+            @endif
+        </div>
+
         <!-- Perfume Type -->
         <div class="mb-4">
             <label for="tipe_parfum" class="block text-sm font-medium text-[#3E3A39] mb-1">

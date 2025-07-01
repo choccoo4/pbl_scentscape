@@ -92,6 +92,22 @@
             @endif
         </div>
 
+        {{-- Buyer Info --}}
+        <div class="flex items-center gap-4 mb-6">
+            <div class="w-16 h-16 rounded-full overflow-hidden bg-gray-200">
+                @php
+                $foto = $pesanan->pengguna->foto_profil
+                ? asset('storage/' . $pesanan->pengguna->foto_profil)
+                : asset('/images/profile.png'); // <- default avatar
+                    @endphp
+
+                    <img src="{{ $foto }}" class="object-cover w-full h-full" alt="Profile Picture">
+            </div>
+            <div>
+                <div class="font-semibold text-[#333]">{{ $pesanan->pengguna->nama }}</div>
+                <div class="text-sm text-[#6c757d]">{{ '@' . $pesanan->pengguna->username }}</div>
+            </div>
+        </div>
 
         {{-- Order Details --}}
         <div>

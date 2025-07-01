@@ -1,5 +1,3 @@
-import Swal from 'sweetalert2';
-
 export function forgotAlert() {
   const success = document.querySelector('meta[name="reset-status"]')?.content;
   const error = document.querySelector('meta[name="forgot-error"]')?.content;

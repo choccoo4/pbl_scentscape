@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\RekapPenjualanExport;
+use Illuminate\Support\Facades\Validator;
 
 class RekapitulasiController extends Controller
 {
@@ -24,11 +25,24 @@ class RekapitulasiController extends Controller
         $grandTotal = 0;
 
         if ($tanggalAwal && $tanggalAkhir) {
-            // Ambil data dan langsung simpan ke database
+            $validator = Validator::make($request->all(), [
+                'tanggal_awal' => ['required', 'date', 'before_or_equal:today'],
+                'tanggal_akhir' => ['required', 'date', 'after_or_equal:tanggal_awal', 'before_or_equal:today'],
+            ], [
+                'tanggal_awal.before_or_equal' => 'Start date must not be in the future.',
+                'tanggal_akhir.after_or_equal' => 'End date must be same or after start date.',
+                'tanggal_akhir.before_or_equal' => 'End date must not be in the future.',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
             $result = $this->getFilteredDataAndSave($request);
             $penjualan = $result['data'];
             $grandTotal = $result['grand_total'];
-            
         }
 
         return view('sellers.rekapitulasi', compact('penjualan', 'grandTotal'));
@@ -76,8 +90,8 @@ class RekapitulasiController extends Controller
 
         // Cek apakah rekap untuk periode ini sudah ada
         $existingRekap = RekapPenjualan::where('rentang_tanggal_awal', $tanggalAwal)
-                                      ->where('rentang_tanggal_akhir', $tanggalAkhir)
-                                      ->exists();
+            ->where('rentang_tanggal_akhir', $tanggalAkhir)
+            ->exists();
 
         // Ambil data penjualan dari PesananItem
         $penjualanItems = PesananItem::with(['produk', 'pesanan'])
@@ -86,7 +100,7 @@ class RekapitulasiController extends Controller
                     Carbon::parse($tanggalAwal)->startOfDay(),
                     Carbon::parse($tanggalAkhir)->endOfDay()
                 ])
-                ->where('status', 'Selesai');
+                    ->where('status', 'Selesai');
             })
             ->orderBy('id_pesanan', 'desc')
             ->get();

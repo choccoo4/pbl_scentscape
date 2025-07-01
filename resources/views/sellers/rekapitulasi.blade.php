@@ -16,17 +16,18 @@
                 <label class="text-sm font-medium text-[#3e3a39] flex items-center gap-2">
                     <i class="fa-solid fa-calendar-days text-[#9baf9a]"></i> Start Date
                 </label>
-                <input type="date" name="tanggal_awal" 
-                       class="w-full border-2 border-[#bfa6a0] rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#9baf9a] focus:border-[#9baf9a] transition-colors bg-white shadow-sm" 
-                       value="{{ request('tanggal_awal') }}">
+                <input type="date" name="tanggal_awal" max="{{ now()->toDateString() }}"
+                    class="w-full border-2 border-[#bfa6a0] rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#9baf9a] focus:border-[#9baf9a] transition-colors bg-white shadow-sm"
+                    value="{{ request('tanggal_awal') }}">
             </div>
             <div class="space-y-2">
                 <label class="text-sm font-medium text-[#3e3a39] flex items-center gap-2">
                     <i class="fa-solid fa-calendar-days text-[#9baf9a]"></i> End Date
                 </label>
-                <input type="date" name="tanggal_akhir" 
-                       class="w-full border-2 border-[#bfa6a0] rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#9baf9a] focus:border-[#9baf9a] transition-colors bg-white shadow-sm" 
-                       value="{{ request('tanggal_akhir') }}">
+                <input type="date" name="tanggal_akhir" min="{{ request('tanggal_awal') }}"
+                    max="{{ now()->toDateString() }}"
+                    class="w-full border-2 border-[#bfa6a0] rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#9baf9a] focus:border-[#9baf9a] transition-colors bg-white shadow-sm"
+                    value="{{ request('tanggal_akhir') }}">
             </div>
         </div>
 
@@ -123,19 +124,19 @@
                             <div class="flex items-center space-x-4">
                                 <div class="flex-shrink-0">
                                     @if($item->produk && $item->produk->gambar)
-                                        @php
-                                            $gambar = $item->produk->gambar;
-                                            $imagePath = is_array($gambar) ? ($gambar[0] ?? '') : $gambar;
-                                        @endphp
-                                        <img src="{{ asset('storage/' . $imagePath) }}" 
-                                        alt="{{ $item->produk->nama_produk }}" 
+                                    @php
+                                    $gambar = $item->produk->gambar;
+                                    $imagePath = is_array($gambar) ? ($gambar[0] ?? '') : $gambar;
+                                    @endphp
+                                    <img src="{{ asset('storage/' . $imagePath) }}"
+                                        alt="{{ $item->produk->nama_produk }}"
                                         class="w-16 h-16 object-cover rounded-lg shadow-sm border border-gray-200"
                                         data-fallback="{{ asset('images/no-image.png') }}"
                                         onerror="this.src=this.dataset.fallback">
                                     @else
-                                        <div class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center border border-gray-200">
-                                            <i class="fa-solid fa-image text-gray-400 text-xl"></i>
-                                        </div>
+                                    <div class="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center border border-gray-200">
+                                        <i class="fa-solid fa-image text-gray-400 text-xl"></i>
+                                    </div>
                                     @endif
                                 </div>
                                 <div class="flex-1 min-w-0">
@@ -203,7 +204,7 @@
             </div>
             <h3 class="text-xl font-semibold text-[#3e3a39] mb-2">Select Date Range</h3>
             <p class="text-gray-600 mb-6">
-                Please select a <strong>start date</strong> and <strong>end date</strong> 
+                Please select a <strong>start date</strong> and <strong>end date</strong>
                 to view your sales summary.
             </p>
             <div class="flex items-center justify-center gap-2 text-sm text-gray-500">

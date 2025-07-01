@@ -54,7 +54,8 @@ class ProdukController extends Controller
         $request->validate([
             'nama_produk' => ['required', 'string', 'max:255', Rule::unique('produk', 'nama_produk')],
             'deskripsi' => 'required|string',
-            'label_kategori' => 'required|in:Unisex,For Him,For Her,Gifts',
+            'label_kategori' => 'required|in:Unisex,For Him,For Her',
+            'is_gifts' => 'nullable|boolean',
             'tipe_parfum' => 'required|string|max:50',
             'volume' => 'required|string|max:20',
             'harga' => 'required|numeric|min:0',
@@ -113,6 +114,7 @@ class ProdukController extends Controller
             'stok' => $request->stok,
             'volume' => $request->volume,
             'label_kategori' => $request->label_kategori,
+            'is_gifts' => $request->boolean('is_gifts'),
             'tipe_parfum' => $request->tipe_parfum,
             'gambar' => $gambarPaths,
             'waktu_dibuat' => now(),
@@ -141,9 +143,8 @@ class ProdukController extends Controller
         $categories = Aroma::all()->pluck('nama');
         $tipeList = Produk::select('tipe_parfum')->distinct()->pluck('tipe_parfum')->toArray();
         $volumeList = Produk::select('volume')->distinct()->pluck('volume')->toArray();
-        $labelKategoriList = ['Unisex', 'For Him', 'For Her', 'Gifts'];
+        $labelKategoriList = ['Unisex', 'For Him', 'For Her'];
         $produkCategories = $produk->aroma()->pluck('nama')->toArray();
-        $categories = Aroma::all()->pluck('nama');
         $kategoriList = AromaKategori::all(['id', 'nama']);
 
         return view('sellers.update_produk', compact(
@@ -185,7 +186,8 @@ class ProdukController extends Controller
                 Rule::unique('produk', 'nama_produk')->ignore($produk->no_produk, 'no_produk')
             ],
             'deskripsi' => 'required|string',
-            'label_kategori' => 'required|in:Unisex,For Him,For Her,Gifts',
+            'label_kategori' => 'required|in:Unisex,For Him,For Her',
+            'is_gifts' => 'nullable|boolean',
             'tipe_parfum' => 'required|string|max:50',
             'volume' => 'required|string|max:20',
             'harga' => 'required|numeric|min:0',
@@ -207,6 +209,7 @@ class ProdukController extends Controller
             'nama_produk' => $validated['nama_produk'],
             'deskripsi' => $validated['deskripsi'],
             'label_kategori' => $validated['label_kategori'],
+            'is_gifts' => $request->boolean('is_gifts'),
             'tipe_parfum' => $validated['tipe_parfum'],
             'volume' => $validated['volume'],
             'harga' => $validated['harga'],

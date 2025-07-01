@@ -40,8 +40,9 @@
                     class="absolute z-10 invisible px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded-md shadow tooltip dark:bg-gray-700">
                     View Details
                     <div class="tooltip-arrow" data-popper-arrow></div>
-    </div>
+                </div>
             </a>
+
 
             <!-- Tambah ke Keranjang (hanya jika stok tersedia) -->
             @if ($stok > 0)
@@ -51,11 +52,11 @@
                 data-tooltip-target="tooltip-cart-{{ Str::slug($name) }}">
                 <i class="ph ph-shopping-cart-simple text-lg"></i>
                 <div id="tooltip-cart-{{ Str::slug($name) }}"
-                role="tooltip"
-                class="absolute z-10 invisible px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded-md shadow tooltip dark:bg-gray-700">
-                Add to Cart
-                <div class="tooltip-arrow" data-popper-arrow></div>
-</div>
+                    role="tooltip"
+                    class="absolute z-10 invisible px-2 py-1 text-xs font-medium text-white bg-gray-900 rounded-md shadow tooltip dark:bg-gray-700">
+                    Add to Cart
+                    <div class="tooltip-arrow" data-popper-arrow></div>
+                </div>
             </button>
             @endif
         </div>
