@@ -1,11 +1,11 @@
 export function confirmLogout() {
     Swal.fire({
-        title: 'Konfirmasi Logout',
-        text: 'Anda yakin ingin keluar dari akun?',
+        title: 'Confirm Logout',
+        text: 'Are you sure you want to log out of your account?',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Yakin',
-        cancelButtonText: 'Batal',
+        confirmButtonText: 'Yes, Log Out',
+        cancelButtonText: 'Cancel',
         confirmButtonColor: '#ef4444',
         cancelButtonColor: '#9ca3af'
     }).then((result) => {

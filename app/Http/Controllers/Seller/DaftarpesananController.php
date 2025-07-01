@@ -11,45 +11,58 @@ class DaftarpesananController extends Controller
 {
     public function daftarpesanan(Request $request)
     {
-        $userId = Auth::id();
+        $userId = Auth::id(); // ID penjual jika dibutuhkan
 
-        // Ambil filter status dari query params, default null (semua)
         $statusFilter = $request->query('status');
         $search = $request->query('search');
 
+        // Mapping status dari query string ke format database
         $statusMap = [
             'menunggu_pembayaran' => 'Menunggu Pembayaran',
             'menunggu_verifikasi' => 'Menunggu Verifikasi',
-            'ditolak' => 'Ditolak',
-            'dikemas' => 'Dikemas',
-            'dikirim' => 'Dikirim',
-            'terkirim' => 'Terkirim',
-            'selesai' => 'Selesai',
-            'dibatalkan' => 'Dibatalkan',
+            'dikemas'              => 'Dikemas',
+            'dikirim'              => 'Dikirim',
+            'terkirim'             => 'Terkirim',
+            'selesai'              => 'Selesai',
+            'dibatalkan'           => 'Dibatalkan',
         ];
 
+        // Query utama untuk pagination
         $query = Pesanan::query();
 
-        // Filter status kalau ada dan bukan semua
+        // Query kedua khusus untuk menghitung jumlah semua status (tidak dipengaruhi filter & pagination)
+        $countQuery = Pesanan::query();
+
+        // Filter berdasarkan status (jika ada)
         if ($statusFilter && strtolower($statusFilter) !== 'semua') {
             if (strtolower($statusFilter) === 'dikirim') {
-                // Khusus tab Dikirim, tampilkan 'Dikirim' dan 'Terkirim'
                 $query->whereIn('status', ['Dikirim', 'Terkirim']);
             } elseif (isset($statusMap[strtolower($statusFilter)])) {
                 $query->where('status', $statusMap[strtolower($statusFilter)]);
             }
         }
 
-        // Filter pencarian
+        // Filter berdasarkan pencarian nomor pesanan
         if ($search) {
             $query->where('nomor_pesanan', 'like', "%{$search}%");
-            // Bisa ditambah filter lain misal nama pembeli, dll
         }
 
+        // Urutkan berdasarkan waktu pemesanan terbaru
         $query->orderBy('waktu_pemesanan', 'desc');
 
+        // Ambil data dengan pagination dan tetap mempertahankan query string
         $pesanan = $query->paginate(10)->withQueryString();
 
-        return view('sellers.daftar_pesanan', compact('pesanan'));
+        // Hitung jumlah semua pesanan berdasarkan status (tidak terkena filter/pagination)
+        $statusCounts = [
+            'Menunggu Pembayaran'  => $countQuery->clone()->where('status', 'Menunggu Pembayaran')->count(),
+            'Menunggu Verifikasi'  => $countQuery->clone()->where('status', 'Menunggu Verifikasi')->count(),
+            'Dikemas'              => $countQuery->clone()->where('status', 'Dikemas')->count(),
+            'Dikirim'              => $countQuery->clone()->whereIn('status', ['Dikirim', 'Terkirim'])->count(),
+            'Selesai'              => $countQuery->clone()->where('status', 'Selesai')->count(),
+            'Dibatalkan'           => $countQuery->clone()->where('status', 'Dibatalkan')->count(),
+        ];
+
+        return view('sellers.daftar_pesanan', compact('pesanan', 'statusCounts'));
     }
 }

@@ -4,7 +4,7 @@ export function resetAlert() {
   if (success) {
     Swal.fire({
       icon: 'success',
-      title: 'Password Diubah',
+      title: 'Password Changed',
       text: success,
       confirmButtonColor: '#414833',
       confirmButtonText: 'OK',
@@ -15,5 +15,5 @@ export function resetAlert() {
   }
 }
 
-// Jalankan saat DOM siap
+// Run when DOM is ready
 document.addEventListener('DOMContentLoaded', resetAlert);

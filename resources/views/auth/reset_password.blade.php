@@ -9,8 +9,10 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="reset-success" content="{{ session('reset_success') }}">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   {{-- Vite --}}
   @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/auth/reset.js'])
+
   {{-- Font Awesome --}}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -32,7 +34,7 @@ $bg = asset('images/background3.jpeg');
     <h2 class="text-[#3E3A39] text-lg font-semibold mb-2">Reset Password</h2>
     <p class="text-sm text-[#3E3A39]/70 mb-6 italic">"Fragrance is the voice of memory and soul."</p>
 
-    {{-- Form Reset --}}
+    {{-- Reset Form --}}
     <form method="POST" action="{{ url('/reset-password/'.$token.'?email='.$email) }}">
       @csrf
 
@@ -48,27 +50,27 @@ $bg = asset('images/background3.jpeg');
         <i class="fa-solid fa-envelope absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
       </div>
 
-      {{-- Password Baru --}}
+      {{-- New Password --}}
       <div class="mb-5 relative" x-data="{ show: false }">
         <input
           :type="show ? 'text' : 'password'"
           name="password"
           autocomplete="new-password"
           required
-          placeholder="Password Baru"
+          placeholder="New Password"
           class="w-full p-3 rounded-md bg-[#F6F1EB] text-sm border border-gray-300 focus:outline-none" />
         <i @click="show = !show"
           :class="show ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"
           class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"></i>
       </div>
 
-      {{-- Konfirmasi Password --}}
+      {{-- Confirm Password --}}
       <div class="mb-6 relative" x-data="{ showConfirm: false }">
         <input
           :type="showConfirm ? 'text' : 'password'"
           name="password_confirmation"
           required
-          placeholder="Konfirmasi Password"
+          placeholder="Confirm Password"
           class="w-full p-3 rounded-md bg-[#F6F1EB] text-sm border border-gray-300 focus:outline-none" />
         <i @click="showConfirm = !showConfirm"
           :class="showConfirm ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"
@@ -84,7 +86,7 @@ $bg = asset('images/background3.jpeg');
     </form>
 
     <p class="text-xs mt-6 text-[#3E3A39]">
-      Ingat kembali password lama?
+      Remember your old password?
       <a href="{{ route('login') }}" class="underline hover:text-[#9BAF9A] transition">Login Now</a>
     </p>
   </div>

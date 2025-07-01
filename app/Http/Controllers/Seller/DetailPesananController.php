@@ -10,12 +10,11 @@ use App\Models\Pembayaran;
 use App\Models\Pengguna;
 use App\Models\Pengiriman;
 
-
 class DetailPesananController extends Controller
 {
     public function show($id)
     {
-        // Ambil data pesanan
+        // Get order data
         $pesanan = Pesanan::with(['pengguna', 'items', 'pembayaran'])->findOrFail($id);
 
         return view('sellers.detail_pesanan', compact('pesanan'));
@@ -26,10 +25,10 @@ class DetailPesananController extends Controller
         $pesanan = Pesanan::with('items.produk')->findOrFail($id);
 
         if (!in_array($pesanan->status, ['Menunggu Verifikasi', 'Menunggu Pembayaran'])) {
-            return back()->with('error', 'Pesanan tidak bisa ditolak di status ini.');
+            return back()->with('error', 'The order cannot be rejected at this status.');
         }
 
-        // Kembalikan stok
+        // Return stock
         foreach ($pesanan->items as $item) {
             $produk = $item->produk;
             if ($produk) {
@@ -38,31 +37,30 @@ class DetailPesananController extends Controller
             }
         }
 
-        // Update status pesanan
+        // Update order status
         $pesanan->status = 'Ditolak';
         $pesanan->save();
 
-        return back()->with('success', 'Pesanan ditolak & stok dikembalikan.');
+        return back()->with('success', 'Order has been rejected and stock returned.');
     }
-
 
     public function konfirmasi($id)
     {
         $pesanan = Pesanan::with('items.produk')->findOrFail($id);
 
         if ($pesanan->status !== 'Menunggu Verifikasi') {
-            return back()->with('error', 'Pesanan tidak dalam status verifikasi.');
+            return back()->with('error', 'The order is not in verification status.');
         }
 
-        // Cek stok cukup dulu
+        // Check stock availability
         foreach ($pesanan->items as $item) {
             $produk = $item->produk;
             if (!$produk || $produk->stok < $item->jumlah) {
-                return back()->with('error', 'Stok tidak cukup untuk produk: ' . $item->nama_produk);
+                return back()->with('error', 'Insufficient stock for product: ' . $item->nama_produk);
             }
         }
 
-        // Kurangi stok
+        // Reduce stock
         foreach ($pesanan->items as $item) {
             $produk = $item->produk;
             $produk->stok -= $item->jumlah;
@@ -73,13 +71,13 @@ class DetailPesananController extends Controller
         $pesanan->status = 'Dikemas';
         $pesanan->save();
 
-        return back()->with('success', 'Pesanan telah dikonfirmasi & stok dikurangi.');
+        return back()->with('success', 'Order has been confirmed and stock reduced.');
     }
 
     public function kirim($id)
     {
         Pesanan::where('id_pesanan', $id)->update(['status' => 'Dikirim']);
-        return back()->with('success', 'Pesanan sudah dikirim.');
+        return back()->with('success', 'Order has been marked as shipped.');
     }
 
     public function terkirim(Request $request, $id)
@@ -94,7 +92,7 @@ class DetailPesananController extends Controller
 
         Pesanan::where('id_pesanan', $id)->update(['status' => 'Terkirim']);
 
-        return back()->with('success', 'Nomor resi berhasil disimpan.');
+        return back()->with('success', 'Tracking number has been saved.');
     }
 
     public function selesai($id)
@@ -105,6 +103,6 @@ class DetailPesananController extends Controller
         $pesanan->waktu_selesai = now();
         $pesanan->save();
 
-        return back()->with('success', 'Pesanan telah diselesaikan.');
+        return back()->with('success', 'Order has been completed.');
     }
 }

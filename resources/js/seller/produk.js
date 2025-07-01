@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    // VALIDASI TAMBAH PRODUK
+    // VALIDATION FOR ADDING PRODUCT
     const form = document.querySelector('form');
     if (form) {
         form.addEventListener('submit', function (e) {
@@ -23,69 +23,69 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (!nama.value.trim()) {
                 isValid = false;
-                messages.push('Nama produk harus diisi');
+                messages.push('Product name is required');
                 nama.classList.add('border-red-500');
             }
             if (!deskripsi.value.trim()) {
                 isValid = false;
-                messages.push('Deskripsi produk harus diisi');
+                messages.push('Product description is required');
                 deskripsi.classList.add('border-red-500');
             }
             if (!label.value) {
                 isValid = false;
-                messages.push('Label kategori harus dipilih');
+                messages.push('Category label must be selected');
                 label.classList.add('border-red-500');
             }
             if (!tipe.value) {
                 isValid = false;
-                messages.push('Tipe parfum harus dipilih');
+                messages.push('Perfume type must be selected');
                 tipe.classList.add('border-red-500');
             }
             if (!volume.value.trim()) {
                 isValid = false;
-                messages.push('Volume harus diisi');
+                messages.push('Volume is required');
                 volume.classList.add('border-red-500');
             }
             if (!harga.value.trim()) {
                 isValid = false;
-                messages.push('Harga harus diisi');
+                messages.push('Price is required');
                 harga.classList.add('border-red-500');
             }
             if (!stok.value.trim()) {
                 isValid = false;
-                messages.push('Stok harus diisi');
+                messages.push('Stock is required');
                 stok.classList.add('border-red-500');
             }
             if (aromaTerpilih.length === 0) {
                 isValid = false;
-                messages.push('Pilih minimal 1 aroma');
+                messages.push('Select at least one scent');
             }
             if (!gambar.files.length) {
                 isValid = false;
-                messages.push('Upload minimal 1 gambar produk');
+                messages.push('Upload at least one product image');
             }
 
             if (!isValid) {
                 e.preventDefault();
-                alert('Harap lengkapi form:\n- ' + messages.join('\n- '));
+                alert('Please complete the form:\n- ' + messages.join('\n- '));
             }
         });
     }
 
-    // SWEETALERT HAPUS PRODUK
+    // SWEETALERT DELETE PRODUCT
     const deleteForms = document.querySelectorAll('.delete-produk');
     deleteForms.forEach(function (form) {
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             Swal.fire({
-                title: 'Hapus Produk?',
-                text: "Produk yang sudah dihapus tidak dapat dikembalikan!",
+                title: 'Delete Product?',
+                text: "Deleted products cannot be recovered!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#9BAF9A',
-                confirmButtonText: 'Ya, Hapus!',
-                cancelButtonText: 'Batal'
+                confirmButtonText: 'Yes, Delete!',
+                cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
                     form.submit();

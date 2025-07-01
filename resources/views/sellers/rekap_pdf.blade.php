@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rekapitulasi Penjualan - Scentscape</title>
+    <title>Sales Recapitulation - Scentscape</title>
+    <!-- Styles remain unchanged -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -192,12 +193,12 @@
 <body>
     <div class="header">
         <h1>🌸 SCENTSCAPE</h1>
-        <h2>Rekapitulasi Penjualan</h2>
+        <h2>Sales Recapitulation</h2>
     </div>
     
     @if(isset($tanggalAwal) && isset($tanggalAkhir))
     <div class="period">
-        <strong>Periode: {{ \Carbon\Carbon::parse($tanggalAwal)->format('d F Y') }} - {{ \Carbon\Carbon::parse($tanggalAkhir)->format('d F Y') }}</strong>
+        <strong>Period: {{ \Carbon\Carbon::parse($tanggalAwal)->format('d F Y') }} - {{ \Carbon\Carbon::parse($tanggalAkhir)->format('d F Y') }}</strong>
     </div>
     @endif
     
@@ -205,8 +206,8 @@
     {{-- Summary Box --}}
     <div class="summary-box">
         <div class="summary-item">
-            <span>Total Transaksi:</span>
-            <span>{{ $penjualan->count() }} item</span>
+            <span>Total Transactions:</span>
+            <span>{{ $penjualan->count() }} item(s)</span>
         </div>
         <div class="summary-item">
             <span>Total Quantity:</span>
@@ -222,9 +223,9 @@
         <table>
             <thead>
                 <tr>
-                    <th width="12%">Tanggal</th>
-                    <th width="40%">Produk</th>
-                    <th width="18%">Harga Satuan</th>
+                    <th width="12%">Date</th>
+                    <th width="40%">Product</th>
+                    <th width="18%">Unit Price</th>
                     <th width="10%">QTY</th>
                     <th width="20%">Total</th>
                 </tr>
@@ -258,7 +259,7 @@
                                 </div>
                             @endif
                             <span class="product-name">
-                                {{ $item->produk ? $item->produk->nama_produk : ($item->nama_produk ?? 'Produk Tidak Ditemukan') }}
+                                {{ $item->produk ? $item->produk->nama_produk : ($item->nama_produk ?? 'Product Not Found') }}
                             </span>
                         </div>
                     </td>
@@ -277,7 +278,7 @@
                 {{-- Total Row --}}
                 <tr class="total-row">
                     <td colspan="4" style="text-align: right; font-weight: bold;">
-                        <strong>GRAND TOTAL:</strong>
+                        <strong>TOTAL:</strong>
                     </td>
                     <td class="price" style="font-weight: bold; font-size: 14px;">
                         <strong>Rp. {{ number_format($grandTotal, 0, ',', '.') }}</strong>
@@ -289,16 +290,16 @@
     
     @else
     <div class="no-data">
-        <p>📋 Tidak ada data penjualan pada periode yang dipilih</p>
+        <p>📋 No sales data found for the selected period</p>
         @if(isset($tanggalAwal) && isset($tanggalAkhir))
-        <p>Periode: {{ \Carbon\Carbon::parse($tanggalAwal)->format('d F Y') }} - {{ \Carbon\Carbon::parse($tanggalAkhir)->format('d F Y') }}</p>
+        <p>Period: {{ \Carbon\Carbon::parse($tanggalAwal)->format('d F Y') }} - {{ \Carbon\Carbon::parse($tanggalAkhir)->format('d F Y') }}</p>
         @endif
     </div>
     @endif
     
     <div class="footer">
-        <p>Laporan dicetak pada: {{ \Carbon\Carbon::now()->format('d F Y, H:i:s') }}</p>
-        <p>© {{ date('Y') }} Scentscape - e-commerce applicalication</p>
+        <p>Report printed on: {{ \Carbon\Carbon::now()->format('d F Y, H:i:s') }}</p>
+        <p>© {{ date('Y') }} Scentscape - e-commerce application</p>
     </div>
 </body>
 </html>

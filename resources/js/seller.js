@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (successMessage) {
         Swal.fire({
             icon: 'success',
-            title: 'Sukses!',
+            title: 'success!',
             text: successMessage,
             timer: 2000,
             showConfirmButton: false

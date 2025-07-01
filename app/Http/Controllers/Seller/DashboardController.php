@@ -14,68 +14,65 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Status pesanan yang dianggap sukses (pembayaran sudah diverifikasi)
-        $statusTerjual = ['Dikirim', 'Terkirim', 'Selesai'];
-
-        // Total penjualan hari ini
-        $totalPenjualan = Pesanan::whereIn('status', $statusTerjual)
-            ->whereDate('waktu_pemesanan', now()->toDateString())
+        // Total sales today (completed orders)
+        $totalPenjualan = Pesanan::where('status', 'Terkirim')
+            ->whereDate('pesanan.waktu_pemesanan', now()->toDateString())
             ->sum('total');
 
-        // Produk terjual hari ini
-        $produkTerjual = PesananItem::join('pesanan', 'pesanan_item.id_pesanan', '=', 'pesanan.id_pesanan')
-            ->whereIn('pesanan.status', $statusTerjual)
-            ->whereDate('pesanan.waktu_pemesanan', now()->toDateString())
-            ->sum('pesanan_item.jumlah');
-
-        // Pesanan masuk hari ini
+        // Incoming orders today (pending or in process)
         $pesananMasuk = Pesanan::whereDate('waktu_pemesanan', now()->toDateString())
             ->whereIn('status', ['Menunggu Verifikasi', 'Dikemas', 'Dikirim', 'Terkirim'])
             ->count();
 
-        // Pesanan baru hari ini
+        // Products sold today
+        $produkTerjual = PesananItem::join('pesanan', 'pesanan_item.id_pesanan', '=', 'pesanan.id_pesanan')
+            ->where('pesanan.status', 'Terkirim')
+            ->whereDate('pesanan.waktu_pemesanan', now()->toDateString())
+            ->sum('pesanan_item.jumlah');
+
+        // Total stock of all products
+        $totalStokProduk = Produk::sum('stok');
+
+        // New orders today (not yet paid or verified)
         $pesananBaruHariIni = Pesanan::whereDate('waktu_pemesanan', now()->toDateString())
             ->whereIn('status', ['Menunggu Pembayaran', 'Menunggu Verifikasi'])
             ->count();
 
-        // Produk dikirim hari ini
+        // Products shipped today
         $produkTerkirimHariIni = PesananItem::join('pesanan', 'pesanan_item.id_pesanan', '=', 'pesanan.id_pesanan')
-            ->whereIn('pesanan.status', ['Dikirim', 'Terkirim'])
             ->whereDate('pesanan.waktu_pemesanan', now()->toDateString())
+            ->whereIn('pesanan.status', ['Dikirim', 'Terkirim'])
             ->sum('pesanan_item.jumlah');
-
-        // Total stok semua produk
-        $totalStokProduk = Produk::sum('stok');
 
         return view('sellers.dashboard', compact(
             'totalPenjualan',
-            'produkTerjual',
             'pesananMasuk',
+            'produkTerjual',
+            'totalStokProduk',
             'pesananBaruHariIni',
-            'produkTerkirimHariIni',
-            'totalStokProduk'
+            'produkTerkirimHariIni'
         ));
     }
 
     /**
-     * API endpoint untuk data chart penjualan mingguan
-     * Ambil data pesanan selesai 7 hari terakhir
+     * API endpoint for weekly sales chart data
+     * Fetch completed orders in the last 7 days
      */
     public function getWeeklySales()
     {
         try {
-            // Ambil 7 hari terakhir termasuk hari ini
+            // Get last 7 days including today
             $dates = collect();
             for ($i = 6; $i >= 0; $i--) {
                 $dates->push(Carbon::now()->subDays($i)->format('Y-m-d'));
             }
 
-            // Query penjualan per hari dalam 7 hari terakhir
+            // Query daily sales in the last 7 days
             $salesData = Pesanan::select(
-                DB::raw('DATE(waktu_selesai) as tanggal'),
-                DB::raw('COALESCE(SUM(total), 0) as total_penjualan'),
-                DB::raw('COUNT(*) as jumlah_pesanan')
-            )
+                    DB::raw('DATE(waktu_selesai) as tanggal'),
+                    DB::raw('COALESCE(SUM(total), 0) as total_penjualan'),
+                    DB::raw('COUNT(*) as jumlah_pesanan')
+                )
                 ->where('status', 'Selesai')
                 ->whereDate('waktu_selesai', '>=', Carbon::now()->subDays(6)->format('Y-m-d'))
                 ->whereDate('waktu_selesai', '<=', Carbon::now()->format('Y-m-d'))
@@ -83,18 +80,19 @@ class DashboardController extends Controller
                 ->get()
                 ->keyBy('tanggal');
 
-            // Siapkan data untuk chart
+            // Prepare data for chart
             $labels = [];
             $salesAmounts = [];
             $orderCounts = [];
-            $dayNames = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+
+            // English day names, indexed by Carbon::dayOfWeek (0=Sunday, 6=Saturday)
+            $dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
             foreach ($dates as $date) {
                 $carbonDate = Carbon::parse($date);
                 $dayName = $dayNames[$carbonDate->dayOfWeek];
                 $labels[] = $dayName;
 
-                // Ambil data penjualan untuk tanggal ini, kalau tidak ada = 0
                 if (isset($salesData[$date])) {
                     $salesAmounts[] = (float) $salesData[$date]->total_penjualan;
                     $orderCounts[] = (int) $salesData[$date]->jumlah_pesanan;
@@ -113,16 +111,17 @@ class DashboardController extends Controller
                     'total_sales' => array_sum($salesAmounts),
                     'total_orders' => array_sum($orderCounts),
                     'periode' => [
-                        'mulai' => Carbon::now()->subDays(6)->format('d M Y'),
-                        'selesai' => Carbon::now()->format('d M Y')
+                        'mulai' => Carbon::now()->subDays(6)->locale('en')->isoFormat('D MMMM YYYY'),
+                        'selesai' => Carbon::now()->locale('en')->isoFormat('D MMMM YYYY')
                     ]
                 ]
             ]);
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal mengambil data penjualan mingguan',
-                'error' => config('app.debug') ? $e->getMessage() : 'Terjadi kesalahan server'
+                'message' => 'Failed to retrieve weekly sales data',
+                'error' => config('app.debug') ? $e->getMessage() : 'Server error occurred'
             ], 500);
         }
     }

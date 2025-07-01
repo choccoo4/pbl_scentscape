@@ -1,7 +1,8 @@
-// resources/js/auth/forgot.js
+import Swal from 'sweetalert2';
 
 export function forgotAlert() {
-  const success = document.querySelector('meta[name="forgot-success"]')?.content;
+  const success = document.querySelector('meta[name="reset-status"]')?.content;
+  const error = document.querySelector('meta[name="forgot-error"]')?.content;
 
   if (success) {
     Swal.fire({
@@ -9,9 +10,19 @@ export function forgotAlert() {
       title: 'Success',
       text: success,
       confirmButtonColor: '#414833'
+    }).then(() => {
+      window.location.href = '/login';
+    });
+  }
+
+  if (error) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: error,
+      confirmButtonColor: '#414833'
     });
   }
 }
 
-// Auto-run when page is ready
 document.addEventListener('DOMContentLoaded', forgotAlert);

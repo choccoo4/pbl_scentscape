@@ -2,21 +2,21 @@
     <thead>
         <tr>
             <th colspan="5" style="font-size: 16px; text-align: center; font-weight: bold; padding: 10px; background-color: #9baf9a; color: white;">
-                REKAPITULASI PENJUALAN
+                SALES RECAPITULATION
             </th>
         </tr>
         @if(isset($tanggalAwal) && isset($tanggalAkhir))
         <tr>
             <th colspan="5" style="text-align: center; font-size: 12px; padding: 5px;">
-                Periode: {{ \Carbon\Carbon::parse($tanggalAwal)->format('d-m-Y') }} s/d {{ \Carbon\Carbon::parse($tanggalAkhir)->format('d-m-Y') }}
+                Period: {{ \Carbon\Carbon::parse($tanggalAwal)->format('d-m-Y') }} to {{ \Carbon\Carbon::parse($tanggalAkhir)->format('d-m-Y') }}
             </th>
         </tr>
         @endif
         <tr style="background-color: #9baf9a; color: white; font-weight: bold;">
-            <th style="text-align: center; padding: 8px; border: 1px solid #ddd;">Tanggal</th>
-            <th style="text-align: center; padding: 8px; border: 1px solid #ddd;">Nama Produk</th>
-            <th style="text-align: center; padding: 8px; border: 1px solid #ddd;">Harga Satuan</th>
-            <th style="text-align: center; padding: 8px; border: 1px solid #ddd;">Jumlah</th>
+            <th style="text-align: center; padding: 8px; border: 1px solid #ddd;">Date</th>
+            <th style="text-align: center; padding: 8px; border: 1px solid #ddd;">Product Name</th>
+            <th style="text-align: center; padding: 8px; border: 1px solid #ddd;">Unit Price</th>
+            <th style="text-align: center; padding: 8px; border: 1px solid #ddd;">Quantity</th>
             <th style="text-align: center; padding: 8px; border: 1px solid #ddd;">Total</th>
         </tr>
     </thead>
@@ -27,7 +27,7 @@
                     {{ $item->pesanan ? $item->pesanan->waktu_pemesanan->format('d-m-Y') : '-' }}
                 </td>
                 <td style="padding: 5px; border: 1px solid #ddd;">
-                    {{ $item->produk ? $item->produk->nama_produk : ($item->nama_produk ?? 'Produk Tidak Ditemukan') }}
+                    {{ $item->produk ? $item->produk->nama_produk : ($item->nama_produk ?? 'Product Not Found') }}
                 </td>
                 <td style="text-align: right; padding: 5px; border: 1px solid #ddd;">
                     {{ number_format($item->harga_satuan, 0, ',', '.') }}
@@ -42,7 +42,7 @@
         @empty
             <tr>
                 <td colspan="5" style="text-align: center; padding: 10px; border: 1px solid #ddd;">
-                    Tidak ada data penjualan pada periode yang dipilih
+                    No sales data found for the selected period
                 </td>
             </tr>
         @endforelse

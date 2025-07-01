@@ -16,11 +16,11 @@
                 <li class="relative">
                     <div class="flex items-center space-x-2 hover:text-[#9BAF9A] transition-all cursor-pointer group-hover:text-[#9BAF9A]">
                         <i class="fas fa-user"></i>
-                        <span>Akun Saya</span>
+                        <span>My Account</span>
                     </div>
                     <ul class="pl-6 mt-2 space-y-1 text-sm transition-all duration-300 group-hover:max-h-32 max-h-0 overflow-hidden">
-                        <li><a href="{{ route('profil-penjual') }}" class="hover:text-[#BFA6A0]">Profil</a></li>
-                        <li><a href="{{ route('ubahpw') }}" class="hover:text-[#BFA6A0]">Ubah Kata Sandi</a></li>
+                        <li><a href="{{ route('profil-penjual') }}" class="hover:text-[#BFA6A0]">Profile</a></li>
+                        <li><a href="{{ route('ubahpw') }}" class="hover:text-[#BFA6A0]">Change Password</a></li>
                     </ul>
                 </li>
             </ul>
@@ -28,7 +28,7 @@
 
         <!-- Main Content -->
         <main class="flex-1 bg-white p-8 rounded shadow">
-            <h2 class="text-2xl font-semibold mb-6 border-b pb-2">Ubah Kata Sandi</h2>
+            <h2 class="text-2xl font-semibold mb-6 border-b pb-2">Change Password</h2>
 
             <!-- Success Message -->
             @if(session('success'))
@@ -61,7 +61,7 @@
                             class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#9BAF9A] pr-10 @error('current_password') border-red-500 @enderror">
                         <button type="button" @click="showCurrent = !showCurrent"
                             class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
-                            <i :class="showCurrent ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                            <i :class="showCurrent ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
                         </button>
                     </div>
                     @error('current_password')
@@ -78,11 +78,11 @@
                             class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#9BAF9A] pr-10 @error('new_password') border-red-500 @enderror">
                         <button type="button" @click="showNew = !showNew"
                             class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
-                            <i :class="showNew ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                            <i :class="showNew ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
                         </button>
                     </div>
                     <p class="text-sm text-gray-600 mt-1">
-                        Password harus minimal 8 karakter, mengandung huruf besar, huruf kecil, angka, dan simbol.
+                        Password must be at least 8 characters and include uppercase, lowercase, number, and symbol.
                     </p>
                     @error('new_password')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -98,7 +98,7 @@
                             class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[#9BAF9A] pr-10 @error('new_password_confirmation') border-red-500 @enderror">
                         <button type="button" @click="showConfirm = !showConfirm"
                             class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
-                            <i :class="showConfirm ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                            <i :class="showConfirm ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
                         </button>
                     </div>
                     @error('new_password_confirmation')
@@ -127,26 +127,12 @@
     // Optional: Real-time password strength indicator
     document.getElementById('new_password').addEventListener('input', function() {
         const password = this.value;
-        const requirements = [{
-                regex: /.{8,}/,
-                text: 'Minimal 8 karakter'
-            },
-            {
-                regex: /[a-z]/,
-                text: 'Huruf kecil'
-            },
-            {
-                regex: /[A-Z]/,
-                text: 'Huruf besar'
-            },
-            {
-                regex: /\d/,
-                text: 'Angka'
-            },
-            {
-                regex: /[^A-Za-z0-9]/,
-                text: 'Simbol'
-            }
+        const requirements = [
+            { regex: /.{8,}/, text: 'At least 8 characters' },
+            { regex: /[a-z]/, text: 'Lowercase letter' },
+            { regex: /[A-Z]/, text: 'Uppercase letter' },
+            { regex: /\d/, text: 'Number' },
+            { regex: /[^A-Za-z0-9]/, text: 'Symbol' }
         ];
 
         // You can add password strength indicator here if needed

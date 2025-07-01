@@ -24,9 +24,9 @@ class ProdukController extends Controller
 
         $produk = $query->latest('waktu_dibuat')->paginate(10)->withQueryString();
 
-        // Loop dan tambahkan kolom penjualan untuk ditampilkan di blade
+        // Add 'penjualan' column for display in blade
         foreach ($produk as $item) {
-            $item->penjualan = $item->totalPenjualan(); // dari model
+            $item->penjualan = $item->totalPenjualan(); // from model
         }
 
         return view('sellers.daftar_produk', compact('produk'));
@@ -34,7 +34,7 @@ class ProdukController extends Controller
 
     public function create()
     {
-        $categories = Aroma::all()->pluck('nama');  // ambil kolom 'nama' aja sebagai array
+        $categories = Aroma::all()->pluck('nama');
         $tipeList = Produk::select('tipe_parfum')->distinct()->pluck('tipe_parfum')->toArray();
         $volumeList = Produk::select('volume')->distinct()->pluck('volume')->toArray();
         $labelKategoriList = ['Unisex', 'For Him', 'For Her', 'Gifts'];
@@ -47,7 +47,7 @@ class ProdukController extends Controller
     {
         if ($request->hasFile('gambar') && count($request->file('gambar')) > 4) {
             return back()->withInput()->withErrors([
-                'gambar' => 'Maksimal upload 4 gambar saja.',
+                'gambar' => 'Maximum upload is 4 images.',
             ]);
         }
 
@@ -60,37 +60,36 @@ class ProdukController extends Controller
             'harga' => 'required|numeric|min:0',
             'stok' => 'required|integer|min:0',
             'gambar' => 'required|array|min:1|max:4',
-            'gambar.*' => 'required|image|mimes:jpg,jpeg,png|max:2048', // kalau mau pakai 2MB
+            'gambar.*' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'categories' => 'required|array|min:1',
             'categories.*' => 'string'
         ], [
-            'nama_produk.required' => 'Nama produk wajib diisi',
-            'nama_produk.unique' => 'Nama produk sudah digunakan',
-            'deskripsi.required' => 'Deskripsi produk harus diisi',
-            'label_kategori.required' => 'Label kategori wajib dipilih',
-            'label_kategori.in' => 'Label kategori tidak valid',
-            'tipe_parfum.required' => 'Tipe parfum wajib diisi',
-            'tipe_parfum.max' => 'Tipe parfum maksimal 50 karakter',
-            'volume.required' => 'Volume wajib diisi',
-            'volume.max' => 'Volume maksimal 20 karakter',
-            'harga.required' => 'Harga wajib diisi',
-            'harga.numeric' => 'Harga harus berupa angka',
-            'harga.min' => 'Harga tidak boleh negatif',
-            'stok.required' => 'Stok wajib diisi',
-            'stok.integer' => 'Stok harus berupa angka bulat',
-            'stok.min' => 'Stok tidak boleh negatif',
-            'gambar.required' => 'Foto produk wajib diupload minimal satu',
-            'gambar.array' => 'Format upload gambar tidak valid',
-            'gambar.min' => 'Upload minimal 1 gambar',
-            'gambar.max' => 'Maksimal upload 4 gambar saja',
-            'gambar.*.image' => 'File harus berupa gambar',
-            'gambar.*.mimes' => 'Gambar harus berformat jpg, jpeg, atau png',
-            'gambar.*' => 'Ukuran gambar maksimal 2MB',
-            'categories.required' => 'Pilih minimal satu aroma',
-            'categories.*.string' => 'Format aroma tidak valid'
+            'nama_produk.required' => 'Product name is required',
+            'nama_produk.unique' => 'Product name already exists',
+            'deskripsi.required' => 'Product description is required',
+            'label_kategori.required' => 'Category label is required',
+            'label_kategori.in' => 'Invalid category label',
+            'tipe_parfum.required' => 'Perfume type is required',
+            'tipe_parfum.max' => 'Perfume type max 50 characters',
+            'volume.required' => 'Volume is required',
+            'volume.max' => 'Volume max 20 characters',
+            'harga.required' => 'Price is required',
+            'harga.numeric' => 'Price must be numeric',
+            'harga.min' => 'Price cannot be negative',
+            'stok.required' => 'Stock is required',
+            'stok.integer' => 'Stock must be an integer',
+            'stok.min' => 'Stock cannot be negative',
+            'gambar.required' => 'Product images must be uploaded at least one',
+            'gambar.array' => 'Invalid image upload format',
+            'gambar.min' => 'Upload at least 1 image',
+            'gambar.max' => 'Maximum upload is 4 images',
+            'gambar.*.image' => 'Each file must be an image',
+            'gambar.*.mimes' => 'Image must be in jpg, jpeg, or png format',
+            'gambar.*' => 'Image size must not exceed 2MB',
+            'categories.required' => 'Select at least one scent',
+            'categories.*.string' => 'Invalid scent format'
         ]);
 
-        // simpan gambar maksimal 4
         $gambarPaths = [];
         if ($request->hasFile('gambar')) {
             foreach ($request->file('gambar') as $index => $file) {
@@ -100,8 +99,7 @@ class ProdukController extends Controller
                 $path = $file->storeAs('produk', $filename, 'public');
 
                 if (!$path) {
-                    // Upload gagal, bisa return response gagal
-                    return back()->with('error', 'Upload gambar gagal!');
+                    return back()->with('error', 'Image upload failed!');
                 }
 
                 $gambarPaths[] = 'produk/' . $filename;
@@ -125,7 +123,7 @@ class ProdukController extends Controller
             $aromaIds = Aroma::whereIn('nama', $request->categories)->pluck('id_kategori');
             $produk->aroma()->attach($aromaIds);
         }
-        return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan.');
+        return redirect()->route('produk.index')->with('success', 'Product added successfully.');
     }
 
     public function destroy($no_produk)
@@ -134,7 +132,7 @@ class ProdukController extends Controller
 
         $produk->delete();
 
-        return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus');
+        return redirect()->route('produk.index')->with('success', 'Product deleted successfully');
     }
 
     public function edit($no_produk)
@@ -144,8 +142,8 @@ class ProdukController extends Controller
         $tipeList = Produk::select('tipe_parfum')->distinct()->pluck('tipe_parfum')->toArray();
         $volumeList = Produk::select('volume')->distinct()->pluck('volume')->toArray();
         $labelKategoriList = ['Unisex', 'For Him', 'For Her', 'Gifts'];
-        $produkCategories = $produk->aroma()->pluck('nama')->toArray(); // ambil nama aroma yang sudah dipilih
-        $categories = Aroma::all()->pluck('nama'); // semua aroma
+        $produkCategories = $produk->aroma()->pluck('nama')->toArray();
+        $categories = Aroma::all()->pluck('nama');
         $kategoriList = AromaKategori::all(['id', 'nama']);
 
         return view('sellers.update_produk', compact(
@@ -163,7 +161,6 @@ class ProdukController extends Controller
     {
         $produk = Produk::where('no_produk', $no_produk)->firstOrFail();
 
-        // Ambil array gambar lama yang dipertahankan
         $existingGambar = [];
         if ($request->filled('existing_gambar')) {
             $existingGambar = json_decode($request->existing_gambar, true);
@@ -172,16 +169,14 @@ class ProdukController extends Controller
             }
         }
 
-        // Cek total gambar tidak boleh lebih dari 4
         $newImages = $request->file('gambar') ?? [];
         $totalImages = count($existingGambar) + count($newImages);
         if ($totalImages > 4) {
             return back()->withInput()->withErrors([
-                'gambar' => 'Total gambar (lama + baru) tidak boleh lebih dari 4.'
+                'gambar' => 'Total images (existing + new) cannot exceed 4.'
             ]);
         }
 
-        // Validasi data
         $validated = $request->validate([
             'nama_produk' => [
                 'required',
@@ -201,14 +196,13 @@ class ProdukController extends Controller
             'categories.*' => 'string',
             'existing_gambar' => 'nullable|string',
         ], [
-            'gambar.max' => 'Maksimal 4 gambar.',
-            'gambar.*.image' => 'Setiap file harus berupa gambar.',
-            'gambar.*.mimes' => 'Format gambar harus jpg, jpeg, atau png.',
-            'gambar.*.max' => 'Ukuran gambar maksimal 2MB.',
-            'categories.required' => 'Minimal satu aroma harus dipilih.',
+            'gambar.max' => 'Maximum 4 images.',
+            'gambar.*.image' => 'Each file must be an image.',
+            'gambar.*.mimes' => 'Image must be in jpg, jpeg, or png format.',
+            'gambar.*.max' => 'Maximum image size is 2MB.',
+            'categories.required' => 'Select at least one scent.',
         ]);
 
-        // Update kolom utama produk
         $produk->update([
             'nama_produk' => $validated['nama_produk'],
             'deskripsi' => $validated['deskripsi'],
@@ -219,7 +213,6 @@ class ProdukController extends Controller
             'stok' => $validated['stok'],
         ]);
 
-        // Upload gambar baru
         $newGambarPaths = [];
         if (!empty($newImages)) {
             foreach ($newImages as $img) {
@@ -230,7 +223,6 @@ class ProdukController extends Controller
             }
         }
 
-        // Opsional: hapus gambar lama yang tidak dipertahankan
         $gambarSebelumnya = $produk->gambar ?? [];
         foreach ($gambarSebelumnya as $lama) {
             if (!in_array($lama, $existingGambar)) {
@@ -238,16 +230,14 @@ class ProdukController extends Controller
             }
         }
 
-        // Gabungkan gambar lama + baru lalu update
         $finalGambar = array_merge($existingGambar, $newGambarPaths);
         $produk->update([
-            'gambar' => $finalGambar, // otomatis disimpan sebagai JSON
+            'gambar' => $finalGambar,
         ]);
 
-        // Update relasi aroma
         $aromaIds = Aroma::whereIn('nama', $validated['categories'])->pluck('id_kategori');
         $produk->aroma()->sync($aromaIds);
 
-        return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui.');
+        return redirect()->route('produk.index')->with('success', 'Product updated successfully.');
     }
 }

@@ -1,6 +1,6 @@
 // resources/js/pages/profil-penjual.js
 
-// Preview foto sebelum upload
+// Preview profile photo before upload
 document.getElementById('profilePicInput')?.addEventListener('change', function (event) {
     const [file] = event.target.files;
     if (file) {
@@ -8,14 +8,13 @@ document.getElementById('profilePicInput')?.addEventListener('change', function 
     }
 });
 
-// SweetAlert untuk pesan sukses
+// SweetAlert for success message
 const successMsg = document.querySelector('[data-success]')?.dataset.success;
 if (successMsg && window.Swal) {
     Swal.fire({
         icon: 'success',
-        title: 'Success',
+        title: 'Success!',
         text: successMsg,
         confirmButtonColor: '#9BAF9A'
     });
 }
-
