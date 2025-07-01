@@ -1,23 +1,23 @@
 export function editProduk(existingImages = [], selectedCategories = []) {
   return {
-    // Untuk gambar
+    // For images
     images: existingImages.map(url => ({ url, isExisting: true })),
     errorMessage: '',
 
-    // Untuk kategori aroma
+    // For aroma categories
     selected: selectedCategories,
     showAromaForm: false,
     newAroma: '',
 
     init() {
-      // Set default selected dari global window (jika ada)
+      // Set default selected from global window (if available)
       this.selected = window.selectedData || this.selected;
     },
 
     updatePreview(event) {
       const files = Array.from(event.target.files);
       if (this.images.length + files.length > 4) {
-        this.errorMessage = 'Maksimal 4 gambar saja.';
+        this.errorMessage = 'Maximum of 4 images only.';
         event.target.value = '';
         return;
       }

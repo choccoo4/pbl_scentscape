@@ -18,11 +18,11 @@
                 <li class="relative">
                     <div class="flex items-center space-x-2 hover:text-[#9BAF9A] transition-all cursor-pointer group-hover:text-[#9BAF9A]">
                         <i class="fas fa-user"></i>
-                        <span>Akun Saya</span>
+                        <span>My Account</span>
                     </div>
                     <ul class="pl-6 mt-2 space-y-1 text-sm transition-all duration-300 group-hover:max-h-32 max-h-0 overflow-hidden">
-                        <li><a href="{{ route('profil-penjual') }}" class="hover:text-[#BFA6A0]">Profil</a></li>
-                        <li><a href="{{ route('ubahpw') }}" class="hover:text-[#BFA6A0]">Ubah Kata Sandi</a></li>
+                        <li><a href="{{ route('profil-penjual') }}" class="hover:text-[#BFA6A0]">Profile</a></li>
+                        <li><a href="{{ route('ubahpw') }}" class="hover:text-[#BFA6A0]">Change Password</a></li>
                     </ul>
                 </li>
             </ul>
@@ -32,57 +32,57 @@
         <section class="flex-1 bg-white p-10 rounded-lg shadow-md mx-6">
             <!-- Greeting -->
             <div class="mb-6">
-                <h2 class="text-2xl font-semibold text-[#3E3A39]">Selamat Datang Kembali, <span class="text-[#9BAF9A]">
+                <h2 class="text-2xl font-semibold text-[#3E3A39]">Welcome back, <span class="text-[#9BAF9A]">
                         {{ $penjual->pengguna->nama ?? 'Admin' }}</span>!
                 </h2>
-                <p class="text-sm text-gray-500">Perbarui profil Anda untuk menjaga semuanya tetap terkini✨</p>
+                <p class="text-sm text-gray-500">Update your profile to keep everything up to date ✨</p>
             </div>
 
-            <!-- Form Update Profil -->
+            <!-- Form Update Profile -->
             <form action="{{ route('profil-penjual.update') }}" method="POST" enctype="multipart/form-data" id="profilForm">
                 @csrf
                 @method('PUT')
 
-                <!-- Foto Profil -->
+                <!-- Profile Picture -->
                 <div class="text-center mb-8">
                     <img id="profilePicPreview"
                         src="{{ $penjual->pengguna->foto_profil ? asset('storage/' . $penjual->pengguna->foto_profil) : asset('/images/profile.png') }}"
                         class="w-24 h-24 rounded-full border-4 border-[#D6C6B8] mx-auto mb-2 shadow-md"
-                        alt="Profil Penjual">
+                        alt="Seller Profile">
 
                     <label for="profilePicInput" class="text-sm text-[#9BAF9A] hover:underline cursor-pointer">
-                        ✎ Ubah Foto Profil
+                        ✎ Change Profile Picture
                     </label>
                     <input id="profilePicInput" type="file" name="foto_profil" class="hidden" accept="image/*"
                         {{ !$penjual->pengguna->foto_profil ? 'required' : '' }}>
                 </div>
 
-                <!-- Nama Toko -->
+                <!-- Store Name -->
                 <div class="mb-6">
-                    <label class="block mb-2 font-medium text-[#3E3A39]" for="nama_toko">Nama Toko</label>
+                    <label class="block mb-2 font-medium text-[#3E3A39]" for="nama_toko">Store Name</label>
                     <input
                         type="text"
                         name="nama_toko"
                         id="nama_toko"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]"
                         value="{{ old('nama_toko', $penjual->pengguna->nama ?? Auth::user()->nama) }}"
-                        placeholder="Nama Toko Anda"
+                        placeholder="Your Store Name"
                         required>
                 </div>
 
-                <!-- Deskripsi Toko -->
+                <!-- Store Description -->
                 <div class="mb-6">
-                    <label class="block mb-2 font-medium text-[#3E3A39]" for="deskripsi_toko">Deskripsi Toko</label>
+                    <label class="block mb-2 font-medium text-[#3E3A39]" for="deskripsi_toko">Store Description</label>
                     <textarea
                         name="deskripsi_toko"
                         id="deskripsi_toko"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]"
                         rows="4"
-                        placeholder="Deskripsi Toko Anda"
+                        placeholder="Describe your store"
                         required>{{ old('deskripsi_toko', $penjual->deskripsi_toko ?? '') }}</textarea>
                 </div>
 
-                <!-- Tombol Simpan -->
+                <!-- Save Button -->
                 <div class="text-right">
                     @if ($errors->any())
                     <div class="mb-4 text-red-500 bg-red-100 border border-red-300 rounded p-3">
@@ -94,7 +94,7 @@
                     </div>
                     @endif
                     <button type="submit" class="bg-[#9BAF9A] text-white px-6 py-2 rounded-lg hover:bg-[#889d87] transition-all">
-                        Simpan Perubahan
+                        Save Changes
                     </button>
                 </div>
             </form>

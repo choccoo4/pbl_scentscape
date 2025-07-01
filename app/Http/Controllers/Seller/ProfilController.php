@@ -12,16 +12,16 @@ class ProfilController extends Controller
 {
     public function index()
     {
-        // Ambil data penjual dengan relasi pengguna berdasarkan user login
+        // Get seller data with user relation based on logged-in user
         $penjual = Penjual::where('id_pengguna', Auth::id())->with('pengguna')->first();
 
         if (!$penjual) {
-            // Jika belum ada data penjual, buat instance baru dengan nilai default
+            // If seller data does not exist, create new instance with default values
             $penjual = new Penjual();
             $penjual->id_pengguna = Auth::id();
-            $penjual->deskripsi_toko = 'Deskripsi toko Anda';
+            $penjual->deskripsi_toko = 'Your store description';
 
-            // Set relasi pengguna agar view tidak error
+            // Set user relation to prevent view error
             $penjual->setRelation('pengguna', Auth::user());
         }
 
@@ -34,33 +34,33 @@ class ProfilController extends Controller
         $user = Auth::user();
         $penjual = $user->penjual;
 
-        // Tentukan aturan validasi foto profil, wajib jika belum ada
+        // Determine profile photo validation rule, required if not already available
         $fotoRule = 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
 
-        // Validasi input
+        // Validate input
         $validatedData = $request->validate([
             'nama_toko' => 'required|string|max:255',
             'deskripsi_toko' => 'required|string',
             'foto_profil' => $fotoRule,
         ], [
-            'foto_profil.required' => 'Foto profil wajib diisi.',
-            'nama_toko.required' => 'Nama toko wajib diisi.',
-            'deskripsi_toko.required' => 'Deskripsi toko wajib diisi.',
+            'foto_profil.required' => 'Profile photo is required.',
+            'nama_toko.required' => 'Store name is required.',
+            'deskripsi_toko.required' => 'Store description is required.',
         ]);
 
-        // Jika penjual belum ada, buat baru
+        // If seller does not exist, create a new one
         if (!$penjual) {
             $penjual = new Penjual();
             $penjual->id_pengguna = $user->id_pengguna;
         }
 
-        // Update nama dan waktu perubahan di user
+        // Update name and updated time in user
         $user->nama = $validatedData['nama_toko'];
         $user->waktu_perubahan = now();
 
-        // Proses upload foto profil jika ada
+        // Process profile photo upload if exists
         if ($request->hasFile('foto_profil')) {
-            // Hapus foto lama jika ada
+            // Delete old photo if exists
             if ($user->foto_profil && Storage::disk('public')->exists($user->foto_profil)) {
                 Storage::disk('public')->delete($user->foto_profil);
             }
@@ -72,14 +72,14 @@ class ProfilController extends Controller
             $user->foto_profil = $path;
         }
 
-        // Simpan perubahan user
+        // Save user changes
         $user->save();
 
-        // Update deskripsi toko di penjual
+        // Update store description in seller
         $penjual->deskripsi_toko = $validatedData['deskripsi_toko'];
         $penjual->save();
 
-        // Sinkronisasi foto profil ke pembeli jika ada
+        // Synchronize profile photo to buyer if exists
         $pembeli = $user->pembeli;
         if ($pembeli) {
             $pembeliUser = $pembeli->pengguna;
@@ -89,6 +89,6 @@ class ProfilController extends Controller
             }
         }
 
-        return redirect()->route('profil-penjual')->with('success', 'Your profile has been updated.');
+        return redirect()->route('profil-penjual')->with('success', 'Profile updated successfully');
     }
 }

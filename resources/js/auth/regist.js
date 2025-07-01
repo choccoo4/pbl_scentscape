@@ -56,16 +56,16 @@ export function registerForm() {
             if (!response.ok) {
               Swal.fire({
                 title: 'Registration Failed',
-                text: data.message || 'Something went wrong. Please try again.',
+                text: data.message || 'An error occurred.',
                 icon: 'error'
               });
               return;
             }
 
-            // On success
+            // If successful
             Swal.fire({
               title: 'Registration Successful!',
-              text: 'Redirecting you to the login page...',
+              text: 'You will be redirected to the login page...',
               icon: 'success',
               timer: 2000,
               showConfirmButton: false,

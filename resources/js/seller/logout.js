@@ -1,13 +1,13 @@
 export function confirmLogoutSeller() {
     Swal.fire({
-        title: 'Logout dari akun penjual?',
-        text: 'Anda akan keluar dan kembali ke halaman login.',
+        title: 'Logout from seller account?',
+        text: 'You will be logged out and redirected to the login page.',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#e3342f', // merah
+        confirmButtonColor: '#e3342f', // red
         cancelButtonColor: '#aaa',
-        confirmButtonText: 'Ya, Logout',
-        cancelButtonText: 'Batal'
+        confirmButtonText: 'Yes, Logout',
+        cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.isConfirmed) {
             const logoutForm = document.getElementById('logout-form-seller');

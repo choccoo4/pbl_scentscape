@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const salesChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
             datasets: [{
                 label: 'Penjualan',
                 data: [5, 8, 6, 10, 4, 7, 12],

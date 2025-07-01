@@ -16,6 +16,8 @@ import './seller/seller-dashboard-chart';
 import './seller/aroma.js';
 import './seller/produk.js';
 import './buyer/profile.js';
+import './buyer/product-page.js';
+import './buyer/product-detail.js';
 import './buyer/product-card.js';
 import './seller/profile-penjual.js';
 

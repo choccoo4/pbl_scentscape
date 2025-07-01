@@ -1,4 +1,3 @@
-// Show success alert if password reset success (based on meta tag)
 document.addEventListener('DOMContentLoaded', () => {
   const status = document.querySelector('meta[name="reset-status"]')?.content;
 
@@ -12,13 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// Login Form Alpine.js logic
+// Login form functionality
 export function loginForm() {
   return {
     email: '',
     password: '',
     errors: {},
-
+    
     validate() {
       this.errors = {};
       if (!this.email) this.errors.email = 'Email is required.';
@@ -72,7 +71,7 @@ export function loginForm() {
           .catch(err => {
             Swal.fire({
               title: 'Oops!',
-              text: 'An error occurred. Please try again.',
+              text: 'Something went wrong. Please try again.',
               icon: 'error',
               timer: 2500,
               showConfirmButton: false

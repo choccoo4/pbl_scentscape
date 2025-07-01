@@ -1,12 +1,12 @@
 @extends('layouts.seller')
-@section('title', 'Rekapitulasi Penjualan Harian - Scentscape')
+@section('title', 'Daily Sales Summary - Scentscape')
 
 @section('content')
 <div class="bg-[#f6f1eb] shadow rounded-xl p-6 md:px-8">
     <form method="GET" action="{{ route('rekap.index') }}">
         <div class="mb-6">
             <h1 class="text-2xl font-semibold flex items-center gap-3 text-[#3e3a39]">
-                <i class="fa-solid fa-chart-line text-[#bfa6a0]"></i> Rekapitulasi Penjualan
+                <i class="fa-solid fa-chart-line text-[#bfa6a0]"></i> Sales Summary
             </h1>
             <hr class="mb-8 mt-2 border-[#9baf9a]">
         </div>
@@ -14,7 +14,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div class="space-y-2">
                 <label class="text-sm font-medium text-[#3e3a39] flex items-center gap-2">
-                    <i class="fa-solid fa-calendar-days text-[#9baf9a]"></i> Tanggal Awal
+                    <i class="fa-solid fa-calendar-days text-[#9baf9a]"></i> Start Date
                 </label>
                 <input type="date" name="tanggal_awal" 
                        class="w-full border-2 border-[#bfa6a0] rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#9baf9a] focus:border-[#9baf9a] transition-colors bg-white shadow-sm" 
@@ -22,7 +22,7 @@
             </div>
             <div class="space-y-2">
                 <label class="text-sm font-medium text-[#3e3a39] flex items-center gap-2">
-                    <i class="fa-solid fa-calendar-days text-[#9baf9a]"></i> Tanggal Akhir
+                    <i class="fa-solid fa-calendar-days text-[#9baf9a]"></i> End Date
                 </label>
                 <input type="date" name="tanggal_akhir" 
                        class="w-full border-2 border-[#bfa6a0] rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#9baf9a] focus:border-[#9baf9a] transition-colors bg-white shadow-sm" 
@@ -32,10 +32,9 @@
 
         <div class="mt-6 flex flex-wrap gap-3">
             <button type="submit"
-    class="inline-flex items-center px-6 py-3 rounded-md bg-[#9baf9a] text-white font-medium hover:bg-[#89a48a] hover:shadow-md transition duration-200 ease-in-out">
-    <i class="fa-solid fa-magnifying-glass mr-2"></i> Tampilkan
-</button>
-
+                class="inline-flex items-center px-6 py-3 rounded-md bg-[#9baf9a] text-white font-medium hover:bg-[#89a48a] hover:shadow-md transition duration-200 ease-in-out">
+                <i class="fa-solid fa-magnifying-glass mr-2"></i> Show Data
+            </button>
 
             @if(request('tanggal_awal') && request('tanggal_akhir') && $penjualan->count() > 0)
             <a href="{{ route('rekap.pdf', request()->all()) }}"
@@ -51,11 +50,7 @@
         </div>
     </form>
 
-   
-    
-
     @if (request('tanggal_awal') && request('tanggal_akhir'))
-    <!-- Summary Cards -->
     @if($penjualan->count() > 0)
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
         <div class="bg-white rounded-lg p-4 border border-[#d6c6b8] shadow-sm">
@@ -64,31 +59,29 @@
                     <i class="fa-solid fa-shopping-cart text-blue-600"></i>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm text-gray-600">Total Transaksi</p>
+                    <p class="text-sm text-gray-600">Total Transactions</p>
                     <p class="text-xl font-semibold text-[#3e3a39]">{{ $penjualan->count() }}</p>
                 </div>
             </div>
         </div>
-        
         <div class="bg-white rounded-lg p-4 border border-[#d6c6b8] shadow-sm">
             <div class="flex items-center">
                 <div class="p-3 rounded-full bg-green-100">
                     <i class="fa-solid fa-box text-green-600"></i>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm text-gray-600">Total Produk Terjual</p>
+                    <p class="text-sm text-gray-600">Total Items Sold</p>
                     <p class="text-xl font-semibold text-[#3e3a39]">{{ $penjualan->sum('jumlah') }}</p>
                 </div>
             </div>
         </div>
-        
         <div class="bg-white rounded-lg p-4 border border-[#d6c6b8] shadow-sm">
             <div class="flex items-center">
                 <div class="p-3 rounded-full bg-yellow-100">
                     <i class="fa-solid fa-money-bill-wave text-yellow-600"></i>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm text-gray-600">Total Pendapatan</p>
+                    <p class="text-sm text-gray-600">Total Revenue</p>
                     <p class="text-xl font-semibold text-[#3e3a39]">Rp. {{ number_format($grandTotal, 0, ',', '.') }}</p>
                 </div>
             </div>
@@ -96,13 +89,11 @@
     </div>
     @endif
 
-    <!-- Data Table -->
     <div class="mt-8">
-        <!-- Period Info -->
         <div class="bg-white rounded-t-lg px-6 py-4 border-b border-[#d6c6b8]">
             <h3 class="text-lg font-semibold text-[#3e3a39] flex items-center gap-2">
                 <i class="fa-solid fa-calendar-days text-[#9baf9a]"></i>
-                Periode: {{ \Carbon\Carbon::parse(request('tanggal_awal'))->format('d F Y') }} - {{ \Carbon\Carbon::parse(request('tanggal_akhir'))->format('d F Y') }}
+                Period: {{ \Carbon\Carbon::parse(request('tanggal_awal'))->format('d F Y') }} - {{ \Carbon\Carbon::parse(request('tanggal_akhir'))->format('d F Y') }}
             </h3>
         </div>
 
@@ -110,9 +101,9 @@
             <table class="min-w-full">
                 <thead class="bg-gradient-to-r from-[#9baf9a] to-[#89a48a] text-white">
                     <tr>
-                        <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Tanggal</th>
-                        <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Produk</th>
-                        <th class="px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">Harga Satuan</th>
+                        <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Date</th>
+                        <th class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Product</th>
+                        <th class="px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">Unit Price</th>
                         <th class="px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">QTY</th>
                         <th class="px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">Total</th>
                     </tr>
@@ -149,7 +140,7 @@
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <p class="text-sm font-semibold text-[#3e3a39] truncate">
-                                        {{ $item->produk ? $item->produk->nama_produk : ($item->nama_produk ?? 'Produk Tidak Ditemukan') }}
+                                        {{ $item->produk ? $item->produk->nama_produk : ($item->nama_produk ?? 'Product Not Found') }}
                                     </p>
                                     @if($item->produk && $item->produk->tipe_parfum)
                                     <p class="text-xs text-gray-500 mt-1">
@@ -180,19 +171,18 @@
                         <td colspan="5" class="px-6 py-12 text-center">
                             <div class="flex flex-col items-center">
                                 <i class="fa-solid fa-inbox text-6xl text-gray-300 mb-4"></i>
-                                <p class="text-lg text-gray-500">Tidak ada data penjualan</p>
-                                <p class="text-sm text-gray-400">pada rentang tanggal yang dipilih</p>
+                                <p class="text-lg text-gray-500">No sales data available</p>
+                                <p class="text-sm text-gray-400">for the selected date range</p>
                             </div>
                         </td>
                     </tr>
                     @endforelse
                 </tbody>
-                
                 @if($penjualan->count() > 0)
                 <tfoot class="bg-gradient-to-r from-gray-50 to-gray-100">
                     <tr>
                         <td colspan="4" class="px-6 py-4 text-right">
-                            <span class="text-lg font-semibold text-[#3e3a39]">Grand Total:</span>
+                            <span class="text-lg font-semibold text-[#3e3a39]">Total:</span>
                         </td>
                         <td class="px-6 py-4 text-center">
                             <span class="text-xl font-bold text-green-600 bg-green-50 px-4 py-2 rounded-lg border border-green-200">
@@ -211,14 +201,14 @@
             <div class="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-[#9baf9a] to-[#89a48a] rounded-full flex items-center justify-center">
                 <i class="fa-solid fa-calendar-days text-white text-2xl"></i>
             </div>
-            <h3 class="text-xl font-semibold text-[#3e3a39] mb-2">Pilih Rentang Tanggal</h3>
+            <h3 class="text-xl font-semibold text-[#3e3a39] mb-2">Select Date Range</h3>
             <p class="text-gray-600 mb-6">
-                Silakan pilih <strong>tanggal awal</strong> dan <strong>tanggal akhir</strong> 
-                terlebih dahulu untuk melihat rekapitulasi penjualan Anda.
+                Please select a <strong>start date</strong> and <strong>end date</strong> 
+                to view your sales summary.
             </p>
             <div class="flex items-center justify-center gap-2 text-sm text-gray-500">
                 <i class="fa-solid fa-lightbulb text-yellow-500"></i>
-                <span>Tip: Pilih periode yang tidak terlalu panjang untuk performa yang optimal</span>
+                <span>Tip: Select a shorter range for optimal performance</span>
             </div>
         </div>
     </div>

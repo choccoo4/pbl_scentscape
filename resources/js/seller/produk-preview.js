@@ -9,17 +9,17 @@ export function previewImages() {
 
             for (let file of files) {
                 if (this.images.length >= 4) {
-                    this.errorMessage = 'Maksimal hanya 4 gambar yang bisa dipilih.';
+                    this.errorMessage = 'Only a maximum of 4 images can be selected.';
                     break;
                 }
 
                 if (this.fileNames.has(file.name)) {
-                    this.errorMessage = `Gambar "${file.name}" sudah dipilih sebelumnya.`;
+                    this.errorMessage = `Image "${file.name}" has already been selected.`;
                     continue;
                 }
 
                 if (file.size > 2 * 1024 * 1024) {
-                    this.errorMessage = `Ukuran "${file.name}" melebihi 2MB. Pilih gambar lain.`;
+                    this.errorMessage = `Size of "${file.name}" exceeds 2MB. Please select a smaller image.`;
                     continue;
                 }
 
@@ -33,11 +33,9 @@ export function previewImages() {
         },
         removeImage(index) {
             this.images.splice(index, 1);
+            // Reset fileNames if tracking by image name is not consistent
             this.fileNames = new Set(this.images.map(img => {
-                // ini opsional, kalau kamu simpan nama file bersama image,
-                // harus disesuaikan dengan cara kamu track nama file
-                // kalau nggak, reset saja fileNames kosong
-                return null; 
+                return null;
             }));
         }
     }

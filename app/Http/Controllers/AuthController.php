@@ -120,21 +120,28 @@ class AuthController extends Controller
     }
 
     public function sendResetLink(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email|exists:pengguna,email',
-        ]);
+{
+    $request->validate([
+        'email' => 'required|email',
+    ]);
 
-        $status = Password::broker('pengguna')->sendResetLink(
-            $request->only('email')
-        );
+    $user = Pengguna::where('email', $request->email)->first();
 
-        if ($status === Password::RESET_LINK_SENT) {
-            return back()->with(['status' => 'We have emailed your password reset link!']);
-        } else {
-            return back()->withErrors(['email' => 'Failed to send password reset email.']);
-        }
+    if (!$user) {
+        return back()->withErrors(['email' => 'This email is not registered. Please check again.']);
     }
+
+    $status = Password::broker('pengguna')->sendResetLink(
+        $request->only('email')
+    );
+
+    if ($status === Password::RESET_LINK_SENT) {
+        return back()->with('status', 'We have emailed your password reset link!');
+    }
+
+    return back()->withErrors(['email' => 'Failed to send password reset email. Please try again later.']);
+}
+
 
     public function showResetForm($token, Request $request)
     {

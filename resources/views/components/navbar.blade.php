@@ -2,7 +2,7 @@
 <nav class="fixed top-0 z-50 w-full bg-[#414833]">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
         <div class="flex items-center justify-between">
-            <!-- Kiri: Toggle & Logo -->
+            <!-- Left: Toggle & Logo -->
             <div class="flex items-center">
                 <!-- Sidebar Toggle (Mobile) -->
                 <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button"
@@ -21,7 +21,7 @@
                 </a>
             </div>
 
-            <!-- Kanan: User Menu -->
+            <!-- Right: User Menu -->
             <div class="flex items-center">
                 <div class="relative">
                     <!-- User Profile Toggle -->
@@ -74,20 +74,21 @@
                 </a>
             </li>
 
-            <!-- Produk -->
+            <!-- Products -->
             <li>
                 <a href="{{ route('produk.index') }}"
                     class="flex items-center p-2 rounded-lg hover:bg-[#5a614f] transition-colors group">
                     <i class="fa-solid fa-box" style="color: #ffffff;"></i>
-                    <span class="ms-3">Produk</span>
+                    <span class="ms-3">Products</span>
                 </a>
             </li>
 
+            <!-- Orders -->
             <li>
                 <a href="{{ route('pesanan.index') }}"
                     class="flex items-center p-2 rounded-lg hover:bg-[#5a614f] transition-colors group">
                     <i class="fa-solid fa-clipboard-list" style="color: #ffffff;"></i>
-                    <span class="flex-1 ms-3 whitespace-nowrap">Pesanan</span>
+                    <span class="flex-1 ms-3 whitespace-nowrap">Orders</span>
                     @if($notifCount > 0)
                     <span
                         class="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
@@ -96,11 +97,13 @@
                     @endif
                 </a>
             </li>
+
+            <!-- Sales Recap -->
             <li>
                 <a href="{{ route('rekap.index') }}"
                     class="flex items-center p-2 rounded-lg hover:bg-[#5a614f] transition-colors group">
                     <i class="fa-solid fa-chart-line" style="color: #ffffff;"></i>
-                    <span class="ms-3">Rekapitulasi Penjualan</span>
+                    <span class="ms-3">Sales Recap</span>
                 </a>
             </li>
         </ul>

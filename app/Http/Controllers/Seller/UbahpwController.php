@@ -22,7 +22,7 @@ class UbahpwController extends Controller
 
     public function updatePassword(Request $request)
     {
-        // Validasi input
+        // Validate input
         $request->validate([
             'current_password' => ['required'],
             'new_password' => [
@@ -41,62 +41,62 @@ class UbahpwController extends Controller
             'new_password.min' => 'New password must be at least 8 characters.',
             'new_password.letters' => 'New password must contain letters.',
             'new_password.mixed_case' => 'New password must contain both uppercase and lowercase letters.',
-            'new_password.numbers' => 'New password must include numbers.',
-            'new_password.symbols' => 'New password must contain at least one symbol.',
+            'new_password.numbers' => 'New password must contain numbers.',
+            'new_password.symbols' => 'New password must contain symbols.',
         ]);
 
-        // Refresh user data dari database untuk memastikan data terbaru
+        // Refresh user data from the database to ensure the latest data
         /** @var \App\Models\Pengguna $user */
         $user = Auth::user();
         $user = $user->fresh();
 
-        // Cek apakah password lama benar
+        // Check if the current password is correct
         if (!Hash::check($request->current_password, $user->password)) {
             return back()->withErrors([
-                'current_password' => 'The current password is incorrect.'
+                'current_password' => 'Current password does not match.'
             ])->withInput();
         }
 
-        // Cek apakah password baru sama dengan password lama
+        // Check if the new password is the same as the current one
         if (Hash::check($request->new_password, $user->password)) {
             return back()->withErrors([
-                'new_password' => 'The new password must be different from the current password.'
+                'new_password' => 'New password must not be the same as the current password.'
             ])->withInput();
         }
 
         try {
-            // Gunakan transaction untuk memastikan konsistensi data
+            // Use transaction to ensure data consistency
             DB::transaction(function () use ($user, $request) {
-                // Update password dan waktu perubahan
-                // Jika model punya mutator, password akan otomatis di-hash
-                // Jika tidak, gunakan Hash::make() manual
+                // Update password and updated time
+                // If the model has a mutator, the password will be hashed automatically
+                // If not, use manual Hash::make()
                 $user->update([
-                    'password' => Hash::make($request->new_password), // Manual hash untuk safety
+                    'password' => Hash::make($request->new_password),
                     'waktu_perubahan' => Carbon::now()
                 ]);
 
-                // Force refresh model dari database
+                // Force refresh model from the database
                 $user->refresh();
             });
 
-            // Verifikasi password baru tersimpan
+            // Verify the new password was saved correctly
             $updatedUser = $user->fresh();
             if (!Hash::check($request->new_password, $updatedUser->password)) {
                 throw new \Exception('Password verification failed after update');
             }
 
-            // Hapus semua session yang berkaitan dengan authentication
+            // Invalidate all sessions related to authentication
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            // Logout user secara eksplisit
+            // Explicitly logout the user
             Auth::logout();
 
-            // Redirect ke halaman login dengan pesan sukses
-            return redirect()->route('login')->with('success', 'Password changed successfully. Please log in again.');
+            // Redirect to login page with success message
+            return redirect()->route('login')->with('success', 'Password changed successfully! Please log in again.');
         } catch (\Exception $e) {
             return back()->withErrors([
-                'error' => 'An error occurred while updating your password. Please try again.'
+                'error' => 'An error occurred while updating the password. Please try again.'
             ])->withInput();
         }
     }

@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="reset-status" content="{{ session('status') }}">
-  <meta name="reset-error" content="{{ $errors->first('email') }}">
+  <meta name="forgot-error" content="{{ $errors->first('email') }}">
   <title>Reset Password - Scentscape</title>
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
+  @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/forgot.js'])
+
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -32,7 +33,7 @@
         <input
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder="Enter your email"
           autocomplete="new-password"
           required
           class="w-full p-3 rounded-md bg-[#F6F1EB] placeholder:text-gray-500 text-sm border border-gray-300 focus:outline-none" />
@@ -42,18 +43,14 @@
       <button
         type="submit"
         class="w-full bg-[#414833] text-white font-semibold py-2 rounded-md hover:bg-[#8da48c] transition-all duration-200">
-        Kirim Link Reset
+        Send Reset Link
       </button>
     </form>
 
     <p class="text-xs mt-6 text-[#3E3A39]">
-      Sudah ingat?
-      <a href="{{ route('login') }}" class="underline hover:text-[#9BAF9A] transition">Back To Login</a>
+      Remember your password?
+      <a href="{{ route('login') }}" class="underline hover:text-[#9BAF9A] transition">Back to Login</a>
     </p>
   </div>
-
-
-
-
 </body>
 </html>

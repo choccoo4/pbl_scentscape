@@ -1,5 +1,5 @@
 @extends('layouts.seller')
-@section('title', 'Edit Produk - Scentscape')
+@section('title', 'Edit Product - Scentscape')
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 @section('content')
@@ -15,38 +15,38 @@
     @method('PUT')
     <div class="max-w-3xl mx-auto p-6 bg-[#F6F1EB] rounded-2xl shadow-lg mt-6">
         <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2 text-[#3E3A39]">
-            ✏️ Edit Produk
+            ✏️ Edit Product
         </h2>
 
-        <!-- Nama Produk -->
+        <!-- Product Name -->
         <div class="mb-4">
-            <label class="block text-sm font-medium text-[#3E3A39] mb-1">Nama Produk</label>
+            <label class="block text-sm font-medium text-[#3E3A39] mb-1">Product Name</label>
             <input type="text" name="nama_produk" value="{{ old('nama_produk', $produk->nama_produk) }}"
                 class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]"
-                placeholder="Masukkan nama produk" />
+                placeholder="Enter product name" />
             @if($errors->has('nama_produk'))
             <p class="text-sm text-red-600 mt-1">{{ $errors->first('nama_produk') }}</p>
             @endif
         </div>
 
-        <!-- Deskripsi Produk -->
+        <!-- Product Description -->
         <div class="mb-4">
-            <label class="block text-sm font-medium text-[#3E3A39] mb-1">Deskripsi Produk</label>
+            <label class="block text-sm font-medium text-[#3E3A39] mb-1">Product Description</label>
             <textarea rows="5" name="deskripsi"
                 class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]"
-                placeholder="Tulis deskripsi lengkap, termasuk karakter aroma (top, middle, base notes), kondisi pemakaian, dan lainnya...">{{ old('deskripsi', $produk->deskripsi) }}</textarea>
-            <p class="text-xs text-[#3E3A39] mt-1">Deskripsi akan ditampilkan sesuai format (paragraf, numbering, dll) yang diinput penjual.</p>
+                placeholder="Write a full description, including scent characteristics (top, middle, base notes), usage conditions, and more...">{{ old('deskripsi', $produk->deskripsi) }}</textarea>
+            <p class="text-xs text-[#3E3A39] mt-1">The description will be displayed according to the format (paragraph, numbering, etc.) entered by the seller.</p>
             @if($errors->has('deskripsi'))
             <p class="text-sm text-red-600 mt-1">{{ $errors->first('deskripsi') }}</p>
             @endif
         </div>
 
-        <!-- Label Kategori Gender -->
+        <!-- Gender Label -->
         <div class="mb-4">
-            <label class="block text-sm font-medium text-[#3E3A39] mb-1">Label Gender</label>
+            <label class="block text-sm font-medium text-[#3E3A39] mb-1">Gender Label</label>
             <select name="label_kategori"
                 class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]">
-                <option value="" disabled {{ old('label_kategori', $produk->label_kategori) ? '' : 'selected' }}>Pilih Label Kategori</option>
+                <option value="" disabled {{ old('label_kategori', $produk->label_kategori) ? '' : 'selected' }}>Select Gender Label</option>
                 @foreach($labelKategoriList as $label)
                 <option value="{{ $label }}" {{ old('label_kategori', $produk->label_kategori) == $label ? 'selected' : '' }}>{{ $label }}</option>
                 @endforeach
@@ -56,14 +56,12 @@
             @endif
         </div>
 
-        <!-- Tipe Parfum -->
+        <!-- Product Type -->
         <div class="mb-4">
-            <label for="tipe_parfum" class="block text-sm font-medium text-[#3E3A39] mb-1">
-                Tipe Produk
-            </label>
+            <label for="tipe_parfum" class="block text-sm font-medium text-[#3E3A39] mb-1">Product Type</label>
             <select id="tipe_parfum" name="tipe_parfum"
                 class="w-full border border-[#9BAF9A] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]">
-                <option value="" disabled {{ old('tipe_parfum', $produk->tipe_parfum) ? '' : 'selected' }}>Pilih Tipe Parfum</option>
+                <option value="" disabled {{ old('tipe_parfum', $produk->tipe_parfum) ? '' : 'selected' }}>Select Product Type</option>
                 <option value="Eau De Parfum (EDP)" {{ old('tipe_parfum', $produk->tipe_parfum) == 'Eau De Parfum (EDP)' ? 'selected' : '' }}>Eau De Parfum (EDP)</option>
                 <option value="Eau De Toilette (EDT)" {{ old('tipe_parfum', $produk->tipe_parfum) == 'Eau De Toilette (EDT)' ? 'selected' : '' }}>Eau De Toilette (EDT)</option>
                 <option value="Body Mist" {{ old('tipe_parfum', $produk->tipe_parfum) == 'Body Mist' ? 'selected' : '' }}>Body Mist</option>
@@ -81,24 +79,24 @@
             <label class="block text-sm font-medium text-[#3E3A39] mb-1">Volume</label>
             <input type="text" name="volume" value="{{ old('volume', $produk->volume) }}"
                 class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]"
-                placeholder="contoh: 50ml" />
+                placeholder="e.g., 50ml" />
             @if($errors->has('volume'))
             <p class="text-sm text-red-600 mt-1">{{ $errors->first('volume') }}</p>
             @endif
         </div>
 
-        <!-- Harga -->
+        <!-- Price -->
         <div class="mb-4">
-            <label class="block text-sm font-medium text-[#3E3A39] mb-1">Harga</label>
+            <label class="block text-sm font-medium text-[#3E3A39] mb-1">Price</label>
             <input type="number" name="harga" value="{{ old('harga', $produk->harga) }}"
                 class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]"
-                placeholder="Masukkan harga produk" />
+                placeholder="Enter product price" />
             @if($errors->has('harga'))
             <p class="text-sm text-red-600 mt-1">{{ $errors->first('harga') }}</p>
             @endif
         </div>
 
-        <!-- Kategori Aroma -->
+        <!-- Aroma Categories -->
         <div x-data="{
             selected: {{ Js::from(old('categories', $produkCategories ?? [])) }},
             showAromaForm: false,
@@ -117,16 +115,15 @@
             const input = document.getElementById('inputAromaBaru');
             if (input) input.value = '';
         };"
-            x-ref="modalAroma"
-            class="mb-4">
-            <label class="block text-sm font-medium text-[#3E3A39] mb-2">Kategori</label>
+        x-ref="modalAroma" class="mb-4">
+            <label class="block text-sm font-medium text-[#3E3A39] mb-2">Category</label>
             <div class="flex flex-wrap gap-2">
                 <button type="button" @click="showAromaForm = true"
                     class="w-8 h-8 rounded-full flex items-center justify-center bg-[#9BAF9A] text-white text-lg hover:bg-[#8DA089] shadow">
                     +
                 </button>
 
-                <!-- Semua kategori -->
+                <!-- All categories -->
                 <template x-for="category in categories" :key="category">
                     <button type="button"
                         @click="selected.includes(category) ? selected = selected.filter(i => i !== category) : selected.push(category)"
@@ -141,25 +138,25 @@
                 <input type="hidden" name="categories[]" :value="item">
             </template>
 
-            <!-- Modal pop-up untuk tambah aroma -->
+            <!-- Modal for adding aroma -->
             <div x-show="showAromaForm" @click.outside="showAromaForm = false"
                 class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
                 <div class="bg-white rounded-xl shadow-lg p-6 w-80">
-                    <h3 class="text-lg font-semibold text-[#3E3A39] mb-3">Tambah Aroma</h3>
-                    <input type="text" id="inputAromaBaru" x-model="newAroma" placeholder="Contoh: Citrus Fresh"
+                    <h3 class="text-lg font-semibold text-[#3E3A39] mb-3">Add Aroma</h3>
+                    <input type="text" id="inputAromaBaru" x-model="newAroma" placeholder="e.g., Citrus Fresh"
                         class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 mb-4 focus:ring-[#9BAF9A] focus:outline-none">
                     <select x-model="selectedKategori" class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 mb-4">
-                        <option value="">-- Pilih Aroma Induk --</option>
+                        <option value="">-- Select Parent Aroma --</option>
                         <template x-for="kat in kategoriList" :key="kat.id">
                             <option :value="kat.id" x-text="kat.nama"></option>
                         </template>
                     </select>
                     <div class="flex justify-end space-x-2">
                         <button type="button" id="BatalSimpanAroma"
-                            class="px-4 py-1 rounded bg-gray-200 text-gray-700 hover:bg-gray-300">Batal</button>
+                            class="px-4 py-1 rounded bg-gray-200 text-gray-700 hover:bg-gray-300">Cancel</button>
 
                         <button type="button" id="simpanAroma"
-                            class="px-4 py-1 rounded bg-[#9BAF9A] text-white hover:bg-[#8DA089]">Simpan</button>
+                            class="px-4 py-1 rounded bg-[#9BAF9A] text-white hover:bg-[#8DA089]">Save</button>
                     </div>
                 </div>
             </div>
@@ -169,32 +166,31 @@
             @endif
         </div>
 
-        <!-- Stok -->
+        <!-- Stock -->
         <div class="mb-4">
-            <label class="block text-sm font-medium text-[#3E3A39] mb-1">Stok</label>
+            <label class="block text-sm font-medium text-[#3E3A39] mb-1">Stock</label>
             <input type="number" name="stok" min="0" value="{{ old('stok', $produk->stok) }}"
                 class="w-full border border-[#D6C6B8] rounded-lg px-4 py-2 bg-white text-[#3E3A39] focus:outline-none focus:ring-2 focus:ring-[#9BAF9A]"
-                placeholder="Masukkan jumlah stok tersedia" />
+                placeholder="Enter available stock quantity" />
             @if($errors->has('stok'))
             <p class="text-sm text-red-600 mt-1">{{ $errors->first('stok') }}</p>
             @endif
         </div>
 
-        <!-- Gambar -->
+        <!-- Product Photos -->
         <div
             x-data="editProduk({{ Js::from(
-        $produk->gambar 
-            ? array_map(fn($g) => asset('storage/' . $g), $produk->gambar) 
-            : []
-    ) }})"
+                $produk->gambar 
+                    ? array_map(fn($g) => asset('storage/' . $g), $produk->gambar) 
+                    : []
+            ) }})"
             class="mb-4">
-            <label class="block text-sm font-medium text-[#3E3A39] mb-1">Foto Produk</label>
+            <label class="block text-sm font-medium text-[#3E3A39] mb-1">Product Photos</label>
             <input type="file" name="gambar[]" accept="image/*" multiple
                 @change="updatePreview($event)" class="block w-full text-sm text-gray-600" />
             <!-- Error Message -->
-            <p x-text="errorMessage" x-show="errorMessage"
-                class="text-sm text-red-600 mt-1"></p>
-            <!-- Preview Gambar -->
+            <p x-text="errorMessage" x-show="errorMessage" class="text-sm text-red-600 mt-1"></p>
+            <!-- Preview -->
             <div class="flex flex-wrap gap-4 mt-4">
                 <template x-for="(image, index) in images" :key="index">
                     <div class="relative w-24 h-24">
@@ -204,19 +200,18 @@
                 </template>
             </div>
 
-            <!-- Hidden untuk gambar lama -->
             <input
                 type="hidden"
                 name="existing_gambar"
                 x-bind:value="JSON.stringify(images.filter(i => i.isExisting).map(i => i.url.replace('{{ asset('storage') }}/', '')))">
         </div>
 
-        <!-- Tombol -->
+        <!-- Buttons -->
         <div class="flex justify-end gap-4 mt-8">
             <a href="{{ route('produk.index') }}"
-                class="px-6 py-2 rounded-lg bg-[#BFA6A0] text-white hover:bg-[#A89089] transition duration-200">Batal</a>
+                class="px-6 py-2 rounded-lg bg-[#BFA6A0] text-white hover:bg-[#A89089] transition duration-200">Cancel</a>
             <button type="submit"
-                class="px-6 py-2 rounded-lg bg-[#9BAF9A] text-white hover:bg-[#8DA089] transition duration-200">Simpan</button>
+                class="px-6 py-2 rounded-lg bg-[#9BAF9A] text-white hover:bg-[#8DA089] transition duration-200">Save</button>
         </div>
     </div>
 </form>
