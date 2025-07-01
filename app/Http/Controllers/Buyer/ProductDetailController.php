@@ -9,9 +9,8 @@ use App\Models\Produk;
 class ProductDetailController extends Controller
 {
     public function productDetail($id)
-    {
-        $product = Produk::with('aroma')->findOrFail($id);
-
-        return view('buyer.product_detail', compact('product'));
-    }
+{
+    $product = Produk::with(['aroma', 'aroma.aromaKategori'])->findOrFail($id);
+    return view('buyer.product_detail', compact('product'));
+}
 }

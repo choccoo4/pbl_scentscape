@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const submitButton = document.getElementById('add-to-cart-button');
     const outOfStockButton = document.getElementById('out-of-stock-button');
 
-    // Event saat tombol "Add to Cart" ditekan
     if (form && submitButton) {
         form.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -36,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Event saat tombol "Out of Stock" ditekan
     if (outOfStockButton) {
         outOfStockButton.addEventListener('click', function () {
             showOutOfStockAlert();
