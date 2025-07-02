@@ -5,38 +5,30 @@ export function registerForm() {
     username: '',
     password: '',
     errors: {},
+    submitting: false,
 
     validate() {
-      this.errors = {}; // reset errors
-
-      if (!this.name) {
-        this.errors.name = 'Name is required.';
-      }
-
-      if (!this.email) {
-        this.errors.email = 'Email is required.';
-      } else if (!this.email.includes('@')) {
-        this.errors.email = 'Invalid email address.';
-      }
-
-      if (!this.username) {
-        this.errors.username = 'Username is required.';
-      }
-
-      if (!this.password) {
-        this.errors.password = 'Password is required.';
-      } else if (this.password.length < 8) {
-        this.errors.password = 'Password must be at least 8 characters.';
-      }
-
+      this.errors = {};
+      if (!this.name) this.errors.name = 'Name is required.';
+      if (!this.email) this.errors.email = 'Email is required.';
+      else if (!this.email.includes('@')) this.errors.email = 'Invalid email.';
+      if (!this.username) this.errors.username = 'Username is required.';
+      if (!this.password) this.errors.password = 'Password is required.';
+      else if (this.password.length < 8) this.errors.password = 'Min. 8 characters.';
       return Object.keys(this.errors).length === 0;
     },
 
-    submitForm() {
-      console.log('Submit form clicked!');
+    async submitForm() {
+      if (this.submitting) return;
+      this.submitting = true;
 
-      if (this.validate()) {
-        fetch('/register', {
+      if (!this.validate()) {
+        this.submitting = false;
+        return;
+      }
+
+      try {
+        const response = await fetch('/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -49,31 +41,46 @@ export function registerForm() {
             username: this.username,
             password: this.password
           })
-        })
-          .then(async response => {
-            const data = await response.json();
+        });
 
-            if (!response.ok) {
-              Swal.fire({
-                title: 'Registration Failed',
-                text: data.message || 'An error occurred.',
-                icon: 'error'
-              });
-              return;
-            }
+        let data;
+        try {
+          data = await response.clone().json();
+        } catch (e) {
+          throw new Error('Invalid JSON response');
+        }
 
-            // If successful
-            Swal.fire({
-              title: 'Registration Successful!',
-              text: 'You will be redirected to the login page...',
-              icon: 'success',
-              timer: 2000,
-              showConfirmButton: false,
-              willClose: () => {
-                window.location.href = '/login';
-              }
-            });
+        if (!response.ok) {
+          this.errors = data.errors || {};
+          Swal.fire({
+            icon: 'error',
+            title: 'Registration Failed',
+            text: data.message || 'Something went wrong.'
           });
+          this.submitting = false;
+          return;
+        }
+
+        // ✅ SUCCESS
+        Swal.fire({
+          icon: 'success',
+          title: 'Registration Successful!',
+          text: 'Redirecting to login...',
+          timer: 2000,
+          showConfirmButton: false,
+          willClose: () => {
+            window.location.href = '/login';
+          }
+        });
+      } catch (err) {
+        console.error('Registration Error:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Request Failed',
+          text: err.message || 'Something went wrong. Please try again.'
+        });
+      } finally {
+        this.submitting = false;
       }
     }
   };

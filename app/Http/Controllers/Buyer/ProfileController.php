@@ -39,6 +39,8 @@ class ProfileController extends Controller
             'alamat' => 'nullable|string|max:500',
             'no_telp' => 'nullable|string|max:20',
             'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ], [
+            'no_telp.regex' => 'Phone number must be numeric and between 10 to 15 digits.',
         ]);
 
         $pembeli = Pembeli::firstOrNew(['id_pengguna' => $user->id_pengguna]);

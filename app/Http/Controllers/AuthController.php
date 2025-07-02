@@ -60,64 +60,47 @@ class AuthController extends Controller
     }
 
     public function register(Request $request)
-    {
-        try {
-            $validator = Validator::make($request->all(), [
-                'email' => 'required|email|unique:pengguna,email',
-                'name' => 'required|string',
-                'username' => 'required|string|unique:pengguna,username',
-                'password' => [
-                    'required',
-                    'string',
-                    PasswordRule::min(8)->mixedCase()->letters()->numbers()->symbols(),
-                ],
-            ]);
+{
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email|unique:pengguna,email',
+        'name' => 'required|string',
+        'username' => 'required|string|unique:pengguna,username',
+        'password' => [
+            'required',
+            'string',
+            PasswordRule::min(8)->mixedCase()->letters()->numbers()->symbols(),
+        ],
+    ]);
 
-            if ($validator->fails()) {
-                if ($validator->errors()->has('email')) {
-                    return response()->json([
-                        'message' => 'Email is already registered. Please login.'
-                    ], 409);
-                }
-
-                if ($validator->errors()->has('username')) {
-                    return response()->json([
-                        'message' => 'Username is already taken. Please try another one.'
-                    ], 409);
-                }
-
-                if ($validator->errors()->has('password')) {
-                    return response()->json([
-                        'message' => 'Weak password. Use uppercase, lowercase, numbers, and symbols.',
-                        'field' => 'password'
-                    ], 422);
-                }
-
-                return response()->json([
-                    'message' => 'Validation failed.',
-                    'errors' => $validator->errors()
-                ], 422);
-            }
-
-            Pengguna::create([
-                'email' => $request->email,
-                'nama' => $request->name,
-                'username' => $request->username,
-                'password' => Hash::make($request->password),
-                'role' => 'pembeli',
-                'waktu_pembuatan' => now(),
-                'waktu_perubahan' => now(),
-            ]);
-
-            return response()->json([
-                'message' => 'Registration successful'
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Server error. Please try again later.'
-            ], 500);
-        }
+    if ($validator->fails()) {
+        return response()->json([
+            'message' => 'Validation failed.',
+            'errors' => $validator->errors(),
+        ], 422);
     }
+
+    try {
+        Pengguna::create([
+            'email' => $request->email,
+            'nama' => $request->name,
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+            'role' => 'pembeli',
+            'waktu_pembuatan' => now(),
+            'waktu_perubahan' => now(),
+        ]);
+
+        return response()->json([
+            'message' => 'Registration successful'
+        ], 201);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Server error. Please try again later.'
+        ], 500);
+    }
+}
+
 
     public function sendResetLink(Request $request)
 {

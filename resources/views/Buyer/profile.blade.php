@@ -73,13 +73,22 @@
                 </div>
 
                 <!-- Phone Number -->
-                <div class="mb-4">
-                    <label class="block text-gray-700 mb-1 flex items-center gap-2">
-                        <i class="fas fa-phone text-[#BFA6A0]"></i> Phone Number
-                    </label>
-                    <input type="text" name="no_telp" class="w-full border px-4 py-2 rounded"
-                        value="{{ old('no_telp', $pembeli->no_telp ?? '') }}">
-                </div>
+<div class="mb-4">
+    <label class="block text-gray-700 mb-1 flex items-center gap-2">
+        <i class="fas fa-phone text-[#BFA6A0]"></i> Phone Number
+    </label>
+    <input
+        type="text"
+        name="no_telp"
+        pattern="[0-9]{10,15}"
+        title="Phone number must be numeric and between 10 to 15 digits"
+        class="w-full border px-4 py-2 rounded"
+        value="{{ old('no_telp', $pembeli->no_telp ?? '') }}">
+    @error('no_telp')
+        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+    @enderror
+</div>
+
 
                 <!-- Address -->
                 <div class="mb-4">
