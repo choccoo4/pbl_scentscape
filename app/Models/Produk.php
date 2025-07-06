@@ -51,13 +51,13 @@ class Produk extends Model
     {
         return $this->hasMany(\App\Models\PesananItem::class, 'id_produk', 'no_produk');
     }
-
+    //mangatur penjualan dan stok di halaman datar produk
     public function totalPenjualan()
     {
         return DB::table('pesanan_item')
             ->join('pesanan', 'pesanan_item.id_pesanan', '=', 'pesanan.id_pesanan')
             ->where('pesanan_item.no_produk', $this->no_produk)
-            ->where('pesanan.status', ['Dikirim', 'Terkirim', 'Selesai'])
+            ->whereIn('pesanan.status', ['Dikirim', 'Terkirim', 'Selesai'])
             ->sum('pesanan_item.jumlah');
     }
 }

@@ -47,7 +47,7 @@ class DetailPesananController extends Controller
     public function konfirmasi($id)
     {
         $pesanan = Pesanan::with('items.produk')->findOrFail($id);
-
+        
         if ($pesanan->status !== 'Menunggu Verifikasi') {
             return back()->with('error', 'The order is not in verification status.');
         }
@@ -60,7 +60,7 @@ class DetailPesananController extends Controller
             }
         }
 
-        // Reduce stock
+        // Mengurangi stok
         foreach ($pesanan->items as $item) {
             $produk = $item->produk;
             $produk->stok -= $item->jumlah;

@@ -70,8 +70,11 @@
       <!-- Submit -->
       <button
         type="submit"
+        x-bind:disabled="isSubmitting"
+        x-bind:class="isSubmitting ? 'opacity-50 cursor-not-allowed' : ''"
         class="w-full bg-[#414833] text-white font-semibold py-2 rounded-md hover:bg-[#8da48c] transition-all duration-200">
-        Login
+        <span x-show="!isSubmitting">Login</span>
+        <span x-show="isSubmitting">Processing...</span>
       </button>
     </form>
 

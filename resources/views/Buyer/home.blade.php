@@ -45,7 +45,7 @@
   class="bg-[#f2ede4] py-16 px-6 text-center">
   <h2 class="text-3xl font-semibold text-gray-900 mb-3 font-serif">Ingredients</h2>
   <p class="text-gray-600 max-w-xl mx-auto mb-8">
-    Discover the 12 core scent families and explore the wide world of perfumes built around them.
+    Discover the 16 core scent families and explore the wide world of perfumes built around them.
   </p>
 
   <div class="flex justify-center flex-wrap gap-6 mb-8">

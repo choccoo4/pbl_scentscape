@@ -114,16 +114,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 Swal.fire({
                     icon: 'success',
-                    title: 'Berhasil!',
-                    text: `Aroma "${aromaBaru}" berhasil ditambahkan.`,
+                    title: 'Success!',
+                    text: `The aroma "${aromaBaru}" has been successfully added.`,
                     timer: 1500,
                     showConfirmButton: false
                 });
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Gagal',
-                    text: 'Gagal menyimpan aroma.',
+                    title: 'Failed',
+                    text: 'Failed to save the aroma.',
                     timer: 2000,
                     showConfirmButton: false
                 });
@@ -132,8 +132,8 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error(error);
             Swal.fire({
                 icon: 'error',
-                title: 'Kesalahan',
-                text: 'Terjadi kesalahan saat menyimpan aroma.',
+                title: 'Error',
+                text: 'An error occurred while saving the aroma.',
                 timer: 2000,
                 showConfirmButton: false
             });
