@@ -3,9 +3,9 @@
 **Nama Tim:** Tim PBL IF 206 
 **Judul Proyek:** Aplikasi Jual Beli Parfum Berbasis Website 
 **Anggota dan NIM:**
-1 [3312401009] – [Putri Aulia Anggraini] 
-2 [3312401018] – [Irene Kristi Syari Rani Samosir] 
-3 [3312401002] – [Masitoh Anggina] 
+- [3312401009] – [Putri Aulia Anggraini] 
+- [3312401018] – [Irene Kristi Syari Rani Samosir] 
+- [3312401002] – [Masitoh Anggina] 
 
 **Link Proyek:**
 - [Repository GitHub](https://github.com/choccoo4/pbl_scentscape.git)
