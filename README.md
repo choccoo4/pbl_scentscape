@@ -1,6 +1,7 @@
 # Informasi Proyek
 
 **Nama Tim:** Tim PBL IF 206 
+
 **Judul Proyek:** Aplikasi Jual Beli Parfum Berbasis Website 
 **Anggota dan NIM:**
 - [3312401009] – [Putri Aulia Anggraini] 
