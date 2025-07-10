@@ -1,3 +1,20 @@
+# Informasi Proyek
+
+**Nama Tim:** Tim PBL IF 206 
+**Judul Proyek:** Aplikasi Jual Beli Parfum Berbasis Website 
+**Anggota dan NIM:**
+1 [3312401009] – [Putri Aulia Anggraini] 
+2 [3312401018] – [Irene Kristi Syari Rani Samosir] 
+3 [3312401002] – [Masitoh Anggina] 
+
+**Link Proyek:**
+- [Repository GitHub](https://github.com/choccoo4/pbl_scentscape.git)
+- [Demo Aplikasi 3 Menit]()
+- [Demo Aplikasi]()
+- [Vidio Presentasi]()
+
+---
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
