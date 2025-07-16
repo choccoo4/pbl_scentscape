@@ -10,9 +10,9 @@
 
 **Link Proyek:**
 - [Repository GitHub](https://github.com/choccoo4/pbl_scentscape.git)
-- [Demo Aplikasi 3 Menit]()
-- [Demo Aplikasi]()
-- [Vidio Presentasi]()
+- [Demo Aplikasi 3 Menit](https://youtu.be/vPU0pTRNSQk)
+- [Demo Aplikasi](https://youtu.be/fOqjN4N7SaE)
+- [Vidio Presentasi](https://youtu.be/0xzIAbeK9Rk?si=vxb8bsHSfTg4i6CZ)
 
 ---
 
